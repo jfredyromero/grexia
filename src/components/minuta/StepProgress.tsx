@@ -24,7 +24,7 @@ export default function StepProgress({ currentStep }: StepProgressProps) {
                                     className={[
                                         'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all',
                                         isCompleted
-                                            ? 'bg-primary text-secondary'
+                                            ? 'bg-primary text-white'
                                             : isActive
                                               ? 'bg-secondary text-white ring-4 ring-secondary/15'
                                               : 'bg-white border-2 border-slate-200 text-slate-400',

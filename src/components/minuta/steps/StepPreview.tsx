@@ -109,7 +109,7 @@ export default function StepPreview({
                 <button
                     onClick={handleDownload}
                     disabled={loading}
-                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-secondary shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 flex-shrink-0"
+                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 flex-shrink-0"
                 >
                     {loading ? (
                         <>
@@ -248,7 +248,7 @@ export default function StepPreview({
                     <button
                         onClick={handleDownload}
                         disabled={loading}
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-secondary shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
                     >
                         {loading ? (
                             <>

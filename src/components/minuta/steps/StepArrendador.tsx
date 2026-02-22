@@ -162,7 +162,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
                 </button>
                 <button
                     onClick={handleNext}
-                    className="flex items-center gap-1.5 h-12 px-8 rounded-full bg-primary text-sm font-bold text-secondary shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all"
+                    className="flex items-center gap-1.5 h-12 px-8 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all"
                 >
                     Continuar
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

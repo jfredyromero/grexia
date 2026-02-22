@@ -50,7 +50,7 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
                             ? 'bg-slate-100 text-slate-600'
                             : plan === 'basico'
                               ? 'bg-primary/15 text-secondary'
-                              : 'bg-secondary text-primary',
+                              : 'bg-primary/10 text-secondary',
                     ].join(' ')}
                 >
                     {currentPlan.name}
@@ -101,7 +101,7 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
                 <>
                     <button
                         onClick={() => onPlanChange('basico')}
-                        className="flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-secondary shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+                        className="flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
                     >
                         Actualizar a Básico
                         <span className="material-symbols-outlined text-[18px]">arrow_upward</span>

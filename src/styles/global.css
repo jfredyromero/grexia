@@ -2,11 +2,11 @@
 
 @theme {
     /* Colors */
-    --color-primary: #2bee79;
-    --color-primary-hover: #25d068;
+    --color-primary: #1b3070;
+    --color-primary-hover: #152457;
     --color-secondary: #0f172a;
-    --color-background-light: #f8fafc;
-    --color-background-dark: #102217;
+    --color-background-light: #ffffff;
+    --color-background-dark: #0d1b3e;
     --color-neutral-light: #f1f5f9;
 
     /* Fonts */

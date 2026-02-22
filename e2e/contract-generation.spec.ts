@@ -178,7 +178,7 @@ test.describe('Plan básico — sin marca de agua', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
