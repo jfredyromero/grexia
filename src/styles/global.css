@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+    --color-primary: #2bee79;
+    --color-primary-hover: #25d068;
+    --color-secondary: #0f172a;
+    --color-background-light: #f8fafc;
+    --color-background-dark: #102217;
+    --color-neutral-light: #f1f5f9;
+
+    /* Fonts */
+    --font-sans: "Inter", sans-serif;
+    --font-display: "Inter", sans-serif;
+    --font-body: "Inter", sans-serif;
+
+    /* Border radius */
+    --radius: 1rem;
+    --radius-lg: 2rem;
+    --radius-xl: 3rem;
+    --radius-2xl: 4rem;
+    --radius-full: 9999px;
+}
+
+/* ── Print styles ───────────────────────────────────────────────────────── */
+@media print {
+    .no-print,
+    header,
+    nav,
+    .whatsapp-btn {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    #contract-content {
+        display: block !important;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 11pt;
+        color: #000000;
+        background: white;
+    }
+
+    #contract-content h1 {
+        font-size: 13pt;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+    }
+
+    #contract-content h2 {
+        font-size: 11pt;
+        font-weight: bold;
+        margin-top: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    #contract-content p,
+    #contract-content li {
+        orphans: 3;
+        widows: 3;
+        page-break-inside: avoid;
+    }
+
+    #contract-signature-block {
+        margin-top: 4rem;
+        page-break-inside: avoid;
+    }
+
+    #contract-disclaimer {
+        margin-top: 3rem;
+        font-size: 8pt;
+        color: #666;
+        border-top: 1px solid #ccc;
+        padding-top: 0.5rem;
+    }
+
+    @page {
+        size: letter;
+        margin: 2.5cm 3cm 2.5cm 3cm;
+    }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glass-widget {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}

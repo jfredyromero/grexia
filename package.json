@@ -1,0 +1,67 @@
+{
+    "name": "lexia",
+    "type": "module",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:debug": "playwright test --debug",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "*.{js,ts,tsx,astro}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{css,html,json,md}": [
+            "prettier --write"
+        ]
+    },
+    "dependencies": {
+        "@astrojs/react": "^4.4.2",
+        "@react-pdf/renderer": "^4.3.2",
+        "@tailwindcss/vite": "^4.2.0",
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "astro": "^5.17.1",
+        "html2canvas": "^1.4.1",
+        "jspdf": "^4.2.0",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4",
+        "tailwindcss": "^4.2.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@playwright/test": "^1.58.2",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
+        "@vitejs/plugin-react": "^5.1.4",
+        "@vitest/coverage-v8": "^4.0.18",
+        "eslint": "^10.0.1",
+        "eslint-plugin-astro": "^1.6.0",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "globals": "^17.3.0",
+        "happy-dom": "^20.7.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "prettier": "^3.8.1",
+        "prettier-plugin-astro": "^0.14.1",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.56.0",
+        "vitest": "^4.0.18"
+    }
+}

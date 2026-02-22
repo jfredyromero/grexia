@@ -1,0 +1,65 @@
+---
+const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
+
+const navLinks = [
+    { label: '¿Cómo funciona?', href: '/#como-funciona', external: false },
+    { label: 'Agendar Asesoría', href: CALENDAR_URL, external: true },
+];
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <!-- Logo -->
+        <a
+            href="/"
+            class="flex items-center gap-2"
+        >
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-primary">
+                <span class="material-symbols-outlined text-[28px]">gavel</span>
+            </div>
+            <span class="text-2xl font-extrabold tracking-tight text-secondary">Lexia</span>
+        </a>
+
+        <!-- Navigation Links (Desktop) -->
+        <nav class="hidden md:flex items-center gap-8">
+            {
+                navLinks.map((link) => (
+                    <a
+                        class="text-sm font-medium text-slate-600 transition-colors hover:text-secondary"
+                        href={link.href}
+                        target={link.external ? '_blank' : undefined}
+                        rel={link.external ? 'noopener noreferrer' : undefined}
+                    >
+                        {link.label}
+                    </a>
+                ))
+            }
+        </nav>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+            <a
+                href={CALENDAR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hidden sm:flex h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300"
+            >
+                Agendar Asesoría
+            </a>
+            <a
+                href="/minuta"
+                class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-secondary shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+            >
+                Generar minuta
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+            <!-- Mobile Menu Button -->
+            <button
+                class="md:hidden flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-900"
+                aria-label="Abrir menú"
+            >
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
