@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import type { MinutaFormData, InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData, PlanTier } from './types';
 import { INITIAL_FORM_DATA } from './types';
 import StepProgress from './StepProgress';
@@ -21,12 +21,8 @@ function readPlanFromUrl(): PlanTier {
 export default function MinutaForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<MinutaFormData>(INITIAL_FORM_DATA);
-    const [plan, setPlan] = useState<PlanTier>('free');
+    const [plan, setPlan] = useState<PlanTier>(readPlanFromUrl);
     const [logoUrl, setLogoUrl] = useState<string>('');
-
-    useEffect(() => {
-        setPlan(readPlanFromUrl());
-    }, []);
 
     const updateInmueble = useCallback((data: InmuebleData) => {
         setFormData((prev) => ({ ...prev, inmueble: data }));

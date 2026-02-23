@@ -89,6 +89,15 @@
     }
 }
 
+@keyframes hero-float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+}
+
+.hero-chat-bubble {
+    animation: hero-float 4s ease-in-out infinite;
+}
+
 @keyframes fade-in-up {
     from {
         opacity: 0;

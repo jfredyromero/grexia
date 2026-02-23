@@ -1,5 +1,5 @@
 export type TipoInmueble = 'Apartamento' | 'Casa' | 'Local Comercial' | 'Oficina';
-export type PlanTier = 'free' | 'basico' | 'pro';
+export type { PlanTier } from '../../types/plans';
 export type TipoDocArrendador = 'CC' | 'CE' | 'NIT';
 export type TipoDocArrendatario = 'CC' | 'CE' | 'Pasaporte';
 

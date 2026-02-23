@@ -1,0 +1,19 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/shared/Navbar.astro';
+import ToolHero from '../../../components/landing/ToolHero.astro';
+import ToolHowItWorks from '../../../components/landing/ToolHowItWorks.astro';
+import SharedPricing from '../../../components/landing/SharedPricing.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import { getToolBySlug } from '../../../config/tools';
+
+const tool = getToolBySlug('pagare')!;
+---
+
+<Layout title="Generador de Pagaré · Lexia">
+    <Navbar variant="tool-landing" activeTool="pagare" />
+    <ToolHero tool={tool} />
+    <ToolHowItWorks tool={tool} />
+    <SharedPricing formHref={tool.href.form} />
+    <WhatsAppButton />
+</Layout>

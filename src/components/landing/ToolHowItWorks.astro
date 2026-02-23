@@ -1,0 +1,65 @@
+---
+import type { ToolConfig } from '../../config/tools';
+
+interface Props {
+    tool: ToolConfig;
+}
+
+const { tool } = Astro.props;
+const { howItWorksSteps, href } = tool;
+---
+
+<section id="como-funciona" class="w-full bg-white py-20 lg:py-28">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-secondary">
+                <span class="material-symbols-outlined text-primary text-[16px]">bolt</span>
+                Simple y rápido
+            </span>
+            <h2 class="mt-4 text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                ¿Cómo funciona?
+            </h2>
+            <p class="mt-3 max-w-xl mx-auto text-lg text-slate-500">
+                Genera tu documento en tres pasos. Sin complicaciones, sin registro.
+            </p>
+        </div>
+
+        <!-- Steps Grid -->
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
+            {howItWorksSteps.map((step, idx) => (
+                <div class="relative flex flex-col gap-5 rounded-2xl bg-slate-50 p-8 border border-slate-100">
+                    <!-- Step number -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
+                            <span class="material-symbols-outlined text-[26px]">{step.icon}</span>
+                        </div>
+                        <span class="text-5xl font-black text-slate-100 select-none">0{idx + 1}</span>
+                    </div>
+                    <!-- Content -->
+                    <div class="flex flex-col gap-2">
+                        <h3 class="text-lg font-bold text-secondary">{step.title}</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+                    </div>
+                    <!-- Connector arrow (between cards, desktop only) -->
+                    {idx < howItWorksSteps.length - 1 && (
+                        <div class="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm">
+                            <span class="material-symbols-outlined text-slate-400 text-[20px]">chevron_right</span>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="mt-12 text-center">
+            <a
+                href={href.form}
+                class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-10 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:translate-y-[-2px] hover:bg-primary-hover hover:shadow-lg"
+            >
+                Generar gratis
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</section>

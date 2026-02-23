@@ -1,16 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import HowItWorks from '../components/home/HowItWorks.astro';
-import ServiceComparison from '../components/home/ServiceComparison.astro';
+import Navbar from '../components/shared/Navbar.astro';
+import HomeHero from '../components/landing/HomeHero.astro';
+import ToolGrid from '../components/landing/ToolGrid.astro';
+import SharedPricing from '../components/landing/SharedPricing.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 
-<Layout>
-    <Navbar />
-    <Hero />
-    <HowItWorks />
-    <ServiceComparison />
+<Layout title="Lexia · Plataforma Legal para Colombia">
+    <Navbar variant="home" />
+    <HomeHero />
+    <ToolGrid />
+    <SharedPricing />
     <WhatsAppButton />
 </Layout>
