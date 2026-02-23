@@ -817,8 +817,8 @@ export default function ContractPDF({ formData, plan, logoUrl }: ContractPDFProp
                     <View style={s.disclaimer}>
                         <Text style={s.disclaimerText}>Documento generado por Lexia · lexia.co</Text>
                         <Text style={s.disclaimerText}>
-                            Este contrato es una referencia legal. Para mayor seguridad jurídica, consulte con un abogado
-                            habilitado.
+                            Este contrato es una referencia legal. Para mayor seguridad jurídica, consulte con un
+                            abogado habilitado.
                         </Text>
                     </View>
                 )}

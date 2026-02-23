@@ -218,8 +218,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                 value={data.ciudadSuscripcion}
                 onChange={(city) => {
                     onChange({ ...data, ciudadSuscripcion: city });
-                    if (errors.ciudadSuscripcion)
-                        setErrors((prev) => ({ ...prev, ciudadSuscripcion: '' }));
+                    if (errors.ciudadSuscripcion) setErrors((prev) => ({ ...prev, ciudadSuscripcion: '' }));
                 }}
                 error={errors.ciudadSuscripcion}
             />

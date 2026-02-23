@@ -148,8 +148,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                 value={data.ciudadResidencia}
                 onChange={(city) => {
                     onChange({ ...data, ciudadResidencia: city });
-                    if (errors.ciudadResidencia)
-                        setErrors((prev) => ({ ...prev, ciudadResidencia: '' }));
+                    if (errors.ciudadResidencia) setErrors((prev) => ({ ...prev, ciudadResidencia: '' }));
                 }}
                 error={errors.ciudadResidencia}
             />

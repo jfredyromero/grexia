@@ -210,7 +210,7 @@ export default function StepPreview({
             {/* Pagaré preview */}
             <div
                 id="pagare-preview"
-                className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm"
+                className="border border-slate-200 rounded-lg overflow-hidden shadow-sm"
             >
                 <PagareTemplate
                     formData={formData}

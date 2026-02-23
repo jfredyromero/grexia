@@ -100,9 +100,9 @@ describe('ColombiaLocationSelect — renderizado', () => {
         renderSelect();
         await waitForDepts();
         // Check options (sorted alphabetically by the component)
-        const opts = Array.from(
-            (screen.getByLabelText('Departamento') as HTMLSelectElement).options
-        ).map((o) => o.text);
+        const opts = Array.from((screen.getByLabelText('Departamento') as HTMLSelectElement).options).map(
+            (o) => o.text
+        );
         expect(opts).toContain('Antioquia');
         expect(opts).toContain('Bogotá D.C.');
     });
@@ -144,9 +144,7 @@ describe('ColombiaLocationSelect — selección de departamento', () => {
 
         await waitFor(
             () => {
-                expect(
-                    (screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled
-                ).toBe(false);
+                expect((screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled).toBe(false);
             },
             { timeout: 3000 }
         );
@@ -188,9 +186,7 @@ describe('ColombiaLocationSelect — selección de ciudad', () => {
 
         await waitFor(
             () => {
-                expect(
-                    (screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled
-                ).toBe(false);
+                expect((screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled).toBe(false);
             },
             { timeout: 3000 }
         );
@@ -231,8 +227,6 @@ describe('ColombiaLocationSelect — errores de validación', () => {
 
     it('no muestra mensaje de error cuando no se provee', () => {
         renderSelect();
-        expect(
-            screen.queryByText('La ciudad de residencia es requerida.')
-        ).not.toBeInTheDocument();
+        expect(screen.queryByText('La ciudad de residencia es requerida.')).not.toBeInTheDocument();
     });
 });

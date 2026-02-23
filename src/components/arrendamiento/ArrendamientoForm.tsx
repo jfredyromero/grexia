@@ -115,13 +115,19 @@ export default function ArrendamientoForm() {
                 <StepProgress currentStep={currentStep} />
 
                 {/* Step card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8">
+                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
                     {stepContent[currentStep]}
                 </div>
             </div>
 
             {/* Sidebar: upsell widget */}
-            <aside className={['no-print', isStep5 ? 'lg:col-span-2' : ''].join(' ')}>
+            <aside
+                className={[
+                    'no-print',
+                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
+                    isStep5 ? 'lg:col-span-2' : '',
+                ].join(' ')}
+            >
                 <UpsellWidget
                     calendarUrl={CALENDAR_URL}
                     plan={plan}

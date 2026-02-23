@@ -98,9 +98,7 @@ describe('numberToWordsCOP — pagare amounts', () => {
     });
 
     it('converts 1.250.750', () => {
-        expect(numberToWordsCOP(1_250_750)).toBe(
-            'UN MILLÓN DOSCIENTOS CINCUENTA MIL SETECIENTOS CINCUENTA PESOS'
-        );
+        expect(numberToWordsCOP(1_250_750)).toBe('UN MILLÓN DOSCIENTOS CINCUENTA MIL SETECIENTOS CINCUENTA PESOS');
     });
 
     it('always ends with PESOS', () => {

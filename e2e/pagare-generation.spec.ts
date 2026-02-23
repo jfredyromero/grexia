@@ -16,9 +16,7 @@ test.describe('Pagaré — pago único (plan gratuito)', () => {
             obligacion: pagareSimple.obligacion,
         });
 
-        await form.screenshotPreview(
-            path.join(artifactDir('pagare-pago-unico'), 'preview.png')
-        );
+        await form.screenshotPreview(path.join(artifactDir('pagare-pago-unico'), 'preview.png'));
 
         // Parties visible in preview
         await form.assertPreviewContains('Juan Carlos Gómez Martínez');
@@ -257,9 +255,7 @@ test.describe('Validación — no avanza con campos vacíos', () => {
 // ── Suite 6: Dropdowns de departamento/ciudad ─────────────────────────────────
 
 test.describe('Selección departamento/ciudad (API mocked)', () => {
-    test('el selector de ciudad está deshabilitado hasta seleccionar departamento (deudor)', async ({
-        page,
-    }) => {
+    test('el selector de ciudad está deshabilitado hasta seleccionar departamento (deudor)', async ({ page }) => {
         const form = new PagareFormPage(page);
         await form.goto('free');
         await form.fillAcreedor(pagareSimple.acreedor);
@@ -278,9 +274,7 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
         await page.selectOption('#deudor-ciudad-dept', pagareSimple.deudor.departamentoId);
 
         await page.waitForSelector('#deudor-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await expect(
-            page.locator('#deudor-ciudad-city option', { hasText: 'Bogotá D.C.' })
-        ).toBeAttached();
+        await expect(page.locator('#deudor-ciudad-city option', { hasText: 'Bogotá D.C.' })).toBeAttached();
     });
 
     test('las ciudades se cargan al seleccionar departamento (obligación)', async ({ page }) => {
@@ -293,9 +287,7 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
         await page.selectOption('#obligacion-ciudad-dept', pagareSimple.obligacion.departamentoId);
 
         await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await expect(
-            page.locator('#obligacion-ciudad-city option', { hasText: 'Bogotá D.C.' })
-        ).toBeAttached();
+        await expect(page.locator('#obligacion-ciudad-city option', { hasText: 'Bogotá D.C.' })).toBeAttached();
     });
 });
 

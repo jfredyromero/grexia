@@ -101,9 +101,7 @@ export default function ColombiaLocationSelect({
                         </option>
                     ))}
                 </select>
-                {deptError && (
-                    <p className="text-xs text-red-500 mt-1">No se pudo cargar los departamentos.</p>
-                )}
+                {deptError && <p className="text-xs text-red-500 mt-1">No se pudo cargar los departamentos.</p>}
             </div>
 
             {/* Ciudad */}

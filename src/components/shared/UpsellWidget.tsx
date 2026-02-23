@@ -14,7 +14,7 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
     const currentPlan = PLANS.find((p) => p.id === plan)!;
 
     return (
-        <div className="glass-widget rounded-2xl p-6 flex flex-col gap-5 sticky top-28">
+        <div className="glass-widget rounded-lg p-6 flex flex-col gap-5 sticky top-28">
             {/* Current plan indicator */}
             <div className="flex items-center justify-between">
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Tu plan</p>

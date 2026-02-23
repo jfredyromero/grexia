@@ -53,25 +53,19 @@ export class PagareFormPage {
             });
         });
 
-        await this.page.route(
-            '**/api-colombia.com/api/v1/Department/*/cities',
-            async (route) => {
-                await route.fulfill({
-                    contentType: 'application/json',
-                    body: JSON.stringify(mockColombiaApi.citiesBogota),
-                });
-            }
-        );
+        await this.page.route('**/api-colombia.com/api/v1/Department/*/cities', async (route) => {
+            await route.fulfill({
+                contentType: 'application/json',
+                body: JSON.stringify(mockColombiaApi.citiesBogota),
+            });
+        });
     }
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto(plan: PlanTier = 'free') {
         await this.mockColombiaApiRoutes();
-        const url =
-            plan !== 'free'
-                ? `/herramientas/pagare/generar?plan=${plan}`
-                : '/herramientas/pagare/generar';
+        const url = plan !== 'free' ? `/herramientas/pagare/generar?plan=${plan}` : '/herramientas/pagare/generar';
         await this.page.goto(url);
         // Wait for React island to hydrate
         await this.page.waitForSelector('h2:has-text("El acreedor")', { timeout: 10_000 });
@@ -153,11 +147,7 @@ export class PagareFormPage {
 
     // ── Full flow ─────────────────────────────────────────────────────────────
 
-    async fillAllSteps(data: {
-        acreedor: AcreedorData;
-        deudor: DeudorData;
-        obligacion: ObligacionData;
-    }) {
+    async fillAllSteps(data: { acreedor: AcreedorData; deudor: DeudorData; obligacion: ObligacionData }) {
         await this.fillAcreedor(data.acreedor);
         await this.fillDeudor(data.deudor);
         await this.fillObligacion(data.obligacion);
@@ -195,15 +185,11 @@ export class PagareFormPage {
     }
 
     async assertWatermarkVisible() {
-        await expect(
-            this.page.locator('#pagare-preview').getByText(/plan gratuito/i)
-        ).toBeVisible();
+        await expect(this.page.locator('#pagare-preview').getByText(/plan gratuito/i)).toBeVisible();
     }
 
     async assertWatermarkHidden() {
-        await expect(
-            this.page.locator('#pagare-preview').getByText(/plan gratuito/i)
-        ).not.toBeVisible();
+        await expect(this.page.locator('#pagare-preview').getByText(/plan gratuito/i)).not.toBeVisible();
     }
 
     async assertLogoImageVisible() {
@@ -215,9 +201,7 @@ export class PagareFormPage {
     }
 
     async assertClauseVisible(clause: 'PRIMERA' | 'SEGUNDA' | 'TERCERA' | 'CUARTA') {
-        await expect(this.page.locator('#pagare-preview')).toContainText(
-            new RegExp(`${clause}\\.`)
-        );
+        await expect(this.page.locator('#pagare-preview')).toContainText(new RegExp(`${clause}\\.`));
     }
 
     async uploadLogo(imagePath: string) {

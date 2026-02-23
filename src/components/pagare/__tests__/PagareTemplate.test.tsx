@@ -45,13 +45,15 @@ const baseCuotas: PagareFormData = {
     },
 };
 
-function renderTemplate(
-    overrides?: Partial<PagareFormData>,
-    plan: PlanTier = 'free',
-    logoUrl = ''
-) {
+function renderTemplate(overrides?: Partial<PagareFormData>, plan: PlanTier = 'free', logoUrl = '') {
     const formData = overrides ? { ...base, ...overrides } : base;
-    return render(<PagareTemplate formData={formData} plan={plan} logoUrl={logoUrl} />);
+    return render(
+        <PagareTemplate
+            formData={formData}
+            plan={plan}
+            logoUrl={logoUrl}
+        />
+    );
 }
 
 // ── Amount Box ────────────────────────────────────────────────────────────────
@@ -151,7 +153,12 @@ describe('PagareTemplate — caja de condiciones de pago', () => {
     });
 
     it('por cuotas: muestra número de cuotas y período', () => {
-        const { container } = render(<PagareTemplate formData={baseCuotas} plan="free" />);
+        const { container } = render(
+            <PagareTemplate
+                formData={baseCuotas}
+                plan="free"
+            />
+        );
         expect(container.textContent).toContain('12');
         expect(container.textContent).toContain('mensuales');
     });
@@ -172,9 +179,7 @@ describe('PagareTemplate — caja de condiciones de pago', () => {
 
     it('muestra "tasa máxima legal vigente" cuando la mora está vacía', () => {
         const { container } = renderTemplate();
-        expect(container.textContent).toContain(
-            'tasa máxima legal vigente certificada por la Superintendencia'
-        );
+        expect(container.textContent).toContain('tasa máxima legal vigente certificada por la Superintendencia');
     });
 });
 
