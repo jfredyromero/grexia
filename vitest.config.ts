@@ -11,14 +11,12 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'html'],
-            include: [
-                'src/components/arrendamiento/contractUtils.ts',
-                'src/components/arrendamiento/validation.ts',
-                'src/components/arrendamiento/ContractTemplate.tsx',
-                'src/components/pagare/pagareUtils.ts',
-                'src/components/pagare/validation.ts',
-                'src/components/pagare/PagareTemplate.tsx',
-                'src/components/shared/ColombiaLocationSelect.tsx',
+            include: ['src/components/**/*.{ts,tsx}'],
+            exclude: [
+                'src/components/**/__tests__/**',
+                'src/components/**/*PDF.tsx',
+                'src/components/**/steps/**',
+                'src/components/**/*Form.tsx',
             ],
         },
     },

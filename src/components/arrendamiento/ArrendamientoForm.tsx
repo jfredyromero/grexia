@@ -8,8 +8,9 @@ import type {
     PlanTier,
 } from './types';
 import { INITIAL_FORM_DATA } from './types';
-import StepProgress from './StepProgress';
-import UpsellWidget from './UpsellWidget';
+import StepProgress from '../shared/StepProgress';
+import UpsellWidget from '../shared/UpsellWidget';
+import { STEPS } from './types';
 import StepInmueble from './steps/StepInmueble';
 import StepArrendador from './steps/StepArrendador';
 import StepArrendatario from './steps/StepArrendatario';
@@ -112,7 +113,10 @@ export default function ArrendamientoForm() {
             {/* Main form column */}
             <div className={['flex flex-col gap-6', isStep5 ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
                 {/* Step progress */}
-                <StepProgress currentStep={currentStep} />
+                <StepProgress
+                    steps={STEPS}
+                    currentStep={currentStep}
+                />
 
                 {/* Step card */}
                 <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
