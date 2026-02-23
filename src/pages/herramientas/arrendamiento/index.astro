@@ -11,7 +11,10 @@ const tool = getToolBySlug('arrendamiento')!;
 ---
 
 <Layout title="Contrato de Arrendamiento · Lexia">
-    <Navbar variant="tool-landing" activeTool="arrendamiento" />
+    <Navbar
+        variant="tool-landing"
+        activeTool="arrendamiento"
+    />
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />
     <SharedPricing formHref={tool.href.form} />

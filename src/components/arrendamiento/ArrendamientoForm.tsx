@@ -1,5 +1,12 @@
 import { useState, useCallback } from 'react';
-import type { MinutaFormData, InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData, PlanTier } from './types';
+import type {
+    ArrendamientoFormData,
+    InmuebleData,
+    ArrendadorData,
+    ArrendatarioData,
+    CondicionesData,
+    PlanTier,
+} from './types';
 import { INITIAL_FORM_DATA } from './types';
 import StepProgress from './StepProgress';
 import UpsellWidget from './UpsellWidget';
@@ -18,9 +25,9 @@ function readPlanFromUrl(): PlanTier {
     return 'free';
 }
 
-export default function MinutaForm() {
+export default function ArrendamientoForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
-    const [formData, setFormData] = useState<MinutaFormData>(INITIAL_FORM_DATA);
+    const [formData, setFormData] = useState<ArrendamientoFormData>(INITIAL_FORM_DATA);
     const [plan, setPlan] = useState<PlanTier>(readPlanFromUrl);
     const [logoUrl, setLogoUrl] = useState<string>('');
 
@@ -100,10 +107,7 @@ export default function MinutaForm() {
 
     return (
         <div
-            className={[
-                'grid grid-cols-1 items-start gap-8',
-                isStep5 ? 'lg:grid-cols-5' : 'lg:grid-cols-3',
-            ].join(' ')}
+            className={['grid grid-cols-1 items-start gap-8', isStep5 ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(' ')}
         >
             {/* Main form column */}
             <div className={['flex flex-col gap-6', isStep5 ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>

@@ -30,7 +30,8 @@ export const TOOLS: ToolConfig[] = [
         slug: 'arrendamiento',
         name: 'Contrato de Arrendamiento',
         shortName: 'Arrendamiento',
-        description: 'Genera contratos de arrendamiento residencial y comercial con validez legal en Colombia. Gratis, sin registro.',
+        description:
+            'Genera contratos de arrendamiento residencial y comercial con validez legal en Colombia. Gratis, sin registro.',
         icon: 'home_work',
         legalBasis: 'Ley 820 de 2003',
         href: {
@@ -43,7 +44,7 @@ export const TOOLS: ToolConfig[] = [
             suffix: 'listo en minutos',
         },
         heroSubtitle:
-            'Genera tu minuta gratis con validez legal en Colombia (Ley 820 de 2003). Sin registro, sin letra pequeña. Lista para descargar en PDF.',
+            'Genera tu contrato gratis con validez legal en Colombia (Ley 820 de 2003). Sin registro, sin letra pequeña. Listo para descargar en PDF.',
         trustBadges: [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Ley 820 de 2003' },
@@ -58,7 +59,7 @@ export const TOOLS: ToolConfig[] = [
             },
             {
                 icon: 'auto_awesome',
-                title: 'Generamos tu minuta',
+                title: 'Generamos tu contrato',
                 description:
                     'El sistema crea automáticamente el contrato ajustado a la Ley 820 de 2003 con todas las cláusulas necesarias.',
             },
@@ -81,7 +82,8 @@ export const TOOLS: ToolConfig[] = [
         slug: 'pagare',
         name: 'Pagaré',
         shortName: 'Pagaré',
-        description: 'Genera pagarés con validez legal en Colombia. Documento de obligación de pago entre acreedor y deudor, conforme al Código de Comercio.',
+        description:
+            'Genera pagarés con validez legal en Colombia. Documento de obligación de pago entre acreedor y deudor, conforme al Código de Comercio.',
         icon: 'receipt_long',
         legalBasis: 'Código de Comercio',
         href: {
@@ -120,8 +122,7 @@ export const TOOLS: ToolConfig[] = [
                     'Revisa tu pagaré, descárgalo en PDF y fírmalo. Listo para usar como título valor con plena validez legal.',
             },
         ],
-        heroImage:
-            'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
+        heroImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogado Carlos',
         heroLawyerSpecialty: 'Títulos Valor · En línea',
         heroLawyerAvatar:

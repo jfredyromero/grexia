@@ -1,5 +1,5 @@
 // Re-export shared utilities from contractUtils
-export { formatCOP, formatDate, numberToWordsCOP } from '../minuta/contractUtils';
+export { formatCOP, formatDate, numberToWordsCOP } from '../arrendamiento/contractUtils';
 
 import type { PeriodoCuotas } from './types';
 

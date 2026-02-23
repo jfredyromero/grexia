@@ -14,8 +14,18 @@ export function formatDate(iso: string): string {
     if (!iso) return '___________________';
     const [year, month, day] = iso.split('-');
     const months = [
-        'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-        'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+        'enero',
+        'febrero',
+        'marzo',
+        'abril',
+        'mayo',
+        'junio',
+        'julio',
+        'agosto',
+        'septiembre',
+        'octubre',
+        'noviembre',
+        'diciembre',
     ];
     return `${parseInt(day, 10)} de ${months[parseInt(month, 10) - 1]} de ${year}`;
 }
@@ -23,19 +33,41 @@ export function formatDate(iso: string): string {
 // ── Number-to-words (Colombian Spanish) ──────────────────────────────────────
 
 const ONES = [
-    '', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE',
-    'DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE',
-    'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE',
+    '',
+    'UN',
+    'DOS',
+    'TRES',
+    'CUATRO',
+    'CINCO',
+    'SEIS',
+    'SIETE',
+    'OCHO',
+    'NUEVE',
+    'DIEZ',
+    'ONCE',
+    'DOCE',
+    'TRECE',
+    'CATORCE',
+    'QUINCE',
+    'DIECISÉIS',
+    'DIECISIETE',
+    'DIECIOCHO',
+    'DIECINUEVE',
 ];
 
-const TENS = [
-    '', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA',
-    'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA',
-];
+const TENS = ['', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
 
 const HUNDREDS = [
-    '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS',
-    'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS',
+    '',
+    'CIENTO',
+    'DOSCIENTOS',
+    'TRESCIENTOS',
+    'CUATROCIENTOS',
+    'QUINIENTOS',
+    'SEISCIENTOS',
+    'SETECIENTOS',
+    'OCHOCIENTOS',
+    'NOVECIENTOS',
 ];
 
 export function threeDigits(n: number): string {
@@ -48,8 +80,7 @@ export function threeDigits(n: number): string {
     if (rem < 20) return (hStr ? hStr + ' ' : '') + ONES[rem];
     const t = Math.floor(rem / 10);
     const u = rem % 10;
-    const tensStr =
-        u === 0 ? TENS[t] : t === 2 ? 'VEINTI' + ONES[u] : TENS[t] + ' Y ' + ONES[u];
+    const tensStr = u === 0 ? TENS[t] : t === 2 ? 'VEINTI' + ONES[u] : TENS[t] + ' Y ' + ONES[u];
     return (hStr ? hStr + ' ' : '') + tensStr;
 }
 

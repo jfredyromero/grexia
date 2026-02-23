@@ -75,13 +75,14 @@ const planHrefs = {
 };
 ---
 
-<section class="w-full bg-background-light py-20 lg:py-28" id="precios">
+<section
+    class="w-full bg-background-light py-20 lg:py-28"
+    id="precios"
+>
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-14">
-            <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
-                Elige tu plan
-            </h2>
+            <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">Elige tu plan</h2>
             <p class="mt-3 max-w-xl mx-auto text-lg text-slate-500">
                 Empieza gratis y escala cuando necesites más. Sin sorpresas.
             </p>
@@ -89,124 +90,123 @@ const planHrefs = {
 
         <!-- Cards -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-6 max-w-5xl mx-auto items-start">
-            {plans.map((plan) => (
-                <div
-                    class={[
-                        'relative flex flex-col gap-6 rounded-2xl p-8 overflow-hidden',
-                        plan.highlighted
-                            ? 'bg-secondary shadow-xl shadow-secondary/25 ring-2 ring-primary'
-                            : 'bg-white border border-slate-200 shadow-sm',
-                    ].join(' ')}
-                >
-                    {plan.highlighted && (
-                        <div class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
-                    )}
-
-                    {/* Badge + Name */}
-                    <div class="relative">
-                        <span
-                            class={[
-                                'inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide',
-                                plan.badgeColor,
-                            ].join(' ')}
-                        >
-                            {plan.badge}
-                        </span>
-                        <h3
-                            class={[
-                                'mt-4 text-2xl font-black',
-                                plan.highlighted ? 'text-white' : 'text-secondary',
-                            ].join(' ')}
-                        >
-                            {plan.name}
-                        </h3>
-                        <p
-                            class={[
-                                'mt-1 text-sm',
-                                plan.highlighted ? 'text-slate-400' : 'text-slate-500',
-                            ].join(' ')}
-                        >
-                            {plan.description}
-                        </p>
-                    </div>
-
-                    {/* Price */}
-                    <div class="relative flex items-end gap-1.5">
-                        <span
-                            class={[
-                                'text-4xl font-black',
-                                plan.highlighted ? 'text-white' : 'text-secondary',
-                            ].join(' ')}
-                        >
-                            {plan.price}
-                        </span>
-                        <span
-                            class={[
-                                'text-sm pb-1',
-                                plan.highlighted ? 'text-slate-400' : 'text-slate-400',
-                            ].join(' ')}
-                        >
-                            {plan.period}
-                        </span>
-                    </div>
-
-                    {/* Features */}
-                    <ul class="relative flex flex-col gap-3">
-                        {plan.features.map((feature) => (
-                            <li
-                                class={[
-                                    'flex items-start gap-2.5 text-sm',
-                                    feature.included
-                                        ? plan.highlighted
-                                            ? 'text-slate-300'
-                                            : 'text-slate-600'
-                                        : 'text-slate-300 line-through',
-                                ].join(' ')}
-                            >
-                                <span
-                                    class={[
-                                        'material-symbols-outlined text-[18px] mt-0.5 flex-shrink-0',
-                                        feature.included
-                                            ? (feature as { warning?: boolean }).warning
-                                                ? 'text-amber-400'
-                                                : 'text-primary'
-                                            : 'text-slate-300',
-                                    ].join(' ')}
-                                >
-                                    {feature.included
-                                        ? (feature as { warning?: boolean }).warning
-                                            ? 'warning'
-                                            : 'check_circle'
-                                        : 'cancel'}
-                                </span>
-                                {feature.text}
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* CTA */}
-                    <a
-                        href={planHrefs[plan.id]}
+            {
+                plans.map((plan) => (
+                    <div
                         class={[
-                            'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:translate-y-[-1px]',
+                            'relative flex flex-col gap-6 rounded-2xl p-8 overflow-hidden',
                             plan.highlighted
-                                ? 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover'
-                                : plan.id === 'pro'
-                                  ? 'bg-secondary text-white hover:bg-slate-800 border border-slate-700'
-                                  : 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover',
+                                ? 'bg-secondary shadow-xl shadow-secondary/25 ring-2 ring-primary'
+                                : 'bg-white border border-slate-200 shadow-sm',
                         ].join(' ')}
                     >
-                        {plan.cta}
-                        <span class="material-symbols-outlined text-[18px]">{plan.ctaIcon}</span>
-                    </a>
-                </div>
-            ))}
+                        {plan.highlighted && (
+                            <div class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
+                        )}
+
+                        {/* Badge + Name */}
+                        <div class="relative">
+                            <span
+                                class={[
+                                    'inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide',
+                                    plan.badgeColor,
+                                ].join(' ')}
+                            >
+                                {plan.badge}
+                            </span>
+                            <h3
+                                class={[
+                                    'mt-4 text-2xl font-black',
+                                    plan.highlighted ? 'text-white' : 'text-secondary',
+                                ].join(' ')}
+                            >
+                                {plan.name}
+                            </h3>
+                            <p
+                                class={['mt-1 text-sm', plan.highlighted ? 'text-slate-400' : 'text-slate-500'].join(
+                                    ' '
+                                )}
+                            >
+                                {plan.description}
+                            </p>
+                        </div>
+
+                        {/* Price */}
+                        <div class="relative flex items-end gap-1.5">
+                            <span
+                                class={['text-4xl font-black', plan.highlighted ? 'text-white' : 'text-secondary'].join(
+                                    ' '
+                                )}
+                            >
+                                {plan.price}
+                            </span>
+                            <span
+                                class={['text-sm pb-1', plan.highlighted ? 'text-slate-400' : 'text-slate-400'].join(
+                                    ' '
+                                )}
+                            >
+                                {plan.period}
+                            </span>
+                        </div>
+
+                        {/* Features */}
+                        <ul class="relative flex flex-col gap-3">
+                            {plan.features.map((feature) => (
+                                <li
+                                    class={[
+                                        'flex items-start gap-2.5 text-sm',
+                                        feature.included
+                                            ? plan.highlighted
+                                                ? 'text-slate-300'
+                                                : 'text-slate-600'
+                                            : 'text-slate-300 line-through',
+                                    ].join(' ')}
+                                >
+                                    <span
+                                        class={[
+                                            'material-symbols-outlined text-[18px] mt-0.5 flex-shrink-0',
+                                            feature.included
+                                                ? (feature as { warning?: boolean }).warning
+                                                    ? 'text-amber-400'
+                                                    : 'text-primary'
+                                                : 'text-slate-300',
+                                        ].join(' ')}
+                                    >
+                                        {feature.included
+                                            ? (feature as { warning?: boolean }).warning
+                                                ? 'warning'
+                                                : 'check_circle'
+                                            : 'cancel'}
+                                    </span>
+                                    {feature.text}
+                                </li>
+                            ))}
+                        </ul>
+
+                        {/* CTA */}
+                        <a
+                            href={planHrefs[plan.id]}
+                            class={[
+                                'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:translate-y-[-1px]',
+                                plan.highlighted
+                                    ? 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover'
+                                    : plan.id === 'pro'
+                                      ? 'bg-secondary text-white hover:bg-slate-800 border border-slate-700'
+                                      : 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover',
+                            ].join(' ')}
+                        >
+                            {plan.cta}
+                            <span class="material-symbols-outlined text-[18px]">{plan.ctaIcon}</span>
+                        </a>
+                    </div>
+                ))
+            }
         </div>
 
         <!-- Bottom note -->
         <p class="text-center text-xs text-slate-400 mt-8">
-            Los planes Básico y Pro incluyen acceso a toda la suite de documentos legales disponibles en
-            Lexia durante el periodo de vigencia. Las sesiones virtuales se agenden vía calendario.
+            Los planes Básico y Pro incluyen acceso a toda la suite de documentos legales disponibles en Lexia durante
+            el periodo de vigencia. Las sesiones virtuales se agenden vía calendario.
         </p>
     </div>
 </section>

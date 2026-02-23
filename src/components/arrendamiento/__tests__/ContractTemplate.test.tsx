@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import ContractTemplate from '../ContractTemplate';
-import type { MinutaFormData } from '../types';
+import type { ArrendamientoFormData } from '../types';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────
 
-const base: MinutaFormData = {
+const base: ArrendamientoFormData = {
     inmueble: {
         tipoInmueble: 'Apartamento',
         propiedadHorizontal: false,
@@ -39,17 +39,17 @@ const base: MinutaFormData = {
     },
 };
 
-const withTipo = (tipoInmueble: MinutaFormData['inmueble']['tipoInmueble']): MinutaFormData => ({
+const withTipo = (tipoInmueble: ArrendamientoFormData['inmueble']['tipoInmueble']): ArrendamientoFormData => ({
     ...base,
     inmueble: { ...base.inmueble, tipoInmueble },
 });
 
-const withPH = (): MinutaFormData => ({
+const withPH = (): ArrendamientoFormData => ({
     ...base,
     inmueble: { ...base.inmueble, tipoInmueble: 'Apartamento', propiedadHorizontal: true },
 });
 
-const withLocal = (actividad: string): MinutaFormData => ({
+const withLocal = (actividad: string): ArrendamientoFormData => ({
     ...base,
     inmueble: { ...base.inmueble, tipoInmueble: 'Local Comercial' },
     condiciones: { ...base.condiciones, actividadComercial: actividad },
@@ -226,7 +226,7 @@ describe('ContractTemplate — cláusula de Propiedad Horizontal', () => {
     });
 
     it('también incluye cláusula de PH para contrato comercial con PH', () => {
-        const comercialPH: MinutaFormData = {
+        const comercialPH: ArrendamientoFormData = {
             ...withLocal('Tienda'),
             inmueble: { ...withLocal('Tienda').inmueble, propiedadHorizontal: true },
         };
@@ -239,17 +239,32 @@ describe('ContractTemplate — cláusula de Propiedad Horizontal', () => {
 
 describe('ContractTemplate — marca de agua y planes', () => {
     it('muestra la marca de agua de Lexia en plan gratuito', () => {
-        render(<ContractTemplate formData={base} plan="free" />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="free"
+            />
+        );
         expect(screen.getByText(/Documento generado por Lexia/i)).toBeInTheDocument();
     });
 
     it('oculta la marca de agua en plan básico', () => {
-        render(<ContractTemplate formData={base} plan="basico" />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="basico"
+            />
+        );
         expect(screen.queryByText(/Documento generado por Lexia/i)).not.toBeInTheDocument();
     });
 
     it('oculta la marca de agua en plan pro', () => {
-        render(<ContractTemplate formData={base} plan="pro" />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="pro"
+            />
+        );
         expect(screen.queryByText(/Documento generado por Lexia/i)).not.toBeInTheDocument();
     });
 
@@ -265,24 +280,48 @@ describe('ContractTemplate — logo personalizado', () => {
     const LOGO_URL = 'data:image/png;base64,iVBORw0KGgo=';
 
     it('muestra el logo cuando el plan es básico y hay logoUrl', () => {
-        render(<ContractTemplate formData={base} plan="basico" logoUrl={LOGO_URL} />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="basico"
+                logoUrl={LOGO_URL}
+            />
+        );
         const logo = screen.getByAltText('Logo');
         expect(logo).toBeInTheDocument();
         expect(logo).toHaveAttribute('src', LOGO_URL);
     });
 
     it('muestra el logo en plan pro', () => {
-        render(<ContractTemplate formData={base} plan="pro" logoUrl={LOGO_URL} />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="pro"
+                logoUrl={LOGO_URL}
+            />
+        );
         expect(screen.getByAltText('Logo')).toBeInTheDocument();
     });
 
     it('no muestra logo en plan gratuito aunque se proporcione logoUrl', () => {
-        render(<ContractTemplate formData={base} plan="free" logoUrl={LOGO_URL} />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="free"
+                logoUrl={LOGO_URL}
+            />
+        );
         expect(screen.queryByAltText('Logo')).not.toBeInTheDocument();
     });
 
     it('no muestra logo en plan básico sin logoUrl', () => {
-        render(<ContractTemplate formData={base} plan="basico" logoUrl="" />);
+        render(
+            <ContractTemplate
+                formData={base}
+                plan="basico"
+                logoUrl=""
+            />
+        );
         expect(screen.queryByAltText('Logo')).not.toBeInTheDocument();
     });
 });

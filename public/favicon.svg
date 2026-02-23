@@ -1,18 +1,13 @@
 <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Teal left arm of angle -->
-  <line x1="11" y1="15" x2="3" y2="28" stroke="#5BBDB9" stroke-width="4.5" stroke-linecap="round"/>
-  <!-- Gavel head -->
-  <g transform="rotate(-33, 17, 9)">
-    <rect x="10" y="6" width="14" height="6" rx="1.5" fill="#1B3070"/>
-    <rect x="10.5" y="7.2" width="3" height="1.1" rx="0.3" fill="white"/>
-    <rect x="10.5" y="9.1" width="3" height="1.1" rx="0.3" fill="white"/>
+  <path d="M2 28H13L10 17L2 28Z" fill="#5BBDB9"/>
+
+  <rect x="20" y="8" width="9" height="3" fill="#1B3070"/>
+  <rect x="22.5" y="11" width="4" height="12" fill="#1B3070"/>
+  <rect x="19" y="23" width="11" height="3" fill="#1B3070"/>
+
+  <g transform="rotate(-40, 12, 14)">
+    <rect x="6" y="11" width="14" height="6" fill="#1B3070"/>
+    <rect x="8" y="12" width="3" height="4" fill="white"/>
+    <rect x="15" y="12" width="3" height="4" fill="white"/>
   </g>
-  <!-- I letter top bar -->
-  <rect x="20" y="8.5" width="9" height="2" rx="0.5" fill="#1B3070"/>
-  <!-- I stem -->
-  <rect x="22.5" y="10.5" width="3.5" height="12.5" fill="#1B3070"/>
-  <!-- I bottom bar -->
-  <rect x="20" y="23" width="9" height="2" rx="0.5" fill="#1B3070"/>
-  <!-- Horizontal base -->
-  <rect x="11" y="26" width="9.5" height="2" rx="1" fill="#1B3070"/>
 </svg>

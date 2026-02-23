@@ -2,11 +2,14 @@
 import Layout from '../../../layouts/Layout.astro';
 import Navbar from '../../../components/shared/Navbar.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
-import MinutaForm from '../../../components/minuta/MinutaForm';
+import ArrendamientoForm from '../../../components/arrendamiento/ArrendamientoForm';
 ---
 
 <Layout title="Generador de Contrato de Arrendamiento · Lexia">
-    <Navbar variant="tool-form" activeTool="arrendamiento" />
+    <Navbar
+        variant="tool-form"
+        activeTool="arrendamiento"
+    />
     <main class="flex-grow w-full bg-background-light">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10 lg:py-16">
             <!-- Page header -->
@@ -36,7 +39,7 @@ import MinutaForm from '../../../components/minuta/MinutaForm';
             </div>
 
             <!-- React island: full form with internal 2-col layout -->
-            <MinutaForm client:load />
+            <ArrendamientoForm client:load />
         </div>
     </main>
     <WhatsAppButton />

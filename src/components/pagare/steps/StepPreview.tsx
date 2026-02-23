@@ -19,7 +19,11 @@ async function generatePDF(formData: PagareFormData, plan: PlanTier, logoUrl: st
     ]);
 
     const blob = await pdf(
-        <PagarePDF formData={formData} plan={plan} logoUrl={logoUrl} />,
+        <PagarePDF
+            formData={formData}
+            plan={plan}
+            logoUrl={logoUrl}
+        />
     ).toBlob();
 
     const url = URL.createObjectURL(blob);
@@ -84,7 +88,9 @@ export default function StepPreview({
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <h2 className="text-xl font-black text-secondary">Tu pagaré está listo</h2>
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs ${planInfo.color}`}>
+                        <span
+                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs ${planInfo.color}`}
+                        >
                             {planInfo.label}
                         </span>
                     </div>
@@ -97,7 +103,9 @@ export default function StepPreview({
                 >
                     {loading ? (
                         <>
-                            <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                            <span className="material-symbols-outlined text-[18px] animate-spin">
+                                progress_activity
+                            </span>
                             Generando...
                         </>
                     ) : (
@@ -133,7 +141,9 @@ export default function StepPreview({
             {plan === 'free' && (
                 <div className="flex items-center justify-between gap-3 rounded-[12px] bg-slate-50 border border-slate-200 p-4">
                     <div className="flex items-start gap-2.5">
-                        <span className="material-symbols-outlined text-amber-500 text-[20px] flex-shrink-0 mt-0.5">info</span>
+                        <span className="material-symbols-outlined text-amber-500 text-[20px] flex-shrink-0 mt-0.5">
+                            info
+                        </span>
                         <p className="text-xs text-slate-600 leading-relaxed">
                             <strong>Plan Gratuito:</strong> el PDF incluye la marca de agua de Lexia. Actualiza a un
                             plan de pago para eliminarla y agregar tu logo.
@@ -184,9 +194,7 @@ export default function StepPreview({
                                 <span className="material-symbols-outlined text-[16px]">upload</span>
                                 Subir logo (PNG, JPG)
                             </button>
-                            <p className="text-xs text-slate-400">
-                                Aparecerá en el encabezado del pagaré.
-                            </p>
+                            <p className="text-xs text-slate-400">Aparecerá en el encabezado del pagaré.</p>
                         </>
                     )}
                     <input
@@ -200,8 +208,15 @@ export default function StepPreview({
             )}
 
             {/* Pagaré preview */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                <PagareTemplate formData={formData} plan={plan} logoUrl={logoUrl} />
+            <div
+                id="pagare-preview"
+                className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm"
+            >
+                <PagareTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
             </div>
 
             {/* Bottom actions */}
@@ -230,7 +245,9 @@ export default function StepPreview({
                     >
                         {loading ? (
                             <>
-                                <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                                <span className="material-symbols-outlined text-[18px] animate-spin">
+                                    progress_activity
+                                </span>
                                 Generando...
                             </>
                         ) : (

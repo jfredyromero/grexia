@@ -41,9 +41,7 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
                         onClick={() => onPlanChange(p.id)}
                         className={[
                             'rounded-lg py-2 text-xs font-semibold transition-all',
-                            plan === p.id
-                                ? 'bg-white text-secondary shadow-sm'
-                                : 'text-slate-500 hover:text-slate-700',
+                            plan === p.id ? 'bg-white text-secondary shadow-sm' : 'text-slate-500 hover:text-slate-700',
                         ].join(' ')}
                     >
                         {p.name}
@@ -55,13 +53,14 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
             <div>
                 <div className="flex items-end gap-1 mb-3">
                     <span className="text-2xl font-black text-secondary">{currentPlan.price}</span>
-                    {currentPlan.period && (
-                        <span className="text-xs text-slate-400 pb-1">{currentPlan.period}</span>
-                    )}
+                    {currentPlan.period && <span className="text-xs text-slate-400 pb-1">{currentPlan.period}</span>}
                 </div>
                 <ul className="flex flex-col gap-2">
                     {currentPlan.features.map((f) => (
-                        <li key={f} className="flex items-center gap-2 text-xs text-slate-600">
+                        <li
+                            key={f}
+                            className="flex items-center gap-2 text-xs text-slate-600"
+                        >
                             <span className="material-symbols-outlined text-primary text-[14px] flex-shrink-0">
                                 check_circle
                             </span>
@@ -83,7 +82,10 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
                     </button>
                     <p className="text-center text-xs text-slate-400">
                         O suscríbete al Plan Pro por{' '}
-                        <button onClick={() => onPlanChange('pro')} className="underline hover:text-secondary">
+                        <button
+                            onClick={() => onPlanChange('pro')}
+                            className="underline hover:text-secondary"
+                        >
                             $119.900/mes
                         </button>
                     </p>
@@ -95,8 +97,11 @@ export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 
                             <span className="material-symbols-outlined text-primary text-[16px] flex-shrink-0 mt-0.5">
                                 video_call
                             </span>
-                            Tienes <strong>{sessions} sesión{sessions > 1 ? 'es' : ''} virtual{sessions > 1 ? 'es' : ''}</strong> con
-                            nuestro equipo legal incluida{sessions > 1 ? 's' : ''}.
+                            Tienes{' '}
+                            <strong>
+                                {sessions} sesión{sessions > 1 ? 'es' : ''} virtual{sessions > 1 ? 'es' : ''}
+                            </strong>{' '}
+                            con nuestro equipo legal incluida{sessions > 1 ? 's' : ''}.
                         </div>
                     )}
                     <a

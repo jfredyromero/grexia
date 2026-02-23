@@ -37,7 +37,10 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
 
             {/* Nombre completo */}
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="acreedor-nombre">
+                <label
+                    className={labelClass}
+                    htmlFor="acreedor-nombre"
+                >
                     Nombre completo o razón social
                 </label>
                 <input
@@ -54,7 +57,10 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
             {/* Tipo y número de documento */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="acreedor-tipo-doc">
+                    <label
+                        className={labelClass}
+                        htmlFor="acreedor-tipo-doc"
+                    >
                         Tipo de documento
                     </label>
                     <select
@@ -65,7 +71,10 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                     >
                         <option value="">Seleccionar...</option>
                         {TIPOS_DOC_PERSONA.map((tipo) => (
-                            <option key={tipo} value={tipo}>
+                            <option
+                                key={tipo}
+                                value={tipo}
+                            >
                                 {DOC_LABELS[tipo]}
                             </option>
                         ))}
@@ -73,7 +82,10 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                     {errors.tipoDocumento && <p className={errorClass}>{errors.tipoDocumento}</p>}
                 </div>
                 <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className={labelClass} htmlFor="acreedor-num-doc">
+                    <label
+                        className={labelClass}
+                        htmlFor="acreedor-num-doc"
+                    >
                         Número de documento
                     </label>
                     <input
@@ -92,7 +104,10 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
             {/* Teléfono y email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="acreedor-tel">
+                    <label
+                        className={labelClass}
+                        htmlFor="acreedor-tel"
+                    >
                         Teléfono de contacto
                     </label>
                     <input
@@ -106,9 +121,11 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                     {errors.telefono && <p className={errorClass}>{errors.telefono}</p>}
                 </div>
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="acreedor-email">
-                        Correo electrónico{' '}
-                        <span className="text-slate-400 font-normal">(opcional)</span>
+                    <label
+                        className={labelClass}
+                        htmlFor="acreedor-email"
+                    >
+                        Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
                     </label>
                     <input
                         id="acreedor-email"

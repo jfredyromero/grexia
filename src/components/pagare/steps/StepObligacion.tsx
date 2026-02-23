@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { ObligacionData, ModalidadPago, PeriodoCuotas } from '../types';
 import { validateObligacion, hasErrors } from '../validation';
+import ColombiaLocationSelect from '../../shared/ColombiaLocationSelect';
 
 interface StepObligacionProps {
     data: ObligacionData;
@@ -69,11 +70,16 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
 
             {/* Valor principal */}
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="obligacion-valor">
+                <label
+                    className={labelClass}
+                    htmlFor="obligacion-valor"
+                >
                     Valor del pagaré (COP)
                 </label>
                 <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-500">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-500">
+                        $
+                    </span>
                     <input
                         id="obligacion-valor"
                         type="text"
@@ -89,7 +95,10 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
 
             {/* Fecha de suscripción */}
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="obligacion-fecha-suscripcion">
+                <label
+                    className={labelClass}
+                    htmlFor="obligacion-fecha-suscripcion"
+                >
                     Fecha de suscripción del pagaré
                 </label>
                 <input
@@ -118,7 +127,9 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                                     : 'border-slate-200 bg-white hover:border-slate-300',
                             ].join(' ')}
                         >
-                            <span className={`text-sm font-bold ${data.modalidadPago === m ? 'text-secondary' : 'text-slate-700'}`}>
+                            <span
+                                className={`text-sm font-bold ${data.modalidadPago === m ? 'text-secondary' : 'text-slate-700'}`}
+                            >
                                 {m === 'unico' ? 'Pago único' : 'Por cuotas'}
                             </span>
                             <span className="text-xs text-slate-500">
@@ -133,7 +144,10 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             {/* Pago único: fecha de vencimiento */}
             {isUnico && (
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="obligacion-fecha-vencimiento">
+                    <label
+                        className={labelClass}
+                        htmlFor="obligacion-fecha-vencimiento"
+                    >
                         Fecha de vencimiento
                     </label>
                     <input
@@ -151,7 +165,10 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             {isCuotas && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
-                        <label className={labelClass} htmlFor="obligacion-num-cuotas">
+                        <label
+                            className={labelClass}
+                            htmlFor="obligacion-num-cuotas"
+                        >
                             Número de cuotas
                         </label>
                         <input
@@ -167,7 +184,10 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                         {errors.numeroCuotas && <p className={errorClass}>{errors.numeroCuotas}</p>}
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className={labelClass} htmlFor="obligacion-periodo">
+                        <label
+                            className={labelClass}
+                            htmlFor="obligacion-periodo"
+                        >
                             Período de pago
                         </label>
                         <select
@@ -178,7 +198,10 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                         >
                             <option value="">Seleccionar...</option>
                             {PERIODOS.map((p) => (
-                                <option key={p.value} value={p.value}>
+                                <option
+                                    key={p.value}
+                                    value={p.value}
+                                >
                                     {p.label}
                                 </option>
                             ))}
@@ -189,26 +212,25 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             )}
 
             {/* Ciudad de suscripción */}
-            <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="obligacion-ciudad">
-                    Ciudad de suscripción
-                </label>
-                <input
-                    id="obligacion-ciudad"
-                    type="text"
-                    value={data.ciudadSuscripcion}
-                    onChange={set('ciudadSuscripcion')}
-                    placeholder="Bogotá D.C."
-                    className={fieldClass}
-                />
-                {errors.ciudadSuscripcion && <p className={errorClass}>{errors.ciudadSuscripcion}</p>}
-            </div>
+            <ColombiaLocationSelect
+                idPrefix="obligacion-ciudad"
+                cityLabel="Ciudad de suscripción"
+                value={data.ciudadSuscripcion}
+                onChange={(city) => {
+                    onChange({ ...data, ciudadSuscripcion: city });
+                    if (errors.ciudadSuscripcion)
+                        setErrors((prev) => ({ ...prev, ciudadSuscripcion: '' }));
+                }}
+                error={errors.ciudadSuscripcion}
+            />
 
             {/* Tasa de interés de mora (opcional) */}
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="obligacion-mora">
-                    Tasa de interés de mora{' '}
-                    <span className="text-slate-400 font-normal">(opcional, %)</span>
+                <label
+                    className={labelClass}
+                    htmlFor="obligacion-mora"
+                >
+                    Tasa de interés de mora <span className="text-slate-400 font-normal">(opcional, %)</span>
                 </label>
                 <div className="relative">
                     <input
@@ -220,7 +242,9 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                         placeholder="Ej: 1.5"
                         className={`${fieldClass} pr-10`}
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-500">%</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-slate-500">
+                        %
+                    </span>
                 </div>
                 <p className="text-xs text-slate-400">Si se deja vacío, se aplicará la tasa máxima legal vigente.</p>
             </div>

@@ -42,14 +42,14 @@ export interface CondicionesData {
     actividadComercial: string;
 }
 
-export interface MinutaFormData {
+export interface ArrendamientoFormData {
     inmueble: InmuebleData;
     arrendador: ArrendadorData;
     arrendatario: ArrendatarioData;
     condiciones: CondicionesData;
 }
 
-export const INITIAL_FORM_DATA: MinutaFormData = {
+export const INITIAL_FORM_DATA: ArrendamientoFormData = {
     inmueble: {
         tipoInmueble: '',
         propiedadHorizontal: false,
@@ -88,7 +88,7 @@ export const STEPS = [
     { number: 2, label: 'Arrendador' },
     { number: 3, label: 'Arrendatario' },
     { number: 4, label: 'Condiciones' },
-    { number: 5, label: 'Minuta' },
+    { number: 5, label: 'Contrato' },
 ] as const;
 
 export const DEPARTAMENTOS = [

@@ -136,8 +136,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
                         className={labelClass}
                         htmlFor="arrendador-email"
                     >
-                        Correo electrónico{' '}
-                        <span className="text-slate-400 font-normal">(opcional)</span>
+                        Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
                     </label>
                     <input
                         id="arrendador-email"

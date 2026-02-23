@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import * as path from 'path';
-import { MinutaFormPage, assertValidPDF, artifactsDir } from './helpers/MinutaFormPage';
+import { ArrendamientoFormPage, assertValidPDF, artifactsDir } from './helpers/ArrendamientoFormPage';
 import { contratoVivienda, contratoLocalComercial, contratoOficinaPH } from './fixtures/testData';
 
 // ── Helper ────────────────────────────────────────────────────────────────────
@@ -13,7 +13,7 @@ function outDir(label: string) {
 
 test.describe('Contrato de vivienda (Apartamento, no PH)', () => {
     test('completa el formulario y descarga un PDF válido', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         const dir = outDir('vivienda-apartamento');
 
         await form.goto();
@@ -45,7 +45,7 @@ test.describe('Contrato de vivienda (Apartamento, no PH)', () => {
     });
 
     test('el contrato contiene el canon en palabras', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto();
         await form.fillAllSteps({
             ...contratoVivienda.inmueble,
@@ -58,7 +58,7 @@ test.describe('Contrato de vivienda (Apartamento, no PH)', () => {
     });
 
     test('no incluye cláusula de PH cuando el inmueble no es PH', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto();
         await form.fillAllSteps({
             ...contratoVivienda.inmueble,
@@ -66,9 +66,7 @@ test.describe('Contrato de vivienda (Apartamento, no PH)', () => {
             arrendatario: contratoVivienda.arrendatario,
             condiciones: contratoVivienda.condiciones,
         });
-        await expect(page.locator('#contract-content')).not.toContainText(
-            /PROPIEDAD HORIZONTAL Y REGLAMENTO/i,
-        );
+        await expect(page.locator('#contract-content')).not.toContainText(/PROPIEDAD HORIZONTAL Y REGLAMENTO/i);
     });
 });
 
@@ -76,7 +74,7 @@ test.describe('Contrato de vivienda (Apartamento, no PH)', () => {
 
 test.describe('Contrato comercial (Local Comercial, PH)', () => {
     test('completa el formulario y descarga un PDF válido', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         const dir = outDir('local-comercial-ph');
 
         await form.goto();
@@ -104,7 +102,7 @@ test.describe('Contrato comercial (Local Comercial, PH)', () => {
     });
 
     test('muestra la cláusula de actividad comercial autorizada', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto();
         await form.fillAllSteps({
             ...contratoLocalComercial.inmueble,
@@ -120,7 +118,7 @@ test.describe('Contrato comercial (Local Comercial, PH)', () => {
 
 test.describe('Contrato comercial (Oficina, PH)', () => {
     test('completa el formulario y descarga un PDF válido', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         const dir = outDir('oficina-ph');
 
         await form.goto();
@@ -149,7 +147,7 @@ test.describe('Contrato comercial (Oficina, PH)', () => {
 
 test.describe('Plan básico — sin marca de agua', () => {
     test('no muestra la marca de agua de Lexia', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto('basico');
         await form.fillAllSteps({
             ...contratoVivienda.inmueble,
@@ -161,7 +159,7 @@ test.describe('Plan básico — sin marca de agua', () => {
     });
 
     test('descarga PDF sin marca de agua (plan básico)', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         const dir = outDir('plan-basico');
 
         await form.goto('basico');
@@ -186,7 +184,7 @@ test.describe('Plan básico — sin marca de agua', () => {
 
 test.describe('Plan pro — sin marca de agua', () => {
     test('no muestra la marca de agua de Lexia', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto('pro');
         await form.fillAllSteps({
             ...contratoVivienda.inmueble,
@@ -202,7 +200,7 @@ test.describe('Plan pro — sin marca de agua', () => {
 
 test.describe('Plan gratuito — marca de agua', () => {
     test('muestra la marca de agua en el contrato', async ({ page }) => {
-        const form = new MinutaFormPage(page);
+        const form = new ArrendamientoFormPage(page);
         await form.goto('free');
         await form.fillAllSteps({
             ...contratoVivienda.inmueble,

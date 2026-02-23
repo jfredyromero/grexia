@@ -42,10 +42,7 @@ export function validateInmueble(data: InmuebleData): ValidationErrors {
 
 // ── Condiciones ───────────────────────────────────────────────────────────────
 
-export function validateCondiciones(
-    data: CondicionesData,
-    tipoInmueble: TipoInmueble | '',
-): ValidationErrors {
+export function validateCondiciones(data: CondicionesData, tipoInmueble: TipoInmueble | ''): ValidationErrors {
     const errors: ValidationErrors = {};
     if (!data.fechaInicio) errors.fechaInicio = 'Campo requerido';
     if (!data.canonMensual.trim()) errors.canonMensual = 'Campo requerido';

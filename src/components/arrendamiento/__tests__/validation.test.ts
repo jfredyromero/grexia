@@ -107,9 +107,7 @@ describe('validateArrendador', () => {
     });
 
     it('rejects emails without @', () => {
-        expect(validateArrendador({ ...validArrendador, email: 'userdominio.com' }).email).toBe(
-            'Correo inválido',
-        );
+        expect(validateArrendador({ ...validArrendador, email: 'userdominio.com' }).email).toBe('Correo inválido');
     });
 
     it('rejects emails without domain', () => {
@@ -230,50 +228,35 @@ describe('validateCondiciones', () => {
 
     describe('actividadComercial — conditional on Local Comercial', () => {
         it('requires actividadComercial for Local Comercial', () => {
-            const errors = validateCondiciones(
-                { ...validCondiciones, actividadComercial: '' },
-                'Local Comercial',
-            );
+            const errors = validateCondiciones({ ...validCondiciones, actividadComercial: '' }, 'Local Comercial');
             expect(errors.actividadComercial).toBe('Campo requerido para local comercial');
         });
 
         it('does NOT require actividadComercial for Apartamento', () => {
-            const errors = validateCondiciones(
-                { ...validCondiciones, actividadComercial: '' },
-                'Apartamento',
-            );
+            const errors = validateCondiciones({ ...validCondiciones, actividadComercial: '' }, 'Apartamento');
             expect(errors.actividadComercial).toBeUndefined();
         });
 
         it('does NOT require actividadComercial for Casa', () => {
-            const errors = validateCondiciones(
-                { ...validCondiciones, actividadComercial: '' },
-                'Casa',
-            );
+            const errors = validateCondiciones({ ...validCondiciones, actividadComercial: '' }, 'Casa');
             expect(errors.actividadComercial).toBeUndefined();
         });
 
         it('does NOT require actividadComercial for Oficina', () => {
-            const errors = validateCondiciones(
-                { ...validCondiciones, actividadComercial: '' },
-                'Oficina',
-            );
+            const errors = validateCondiciones({ ...validCondiciones, actividadComercial: '' }, 'Oficina');
             expect(errors.actividadComercial).toBeUndefined();
         });
 
         it('passes validation for Local Comercial when actividadComercial is provided', () => {
             const errors = validateCondiciones(
                 { ...validCondiciones, actividadComercial: 'Restaurante' },
-                'Local Comercial',
+                'Local Comercial'
             );
             expect(errors.actividadComercial).toBeUndefined();
         });
 
         it('rejects whitespace-only actividadComercial for Local Comercial', () => {
-            const errors = validateCondiciones(
-                { ...validCondiciones, actividadComercial: '   ' },
-                'Local Comercial',
-            );
+            const errors = validateCondiciones({ ...validCondiciones, actividadComercial: '   ' }, 'Local Comercial');
             expect(errors.actividadComercial).toBeTruthy();
         });
     });

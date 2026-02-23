@@ -32,13 +32,13 @@ interface CondicionesData {
     actividad?: string;
 }
 
-export class MinutaFormPage {
+export class ArrendamientoFormPage {
     constructor(private page: Page) {}
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto(plan?: 'free' | 'basico' | 'pro') {
-        const url = plan && plan !== 'free' ? `/minuta?plan=${plan}` : '/minuta';
+        const url = plan && plan !== 'free' ? `/herramientas/arrendamiento/generar?plan=${plan}` : '/herramientas/arrendamiento/generar';
         await this.page.goto(url);
         // Wait for React island to hydrate
         await this.page.waitForSelector('button:has-text("Continuar")', { timeout: 10_000 });
@@ -114,7 +114,7 @@ export class MinutaFormPage {
         await this.page.locator('#deposito').fill(data.deposito);
         await this.page.fill('#dia-pago', data.diaPago);
 
-        await this.page.getByRole('button', { name: 'Ver mi minuta' }).click();
+        await this.page.getByRole('button', { name: 'Ver mi contrato' }).click();
         // Wait for contract preview to render
         await this.page.waitForSelector('#contract-content', { timeout: 10_000 });
     }
@@ -126,7 +126,7 @@ export class MinutaFormPage {
             arrendador: PersonaData;
             arrendatario: PersonaData;
             condiciones: CondicionesData;
-        },
+        }
     ) {
         await this.fillInmueble(data);
         await this.fillArrendador(data.arrendador);
@@ -168,14 +168,12 @@ export class MinutaFormPage {
     }
 
     async assertWatermarkVisible() {
-        await expect(
-            this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i),
-        ).toBeVisible();
+        await expect(this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i)).toBeVisible();
     }
 
     async assertWatermarkHidden() {
         await expect(
-            this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i),
+            this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i)
         ).not.toBeVisible();
     }
 }

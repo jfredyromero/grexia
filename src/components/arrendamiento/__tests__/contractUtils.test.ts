@@ -18,8 +18,18 @@ describe('formatDate', () => {
 
     it('formats all 12 months with correct Spanish names', () => {
         const expected = [
-            'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+            'enero',
+            'febrero',
+            'marzo',
+            'abril',
+            'mayo',
+            'junio',
+            'julio',
+            'agosto',
+            'septiembre',
+            'octubre',
+            'noviembre',
+            'diciembre',
         ];
         expected.forEach((month, i) => {
             const mm = String(i + 1).padStart(2, '0');
@@ -135,9 +145,7 @@ describe('numberToWordsCOP', () => {
     });
 
     it('converts a complex amount — 2.350.750', () => {
-        expect(numberToWordsCOP(2_350_750)).toBe(
-            'DOS MILLONES TRESCIENTOS CINCUENTA MIL SETECIENTOS CINCUENTA PESOS',
-        );
+        expect(numberToWordsCOP(2_350_750)).toBe('DOS MILLONES TRESCIENTOS CINCUENTA MIL SETECIENTOS CINCUENTA PESOS');
     });
 
     it('includes PESOS suffix always', () => {

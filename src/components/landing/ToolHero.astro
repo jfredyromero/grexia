@@ -70,7 +70,7 @@ const socialAvatars = [
 			<!-- ── Left: Text content ── -->
 			<div class="flex flex-col gap-8 order-2 lg:order-1">
 				<!-- Trust Badges -->
-				<div class="flex flex-wrap gap-3">
+				<div class="hidden lg:flex flex-wrap gap-3">
 					{
 						trustBadges.map((badge) => (
 							<div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
@@ -158,7 +158,7 @@ const socialAvatars = [
 			</div>
 
 			<!-- ── Right: Photo visual ── -->
-			<div class="relative order-1 lg:order-2">
+			<div class="relative hidden lg:block order-1 lg:order-2">
 				<div
 					class="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
 				>

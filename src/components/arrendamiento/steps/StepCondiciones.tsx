@@ -198,13 +198,13 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
                 <p className="text-xs text-slate-600 leading-relaxed">
                     {esComercial ? (
                         <>
-                            Para contratos comerciales el reajuste del canon se pacta libremente entre las partes,
-                            sin límite de IPC. Se rige por el Código de Comercio.
+                            Para contratos comerciales el reajuste del canon se pacta libremente entre las partes, sin
+                            límite de IPC. Se rige por el Código de Comercio.
                         </>
                     ) : (
                         <>
-                            El depósito equivale normalmente a 1–2 meses de canon. No puede exceder el equivalente
-                            a 2 meses de canon según la Ley 820 de 2003 para vivienda urbana.
+                            El depósito equivale normalmente a 1–2 meses de canon. No puede exceder el equivalente a 2
+                            meses de canon según la Ley 820 de 2003 para vivienda urbana.
                         </>
                     )}
                 </p>
@@ -223,7 +223,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
                     onClick={handleNext}
                     className="flex items-center gap-1.5 h-12 px-8 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all"
                 >
-                    Ver mi minuta
+                    Ver mi contrato
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </button>
             </div>

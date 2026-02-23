@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 html {
     scroll-behavior: smooth;
@@ -14,9 +14,9 @@ html {
     --color-neutral-light: #f1f5f9;
 
     /* Fonts */
-    --font-sans: "Inter", sans-serif;
-    --font-display: "Inter", sans-serif;
-    --font-body: "Inter", sans-serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-display: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
 
     /* Border radius */
     --radius: 1rem;
@@ -94,8 +94,13 @@ html {
 }
 
 @keyframes hero-float {
-    0%, 100% { transform: translateY(0px); }
-    50%       { transform: translateY(-10px); }
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .hero-chat-bubble {

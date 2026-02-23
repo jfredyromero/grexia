@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react';
-import type { MinutaFormData, PlanTier } from '../types';
+import type { ArrendamientoFormData, PlanTier } from '../types';
 import { isComercial } from '../types';
 import ContractTemplate from '../ContractTemplate';
 
 interface StepPreviewProps {
-    formData: MinutaFormData;
+    formData: ArrendamientoFormData;
     plan: PlanTier;
     logoUrl: string;
     onLogoChange: (url: string) => void;
@@ -15,14 +15,18 @@ interface StepPreviewProps {
 
 // ── PDF generation ────────────────────────────────────────────────────────────
 
-async function generatePDF(formData: MinutaFormData, plan: PlanTier, logoUrl: string): Promise<void> {
+async function generatePDF(formData: ArrendamientoFormData, plan: PlanTier, logoUrl: string): Promise<void> {
     const [{ pdf }, { default: ContractPDF }] = await Promise.all([
         import('@react-pdf/renderer'),
         import('../ContractPDF'),
     ]);
 
     const blob = await pdf(
-        <ContractPDF formData={formData} plan={plan} logoUrl={logoUrl} />,
+        <ContractPDF
+            formData={formData}
+            plan={plan}
+            logoUrl={logoUrl}
+        />
     ).toBlob();
 
     const url = URL.createObjectURL(blob);
@@ -92,7 +96,7 @@ export default function StepPreview({
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <h2 className="text-xl font-black text-secondary">Tu minuta está lista</h2>
+                        <h2 className="text-xl font-black text-secondary">Tu contrato está listo</h2>
                         <span
                             className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs ${planInfo.color}`}
                         >

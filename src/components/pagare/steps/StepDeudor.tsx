@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { DeudorData } from '../types';
 import { TIPOS_DOC_PERSONA, DOC_LABELS } from '../types';
 import { validateDeudor, hasErrors } from '../validation';
+import ColombiaLocationSelect from '../../shared/ColombiaLocationSelect';
 
 interface StepDeudorProps {
     data: DeudorData;
@@ -38,7 +39,10 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
 
             {/* Nombre completo */}
             <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="deudor-nombre">
+                <label
+                    className={labelClass}
+                    htmlFor="deudor-nombre"
+                >
                     Nombre completo o razón social
                 </label>
                 <input
@@ -55,7 +59,10 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
             {/* Tipo y número de documento */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="deudor-tipo-doc">
+                    <label
+                        className={labelClass}
+                        htmlFor="deudor-tipo-doc"
+                    >
                         Tipo de documento
                     </label>
                     <select
@@ -66,7 +73,10 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                     >
                         <option value="">Seleccionar...</option>
                         {TIPOS_DOC_PERSONA.map((tipo) => (
-                            <option key={tipo} value={tipo}>
+                            <option
+                                key={tipo}
+                                value={tipo}
+                            >
                                 {DOC_LABELS[tipo]}
                             </option>
                         ))}
@@ -74,7 +84,10 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                     {errors.tipoDocumento && <p className={errorClass}>{errors.tipoDocumento}</p>}
                 </div>
                 <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className={labelClass} htmlFor="deudor-num-doc">
+                    <label
+                        className={labelClass}
+                        htmlFor="deudor-num-doc"
+                    >
                         Número de documento
                     </label>
                     <input
@@ -93,7 +106,10 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
             {/* Teléfono y email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="deudor-tel">
+                    <label
+                        className={labelClass}
+                        htmlFor="deudor-tel"
+                    >
                         Teléfono de contacto
                     </label>
                     <input
@@ -107,9 +123,11 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                     {errors.telefono && <p className={errorClass}>{errors.telefono}</p>}
                 </div>
                 <div className="flex flex-col gap-1.5">
-                    <label className={labelClass} htmlFor="deudor-email">
-                        Correo electrónico{' '}
-                        <span className="text-slate-400 font-normal">(opcional)</span>
+                    <label
+                        className={labelClass}
+                        htmlFor="deudor-email"
+                    >
+                        Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
                     </label>
                     <input
                         id="deudor-email"
@@ -124,20 +142,17 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
             </div>
 
             {/* Ciudad de residencia */}
-            <div className="flex flex-col gap-1.5">
-                <label className={labelClass} htmlFor="deudor-ciudad">
-                    Ciudad de residencia
-                </label>
-                <input
-                    id="deudor-ciudad"
-                    type="text"
-                    value={data.ciudadResidencia}
-                    onChange={set('ciudadResidencia')}
-                    placeholder="Bogotá D.C."
-                    className={fieldClass}
-                />
-                {errors.ciudadResidencia && <p className={errorClass}>{errors.ciudadResidencia}</p>}
-            </div>
+            <ColombiaLocationSelect
+                idPrefix="deudor-ciudad"
+                cityLabel="Ciudad de residencia"
+                value={data.ciudadResidencia}
+                onChange={(city) => {
+                    onChange({ ...data, ciudadResidencia: city });
+                    if (errors.ciudadResidencia)
+                        setErrors((prev) => ({ ...prev, ciudadResidencia: '' }));
+                }}
+                error={errors.ciudadResidencia}
+            />
 
             {/* Navigation */}
             <div className="flex justify-between pt-4 mt-2 border-t border-slate-100">

@@ -6,5 +6,10 @@ interface StepProgressProps {
 }
 
 export default function StepProgress({ currentStep }: StepProgressProps) {
-    return <SharedStepProgress steps={STEPS} currentStep={currentStep} />;
+    return (
+        <SharedStepProgress
+            steps={STEPS}
+            currentStep={currentStep}
+        />
+    );
 }

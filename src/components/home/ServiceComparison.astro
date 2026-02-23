@@ -13,7 +13,7 @@ const plans = [
         highlighted: false,
         features: [
             { text: 'Generación ilimitada de contratos', included: true },
-            { text: '6 tipos de minuta (vivienda, comercial, PH)', included: true },
+            { text: '6 tipos de contrato (vivienda, comercial, PH)', included: true },
             { text: 'Descarga en PDF sin registro', included: true },
             { text: 'Marca de agua Lexia en el documento', included: true, warning: true },
             { text: 'Logo personalizado en el contrato', included: false },
@@ -21,7 +21,7 @@ const plans = [
         ],
         cta: 'Empezar gratis',
         ctaIcon: 'arrow_forward',
-        href: '/minuta',
+        href: '/herramientas/arrendamiento/generar',
         external: false,
     },
     {
@@ -35,7 +35,7 @@ const plans = [
         highlighted: true,
         features: [
             { text: 'Generación ilimitada de contratos', included: true },
-            { text: '6 tipos de minuta (vivienda, comercial, PH)', included: true },
+            { text: '6 tipos de contrato (vivienda, comercial, PH)', included: true },
             { text: 'Descarga en PDF sin registro', included: true },
             { text: 'Sin marca de agua Lexia', included: true },
             { text: 'Logo personalizado en el contrato', included: true },
@@ -43,7 +43,7 @@ const plans = [
         ],
         cta: 'Contratar plan',
         ctaIcon: 'arrow_forward',
-        href: '/minuta?plan=basico',
+        href: '/herramientas/arrendamiento/generar?plan=basico',
         external: false,
     },
     {
@@ -57,7 +57,7 @@ const plans = [
         highlighted: false,
         features: [
             { text: 'Generación ilimitada de contratos', included: true },
-            { text: '6 tipos de minuta (vivienda, comercial, PH)', included: true },
+            { text: '6 tipos de contrato (vivienda, comercial, PH)', included: true },
             { text: 'Descarga en PDF sin registro', included: true },
             { text: 'Sin marca de agua Lexia', included: true },
             { text: 'Logo personalizado en el contrato', included: true },
@@ -65,19 +65,20 @@ const plans = [
         ],
         cta: 'Suscribirse',
         ctaIcon: 'loop',
-        href: '/minuta?plan=pro',
+        href: '/herramientas/arrendamiento/generar?plan=pro',
         external: false,
     },
 ] as const;
 ---
 
-<section class="w-full bg-background-light py-20 lg:py-28" id="precios">
+<section
+    class="w-full bg-background-light py-20 lg:py-28"
+    id="precios"
+>
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-14">
-            <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
-                Elige tu plan
-            </h2>
+            <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">Elige tu plan</h2>
             <p class="mt-3 max-w-xl mx-auto text-lg text-slate-500">
                 Empieza gratis y escala cuando necesites más. Sin sorpresas.
             </p>
@@ -119,10 +120,9 @@ const plans = [
                                 {plan.name}
                             </h3>
                             <p
-                                class={[
-                                    'mt-1 text-sm',
-                                    plan.highlighted ? 'text-slate-400' : 'text-slate-500',
-                                ].join(' ')}
+                                class={['mt-1 text-sm', plan.highlighted ? 'text-slate-400' : 'text-slate-500'].join(
+                                    ' '
+                                )}
                             >
                                 {plan.description}
                             </p>
@@ -131,18 +131,16 @@ const plans = [
                         {/* Price */}
                         <div class="relative flex items-end gap-1.5">
                             <span
-                                class={[
-                                    'text-4xl font-black',
-                                    plan.highlighted ? 'text-white' : 'text-secondary',
-                                ].join(' ')}
+                                class={['text-4xl font-black', plan.highlighted ? 'text-white' : 'text-secondary'].join(
+                                    ' '
+                                )}
                             >
                                 {plan.price}
                             </span>
                             <span
-                                class={[
-                                    'text-sm pb-1',
-                                    plan.highlighted ? 'text-slate-400' : 'text-slate-400',
-                                ].join(' ')}
+                                class={['text-sm pb-1', plan.highlighted ? 'text-slate-400' : 'text-slate-400'].join(
+                                    ' '
+                                )}
                             >
                                 {plan.period}
                             </span>
@@ -204,8 +202,8 @@ const plans = [
 
         <!-- Bottom note -->
         <p class="text-center text-xs text-slate-400 mt-8">
-            Los planes Básico y Pro incluyen acceso a toda la suite de documentos legales disponibles en
-            Lexia durante el periodo de vigencia. Las sesiones virtuales se agenden vía calendario.
+            Los planes Básico y Pro incluyen acceso a toda la suite de documentos legales disponibles en Lexia durante
+            el periodo de vigencia. Las sesiones virtuales se agenden vía calendario.
         </p>
     </div>
 </section>

@@ -52,9 +52,29 @@ export default function PagareForm() {
     const isLastStep = currentStep === PAGARE_STEPS.length;
 
     const stepContent: Record<number, React.ReactNode> = {
-        1: <StepAcreedor data={formData.acreedor} onChange={updateAcreedor} onNext={handleNext} />,
-        2: <StepDeudor data={formData.deudor} onChange={updateDeudor} onNext={handleNext} onBack={handleBack} />,
-        3: <StepObligacion data={formData.obligacion} onChange={updateObligacion} onNext={handleNext} onBack={handleBack} />,
+        1: (
+            <StepAcreedor
+                data={formData.acreedor}
+                onChange={updateAcreedor}
+                onNext={handleNext}
+            />
+        ),
+        2: (
+            <StepDeudor
+                data={formData.deudor}
+                onChange={updateDeudor}
+                onNext={handleNext}
+                onBack={handleBack}
+            />
+        ),
+        3: (
+            <StepObligacion
+                data={formData.obligacion}
+                onChange={updateObligacion}
+                onNext={handleNext}
+                onBack={handleBack}
+            />
+        ),
         4: (
             <StepPreview
                 formData={formData}
@@ -70,14 +90,16 @@ export default function PagareForm() {
 
     return (
         <div
-            className={[
-                'grid grid-cols-1 items-start gap-8',
-                isLastStep ? 'lg:grid-cols-5' : 'lg:grid-cols-3',
-            ].join(' ')}
+            className={['grid grid-cols-1 items-start gap-8', isLastStep ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(
+                ' '
+            )}
         >
             {/* Main form column */}
             <div className={['flex flex-col gap-6', isLastStep ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
-                <StepProgress steps={PAGARE_STEPS} currentStep={currentStep} />
+                <StepProgress
+                    steps={PAGARE_STEPS}
+                    currentStep={currentStep}
+                />
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8">
                     {stepContent[currentStep]}
                 </div>

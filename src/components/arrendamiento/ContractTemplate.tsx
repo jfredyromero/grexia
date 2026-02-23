@@ -1,9 +1,9 @@
-import type { MinutaFormData, PlanTier } from './types';
+import type { ArrendamientoFormData, PlanTier } from './types';
 import { isComercial } from './types';
 import { formatCOP, formatDate, numberToWordsCOP } from './contractUtils';
 
 interface ContractTemplateProps {
-    formData: MinutaFormData;
+    formData: ArrendamientoFormData;
     plan?: PlanTier;
     logoUrl?: string;
 }
@@ -35,7 +35,10 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
     const phLabel = inmueble.propiedadHorizontal ? ' sometido al régimen de propiedad horizontal' : '';
 
     const clausesPH = inmueble.propiedadHorizontal ? (
-        <Clause number="SÉPTIMA" title="Propiedad Horizontal y Reglamento">
+        <Clause
+            number="SÉPTIMA"
+            title="Propiedad Horizontal y Reglamento"
+        >
             <p>
                 El inmueble hace parte de un conjunto o edificio sometido al régimen de propiedad horizontal. El
                 ARRENDATARIO se obliga a conocer y cumplir el reglamento de propiedad horizontal vigente, así como las
@@ -47,9 +50,22 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
 
     const nextNum = (n: number) => {
         const nums = [
-            '', 'PRIMERA', 'SEGUNDA', 'TERCERA', 'CUARTA', 'QUINTA', 'SEXTA',
-            'SÉPTIMA', 'OCTAVA', 'NOVENA', 'DÉCIMA', 'DÉCIMA PRIMERA', 'DÉCIMA SEGUNDA',
-            'DÉCIMA TERCERA', 'DÉCIMA CUARTA', 'DÉCIMA QUINTA',
+            '',
+            'PRIMERA',
+            'SEGUNDA',
+            'TERCERA',
+            'CUARTA',
+            'QUINTA',
+            'SEXTA',
+            'SÉPTIMA',
+            'OCTAVA',
+            'NOVENA',
+            'DÉCIMA',
+            'DÉCIMA PRIMERA',
+            'DÉCIMA SEGUNDA',
+            'DÉCIMA TERCERA',
+            'DÉCIMA CUARTA',
+            'DÉCIMA QUINTA',
         ];
         return nums[n] ?? String(n);
     };
@@ -59,12 +75,14 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
 
     return (
         <div className="space-y-1">
-            <Clause number="PRIMERA" title="Objeto del contrato">
+            <Clause
+                number="PRIMERA"
+                title="Objeto del contrato"
+            >
                 <p>
                     El ARRENDADOR entrega al ARRENDATARIO, a título de arrendamiento, el inmueble tipo{' '}
                     <strong>{tipoLabel}</strong>
-                    {phLabel}, ubicado en{' '}
-                    <strong>{inmueble.direccion || '___________________'}</strong>, ciudad de{' '}
+                    {phLabel}, ubicado en <strong>{inmueble.direccion || '___________________'}</strong>, ciudad de{' '}
                     <strong>{ciudadStr}</strong>, departamento de{' '}
                     <strong>{inmueble.departamento || '___________________'}</strong>
                     {inmueble.areaMq ? `, con un área aproximada de ${inmueble.areaMq} m²` : ''}, estrato{' '}
@@ -73,61 +91,75 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
                 </p>
             </Clause>
 
-            <Clause number="SEGUNDA" title="Canon de arrendamiento">
+            <Clause
+                number="SEGUNDA"
+                title="Canon de arrendamiento"
+            >
                 <p>
                     El canon mensual de arrendamiento es de{' '}
                     <strong>
                         {numberToWordsCOP(canonNum)} ({formatCOP(condiciones.canonMensual)} COP)
                     </strong>
-                    . El ARRENDATARIO se obliga a pagarlo a más tardar el día{' '}
-                    <strong>{condiciones.diaPagoMes}</strong> de cada mes. El canon podrá ser reajustado
-                    anualmente conforme al IPC certificado por el DANE, en los términos del artículo 20 de la
-                    Ley 820 de 2003.
+                    . El ARRENDATARIO se obliga a pagarlo a más tardar el día <strong>{condiciones.diaPagoMes}</strong>{' '}
+                    de cada mes. El canon podrá ser reajustado anualmente conforme al IPC certificado por el DANE, en
+                    los términos del artículo 20 de la Ley 820 de 2003.
                 </p>
             </Clause>
 
-            <Clause number="TERCERA" title="Forma y lugar de pago">
+            <Clause
+                number="TERCERA"
+                title="Forma y lugar de pago"
+            >
                 <p>
                     El canon se pagará por mensualidades anticipadas, a más tardar el día{' '}
-                    <strong>{condiciones.diaPagoMes}</strong> de cada mes calendario. El incumplimiento en el
-                    pago constituye causal de terminación del contrato, conforme al artículo 22, numeral 1, de
-                    la Ley 820 de 2003.
+                    <strong>{condiciones.diaPagoMes}</strong> de cada mes calendario. El incumplimiento en el pago
+                    constituye causal de terminación del contrato, conforme al artículo 22, numeral 1, de la Ley 820 de
+                    2003.
                 </p>
             </Clause>
 
-            <Clause number="CUARTA" title="Duración y renovación">
+            <Clause
+                number="CUARTA"
+                title="Duración y renovación"
+            >
                 <p>
-                    El contrato tendrá una duración de <strong>{condiciones.duracionMeses} meses</strong>,
-                    contados a partir del <strong>{fechaStr}</strong>. A su vencimiento, se entenderá
-                    prorrogado en iguales condiciones y por el mismo término, en los términos del artículo 6
-                    de la Ley 820 de 2003.
+                    El contrato tendrá una duración de <strong>{condiciones.duracionMeses} meses</strong>, contados a
+                    partir del <strong>{fechaStr}</strong>. A su vencimiento, se entenderá prorrogado en iguales
+                    condiciones y por el mismo término, en los términos del artículo 6 de la Ley 820 de 2003.
                 </p>
             </Clause>
 
-            <Clause number="QUINTA" title="Depósito de garantía">
+            <Clause
+                number="QUINTA"
+                title="Depósito de garantía"
+            >
                 <p>
                     El ARRENDATARIO entrega en calidad de depósito de garantía la suma de{' '}
                     <strong>
                         {numberToWordsCOP(depositoNum)} ({formatCOP(condiciones.depositoCOP)} COP)
                     </strong>
-                    , equivalente a <strong>{depositoMeses}</strong> mes(es) de canon. Dicha suma será
-                    devuelta al término del contrato, descontando los valores adeudados conforme a la ley.
-                    El depósito no podrá exceder el valor de dos (2) meses de canon, según el artículo 16
-                    de la Ley 820 de 2003.
+                    , equivalente a <strong>{depositoMeses}</strong> mes(es) de canon. Dicha suma será devuelta al
+                    término del contrato, descontando los valores adeudados conforme a la ley. El depósito no podrá
+                    exceder el valor de dos (2) meses de canon, según el artículo 16 de la Ley 820 de 2003.
                 </p>
             </Clause>
 
-            <Clause number="SEXTA" title="Servicios públicos">
+            <Clause
+                number="SEXTA"
+                title="Servicios públicos"
+            >
                 <p>
-                    Los servicios públicos domiciliarios (agua, energía eléctrica, gas natural, teléfono e
-                    internet) corren por cuenta del ARRENDATARIO, salvo pacto en contrario debidamente
-                    consignado por escrito.
+                    Los servicios públicos domiciliarios (agua, energía eléctrica, gas natural, teléfono e internet)
+                    corren por cuenta del ARRENDATARIO, salvo pacto en contrario debidamente consignado por escrito.
                 </p>
             </Clause>
 
             {clausesPH}
 
-            <Clause number={nextNum(base + off)} title="Obligaciones del arrendador">
+            <Clause
+                number={nextNum(base + off)}
+                title="Obligaciones del arrendador"
+            >
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Entregar el inmueble en buen estado de servicio, seguridad y sanidad.</li>
                     <li>Mantener el inmueble en estado de servir para el fin convenido.</li>
@@ -136,7 +168,10 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 1)} title="Obligaciones del arrendatario">
+            <Clause
+                number={nextNum(base + off + 1)}
+                title="Obligaciones del arrendatario"
+            >
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Pagar el canon de arrendamiento en las fechas y forma pactadas.</li>
                     <li>Conservar el inmueble en buen estado y restituirlo en las mismas condiciones.</li>
@@ -147,7 +182,10 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 2)} title="Causales de terminación">
+            <Clause
+                number={nextNum(base + off + 2)}
+                title="Causales de terminación"
+            >
                 <p>El presente contrato podrá darse por terminado por:</p>
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Mutuo acuerdo entre las partes.</li>
@@ -158,35 +196,46 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 3)} title="Preaviso de terminación">
+            <Clause
+                number={nextNum(base + off + 3)}
+                title="Preaviso de terminación"
+            >
                 <p>
-                    Cualquiera de las partes que desee dar por terminado el contrato al vencimiento del término
-                    deberá notificar a la otra con un mínimo de <strong>tres (3) meses</strong> de
-                    anticipación, conforme al artículo 22 de la Ley 820 de 2003.
+                    Cualquiera de las partes que desee dar por terminado el contrato al vencimiento del término deberá
+                    notificar a la otra con un mínimo de <strong>tres (3) meses</strong> de anticipación, conforme al
+                    artículo 22 de la Ley 820 de 2003.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 4)} title="Resolución de conflictos">
+            <Clause
+                number={nextNum(base + off + 4)}
+                title="Resolución de conflictos"
+            >
                 <p>
-                    Las controversias que surjan del presente contrato se resolverán, en primera instancia,
-                    mediante conciliación ante un Centro de Conciliación autorizado por el Ministerio de
-                    Justicia y del Derecho. De no llegarse a acuerdo, las partes acudirán a la vía judicial
-                    ordinaria.
+                    Las controversias que surjan del presente contrato se resolverán, en primera instancia, mediante
+                    conciliación ante un Centro de Conciliación autorizado por el Ministerio de Justicia y del Derecho.
+                    De no llegarse a acuerdo, las partes acudirán a la vía judicial ordinaria.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 5)} title="Norma aplicable">
+            <Clause
+                number={nextNum(base + off + 5)}
+                title="Norma aplicable"
+            >
                 <p>
                     El presente contrato se regirá por la Ley 820 de 2003, el Código Civil colombiano y demás
                     disposiciones aplicables vigentes.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 6)} title="Aceptación">
+            <Clause
+                number={nextNum(base + off + 6)}
+                title="Aceptación"
+            >
                 <p>
-                    Las partes declaran haber leído íntegramente el presente contrato, encontrarlo conforme a
-                    sus intereses y firmarlo en señal de aceptación, en la ciudad de{' '}
-                    <strong>{ciudadStr}</strong>, a los <strong>{parseInt(day, 10)}</strong> días del mes de{' '}
+                    Las partes declaran haber leído íntegramente el presente contrato, encontrarlo conforme a sus
+                    intereses y firmarlo en señal de aceptación, en la ciudad de <strong>{ciudadStr}</strong>, a los{' '}
+                    <strong>{parseInt(day, 10)}</strong> días del mes de{' '}
                     <strong>
                         {condiciones.fechaInicio
                             ? new Date(condiciones.fechaInicio + 'T12:00:00').toLocaleString('es-CO', { month: 'long' })
@@ -213,21 +262,37 @@ function ContractComercial({ formData }: ContractTemplateProps) {
     const phLabel = inmueble.propiedadHorizontal ? ' sometido al régimen de propiedad horizontal' : '';
 
     const clausesPH = inmueble.propiedadHorizontal ? (
-        <Clause number="OCTAVA" title="Propiedad Horizontal y Reglamento">
+        <Clause
+            number="OCTAVA"
+            title="Propiedad Horizontal y Reglamento"
+        >
             <p>
-                El inmueble hace parte de un edificio o centro comercial sometido al régimen de propiedad
-                horizontal. El ARRENDATARIO se obliga a conocer y cumplir el reglamento de propiedad
-                horizontal vigente y las decisiones de la administración. Las cuotas de administración y
-                expensas comunes ordinarias corren por cuenta del ARRENDATARIO, salvo pacto en contrario.
+                El inmueble hace parte de un edificio o centro comercial sometido al régimen de propiedad horizontal. El
+                ARRENDATARIO se obliga a conocer y cumplir el reglamento de propiedad horizontal vigente y las
+                decisiones de la administración. Las cuotas de administración y expensas comunes ordinarias corren por
+                cuenta del ARRENDATARIO, salvo pacto en contrario.
             </p>
         </Clause>
     ) : null;
 
     const nextNum = (n: number) => {
         const nums = [
-            '', 'PRIMERA', 'SEGUNDA', 'TERCERA', 'CUARTA', 'QUINTA', 'SEXTA',
-            'SÉPTIMA', 'OCTAVA', 'NOVENA', 'DÉCIMA', 'DÉCIMA PRIMERA', 'DÉCIMA SEGUNDA',
-            'DÉCIMA TERCERA', 'DÉCIMA CUARTA', 'DÉCIMA QUINTA',
+            '',
+            'PRIMERA',
+            'SEGUNDA',
+            'TERCERA',
+            'CUARTA',
+            'QUINTA',
+            'SEXTA',
+            'SÉPTIMA',
+            'OCTAVA',
+            'NOVENA',
+            'DÉCIMA',
+            'DÉCIMA PRIMERA',
+            'DÉCIMA SEGUNDA',
+            'DÉCIMA TERCERA',
+            'DÉCIMA CUARTA',
+            'DÉCIMA QUINTA',
         ];
         return nums[n] ?? String(n);
     };
@@ -237,12 +302,14 @@ function ContractComercial({ formData }: ContractTemplateProps) {
 
     return (
         <div className="space-y-1">
-            <Clause number="PRIMERA" title="Objeto del contrato">
+            <Clause
+                number="PRIMERA"
+                title="Objeto del contrato"
+            >
                 <p>
                     El ARRENDADOR entrega al ARRENDATARIO, a título de arrendamiento, el inmueble tipo{' '}
                     <strong>{tipoLabel}</strong>
-                    {phLabel}, ubicado en{' '}
-                    <strong>{inmueble.direccion || '___________________'}</strong>, ciudad de{' '}
+                    {phLabel}, ubicado en <strong>{inmueble.direccion || '___________________'}</strong>, ciudad de{' '}
                     <strong>{ciudadStr}</strong>, departamento de{' '}
                     <strong>{inmueble.departamento || '___________________'}</strong>
                     {inmueble.areaMq ? `, con un área aproximada de ${inmueble.areaMq} m²` : ''}, estrato{' '}
@@ -251,80 +318,101 @@ function ContractComercial({ formData }: ContractTemplateProps) {
             </Clause>
 
             {esLocal ? (
-                <Clause number="SEGUNDA" title="Actividad comercial autorizada">
+                <Clause
+                    number="SEGUNDA"
+                    title="Actividad comercial autorizada"
+                >
                     <p>
-                        El ARRENDATARIO destinará el inmueble exclusivamente al desarrollo de la siguiente
-                        actividad comercial:{' '}
-                        <strong>{condiciones.actividadComercial || '___________________'}</strong>. Queda
-                        expresamente prohibido el cambio de actividad sin autorización previa y escrita del
-                        ARRENDADOR. El ARRENDATARIO será responsable de obtener las licencias, permisos y
-                        registros que la ley exija para el ejercicio de dicha actividad.
+                        El ARRENDATARIO destinará el inmueble exclusivamente al desarrollo de la siguiente actividad
+                        comercial: <strong>{condiciones.actividadComercial || '___________________'}</strong>. Queda
+                        expresamente prohibido el cambio de actividad sin autorización previa y escrita del ARRENDADOR.
+                        El ARRENDATARIO será responsable de obtener las licencias, permisos y registros que la ley exija
+                        para el ejercicio de dicha actividad.
                     </p>
                 </Clause>
             ) : (
-                <Clause number="SEGUNDA" title="Destinación del inmueble">
+                <Clause
+                    number="SEGUNDA"
+                    title="Destinación del inmueble"
+                >
                     <p>
-                        El ARRENDATARIO destinará el inmueble exclusivamente para uso de{' '}
-                        <strong>oficina</strong>. Queda expresamente prohibido el uso residencial o el
-                        desarrollo de actividades distintas sin autorización previa y escrita del ARRENDADOR.
+                        El ARRENDATARIO destinará el inmueble exclusivamente para uso de <strong>oficina</strong>. Queda
+                        expresamente prohibido el uso residencial o el desarrollo de actividades distintas sin
+                        autorización previa y escrita del ARRENDADOR.
                     </p>
                 </Clause>
             )}
 
-            <Clause number="TERCERA" title="Canon de arrendamiento">
+            <Clause
+                number="TERCERA"
+                title="Canon de arrendamiento"
+            >
                 <p>
                     El canon mensual de arrendamiento es de{' '}
                     <strong>
                         {numberToWordsCOP(canonNum)} ({formatCOP(condiciones.canonMensual)} COP)
                     </strong>
-                    . El ARRENDATARIO se obliga a pagarlo a más tardar el día{' '}
-                    <strong>{condiciones.diaPagoMes}</strong> de cada mes. Las partes podrán acordar
-                    libremente el reajuste anual del canon, sin que aplique el límite del IPC previsto en la
-                    Ley 820 de 2003, por tratarse de un arrendamiento comercial regido por el Código de
-                    Comercio.
+                    . El ARRENDATARIO se obliga a pagarlo a más tardar el día <strong>{condiciones.diaPagoMes}</strong>{' '}
+                    de cada mes. Las partes podrán acordar libremente el reajuste anual del canon, sin que aplique el
+                    límite del IPC previsto en la Ley 820 de 2003, por tratarse de un arrendamiento comercial regido por
+                    el Código de Comercio.
                 </p>
             </Clause>
 
-            <Clause number="CUARTA" title="Forma y lugar de pago">
+            <Clause
+                number="CUARTA"
+                title="Forma y lugar de pago"
+            >
                 <p>
                     El canon se pagará por mensualidades anticipadas, a más tardar el día{' '}
-                    <strong>{condiciones.diaPagoMes}</strong> de cada mes calendario. El incumplimiento en el
-                    pago durante dos (2) periodos consecutivos constituirá causal de terminación unilateral
-                    del contrato por parte del ARRENDADOR.
+                    <strong>{condiciones.diaPagoMes}</strong> de cada mes calendario. El incumplimiento en el pago
+                    durante dos (2) periodos consecutivos constituirá causal de terminación unilateral del contrato por
+                    parte del ARRENDADOR.
                 </p>
             </Clause>
 
-            <Clause number="QUINTA" title="Duración del contrato">
+            <Clause
+                number="QUINTA"
+                title="Duración del contrato"
+            >
                 <p>
-                    El contrato tendrá una duración de <strong>{condiciones.duracionMeses} meses</strong>,
-                    contados a partir del <strong>{fechaStr}</strong>. Vencido el término, el contrato
-                    podrá prorrogarse por acuerdo escrito entre las partes.
+                    El contrato tendrá una duración de <strong>{condiciones.duracionMeses} meses</strong>, contados a
+                    partir del <strong>{fechaStr}</strong>. Vencido el término, el contrato podrá prorrogarse por
+                    acuerdo escrito entre las partes.
                 </p>
             </Clause>
 
-            <Clause number="SEXTA" title="Depósito de garantía">
+            <Clause
+                number="SEXTA"
+                title="Depósito de garantía"
+            >
                 <p>
                     El ARRENDATARIO entrega en calidad de depósito de garantía la suma de{' '}
                     <strong>
                         {numberToWordsCOP(depositoNum)} ({formatCOP(condiciones.depositoCOP)} COP)
                     </strong>
-                    . Dicha suma será devuelta al término del contrato, descontando los valores adeudados,
-                    perjuicios causados al inmueble y demás obligaciones pendientes del ARRENDATARIO.
+                    . Dicha suma será devuelta al término del contrato, descontando los valores adeudados, perjuicios
+                    causados al inmueble y demás obligaciones pendientes del ARRENDATARIO.
                 </p>
             </Clause>
 
-            <Clause number="SÉPTIMA" title="Servicios públicos y administración">
+            <Clause
+                number="SÉPTIMA"
+                title="Servicios públicos y administración"
+            >
                 <p>
-                    Los servicios públicos (agua, energía eléctrica, gas, teléfono e internet) y las cuotas
-                    de administración, si aplican, corren por cuenta del ARRENDATARIO, salvo pacto en
-                    contrario. El ARRENDATARIO no podrá interrumpir el pago de los servicios durante la
-                    vigencia del contrato.
+                    Los servicios públicos (agua, energía eléctrica, gas, teléfono e internet) y las cuotas de
+                    administración, si aplican, corren por cuenta del ARRENDATARIO, salvo pacto en contrario. El
+                    ARRENDATARIO no podrá interrumpir el pago de los servicios durante la vigencia del contrato.
                 </p>
             </Clause>
 
             {clausesPH}
 
-            <Clause number={nextNum(base + off)} title="Obligaciones del arrendador">
+            <Clause
+                number={nextNum(base + off)}
+                title="Obligaciones del arrendador"
+            >
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Entregar el inmueble en buen estado y apto para el uso pactado.</li>
                     <li>Mantener el inmueble en condiciones que permitan el uso convenido.</li>
@@ -333,15 +421,18 @@ function ContractComercial({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 1)} title="Obligaciones del arrendatario">
+            <Clause
+                number={nextNum(base + off + 1)}
+                title="Obligaciones del arrendatario"
+            >
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Pagar el canon de arrendamiento en las fechas y forma pactadas.</li>
                     <li>Usar el inmueble exclusivamente para la actividad autorizada.</li>
                     <li>Conservar el inmueble en buen estado y restituirlo en las mismas condiciones.</li>
                     <li>No subarrendar ni ceder el contrato sin autorización escrita del ARRENDADOR.</li>
                     <li>
-                        No realizar adecuaciones, reformas o modificaciones al inmueble sin autorización
-                        escrita del ARRENDADOR.
+                        No realizar adecuaciones, reformas o modificaciones al inmueble sin autorización escrita del
+                        ARRENDADOR.
                     </li>
                     {inmueble.propiedadHorizontal && <li>Cumplir el reglamento de propiedad horizontal.</li>}
                     <li>Obtener y mantener vigentes los permisos y licencias para su actividad.</li>
@@ -349,26 +440,34 @@ function ContractComercial({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 2)} title="Mejoras y adecuaciones">
+            <Clause
+                number={nextNum(base + off + 2)}
+                title="Mejoras y adecuaciones"
+            >
                 <p>
-                    Las mejoras útiles o de lujo que el ARRENDATARIO realice con autorización escrita del
-                    ARRENDADOR quedarán en beneficio del inmueble sin derecho a indemnización, salvo pacto
-                    en contrario. Las mejoras necesarias autorizadas serán abonadas al ARRENDATARIO conforme
-                    a lo pactado. El ARRENDATARIO deberá restituir el inmueble en el estado en que lo
-                    recibió.
+                    Las mejoras útiles o de lujo que el ARRENDATARIO realice con autorización escrita del ARRENDADOR
+                    quedarán en beneficio del inmueble sin derecho a indemnización, salvo pacto en contrario. Las
+                    mejoras necesarias autorizadas serán abonadas al ARRENDATARIO conforme a lo pactado. El ARRENDATARIO
+                    deberá restituir el inmueble en el estado en que lo recibió.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 3)} title="Terminación anticipada">
+            <Clause
+                number={nextNum(base + off + 3)}
+                title="Terminación anticipada"
+            >
                 <p>
-                    Cualquiera de las partes podrá dar por terminado el contrato antes del vencimiento del
-                    término pactado, con un preaviso mínimo de <strong>tres (3) meses</strong> mediante
-                    comunicación escrita. El incumplimiento de este preaviso generará el pago de una
-                    indemnización equivalente al canon correspondiente al tiempo de preaviso no cumplido.
+                    Cualquiera de las partes podrá dar por terminado el contrato antes del vencimiento del término
+                    pactado, con un preaviso mínimo de <strong>tres (3) meses</strong> mediante comunicación escrita. El
+                    incumplimiento de este preaviso generará el pago de una indemnización equivalente al canon
+                    correspondiente al tiempo de preaviso no cumplido.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 4)} title="Causales de terminación">
+            <Clause
+                number={nextNum(base + off + 4)}
+                title="Causales de terminación"
+            >
                 <p>El presente contrato podrá darse por terminado por:</p>
                 <ol className="list-decimal list-inside space-y-1 mt-1">
                     <li>Mutuo acuerdo entre las partes.</li>
@@ -380,28 +479,35 @@ function ContractComercial({ formData }: ContractTemplateProps) {
                 </ol>
             </Clause>
 
-            <Clause number={nextNum(base + off + 5)} title="Resolución de conflictos">
+            <Clause
+                number={nextNum(base + off + 5)}
+                title="Resolución de conflictos"
+            >
                 <p>
-                    Las controversias que surjan del presente contrato se resolverán mediante conciliación
-                    ante un Centro de Conciliación autorizado. De no llegarse a acuerdo, las partes
-                    acudirán a la jurisdicción ordinaria competente en la ciudad de{' '}
-                    <strong>{ciudadStr}</strong>.
+                    Las controversias que surjan del presente contrato se resolverán mediante conciliación ante un
+                    Centro de Conciliación autorizado. De no llegarse a acuerdo, las partes acudirán a la jurisdicción
+                    ordinaria competente en la ciudad de <strong>{ciudadStr}</strong>.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 6)} title="Norma aplicable">
+            <Clause
+                number={nextNum(base + off + 6)}
+                title="Norma aplicable"
+            >
                 <p>
-                    El presente contrato se regirá por el Código de Comercio colombiano, el Código Civil y
-                    demás disposiciones legales vigentes aplicables a los contratos de arrendamiento
-                    comercial.
+                    El presente contrato se regirá por el Código de Comercio colombiano, el Código Civil y demás
+                    disposiciones legales vigentes aplicables a los contratos de arrendamiento comercial.
                 </p>
             </Clause>
 
-            <Clause number={nextNum(base + off + 7)} title="Aceptación">
+            <Clause
+                number={nextNum(base + off + 7)}
+                title="Aceptación"
+            >
                 <p>
-                    Las partes declaran haber leído íntegramente el presente contrato, encontrarlo conforme
-                    a sus intereses y firmarlo en señal de aceptación, en la ciudad de{' '}
-                    <strong>{ciudadStr}</strong>, a los <strong>{parseInt(day, 10)}</strong> días del mes de{' '}
+                    Las partes declaran haber leído íntegramente el presente contrato, encontrarlo conforme a sus
+                    intereses y firmarlo en señal de aceptación, en la ciudad de <strong>{ciudadStr}</strong>, a los{' '}
+                    <strong>{parseInt(day, 10)}</strong> días del mes de{' '}
                     <strong>
                         {condiciones.fechaInicio
                             ? new Date(condiciones.fechaInicio + 'T12:00:00').toLocaleString('es-CO', { month: 'long' })
@@ -433,7 +539,11 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
             {/* Custom logo for paid plans */}
             {isPaid && logoUrl && (
                 <div className="flex justify-start mb-6 pb-4 border-b border-slate-200">
-                    <img src={logoUrl} alt="Logo" className="h-12 max-w-[180px] object-contain" />
+                    <img
+                        src={logoUrl}
+                        alt="Logo"
+                        className="h-12 max-w-[180px] object-contain"
+                    />
                 </div>
             )}
 
@@ -457,7 +567,8 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
                         <p className="font-bold text-slate-700 mb-1">Arrendador</p>
                         <p>{arrendador.nombreCompleto || '___________________'}</p>
                         <p>
-                            {arrendador.tipoDocumento || 'Doc.'} No. {arrendador.numeroDocumento || '___________________'}
+                            {arrendador.tipoDocumento || 'Doc.'} No.{' '}
+                            {arrendador.numeroDocumento || '___________________'}
                         </p>
                         <p>Tel. {arrendador.telefono || '___________________'}</p>
                         {arrendador.email && <p>{arrendador.email}</p>}
@@ -476,11 +587,7 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
             </div>
 
             {/* Clauses */}
-            {esContratoCom ? (
-                <ContractComercial formData={formData} />
-            ) : (
-                <ContractVivienda formData={formData} />
-            )}
+            {esContratoCom ? <ContractComercial formData={formData} /> : <ContractVivienda formData={formData} />}
 
             {/* Signature block */}
             <div className="mt-12 grid grid-cols-2 gap-12">
@@ -489,7 +596,8 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
                         <p className="font-bold text-slate-900">EL ARRENDADOR</p>
                         <p>{arrendador.nombreCompleto || '___________________'}</p>
                         <p>
-                            {arrendador.tipoDocumento || 'Doc.'} No. {arrendador.numeroDocumento || '___________________'}
+                            {arrendador.tipoDocumento || 'Doc.'} No.{' '}
+                            {arrendador.numeroDocumento || '___________________'}
                         </p>
                         <p>Tel. {arrendador.telefono || '___________________'}</p>
                     </div>
@@ -515,8 +623,8 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
                 >
                     <p>Documento generado por Lexia · lexia.co</p>
                     <p>
-                        Esta minuta es una referencia legal. Para mayor seguridad jurídica, consulte con un
-                        abogado habilitado.
+                        Este contrato es una referencia legal. Para mayor seguridad jurídica, consulte con un abogado
+                        habilitado.
                     </p>
                 </div>
             )}

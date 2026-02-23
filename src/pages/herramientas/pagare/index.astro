@@ -11,7 +11,10 @@ const tool = getToolBySlug('pagare')!;
 ---
 
 <Layout title="Generador de Pagaré · Lexia">
-    <Navbar variant="tool-landing" activeTool="pagare" />
+    <Navbar
+        variant="tool-landing"
+        activeTool="pagare"
+    />
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />
     <SharedPricing formHref={tool.href.form} />
