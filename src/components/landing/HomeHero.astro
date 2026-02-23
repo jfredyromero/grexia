@@ -2,167 +2,181 @@
 const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
 
 const trustBadges = [
-    { icon: 'check_circle', label: 'Gratis · Sin registro' },
-    { icon: 'verified', label: 'Válido en Colombia' },
-    { icon: 'download', label: 'Descarga en PDF' },
+	{ icon: 'check_circle', label: 'Gratis · Sin registro' },
+	{ icon: 'verified', label: 'Válido en Colombia' },
+	{ icon: 'download', label: 'Descarga en PDF' },
 ];
 
 const socialAvatars = [
-    {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
-        alt: 'Usuaria de Lexia',
-    },
-    {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
-        alt: 'Usuario de Lexia',
-    },
-    {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
-        alt: 'Usuario de Lexia',
-    },
+	{
+		src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+		alt: 'Usuaria de Lexia',
+	},
+	{
+		src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+		alt: 'Usuario de Lexia',
+	},
+	{
+		src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
+		alt: 'Usuario de Lexia',
+	},
 ];
 
 // Home-specific hero visual
 const HERO_IMAGE =
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDWv17QOVbfZPk9kO3e46KtKbJzpucPs99OOaVCKHmz2kSkcOdNeEneM_-NRb0z92MAptlBCnGHUtZ9a_zBH9FGGGc3CuUb5FBGZGlifDi5G7uZ5iuyYO4-XH-fNOuHZVEJqpkHIyIpA0sf1h01qqAIy9P5MIEPwc6XnRwYvAVz2exUikaWK2bWALEyVH_2h-FOjnU3mTm7OzCqoq3dSX7sjL8mmij62DeQaz1SBWDPC-d1luqm6r6HJQoOrBM14byZqO3OL7Fk9NVP';
+	'https://lh3.googleusercontent.com/aida-public/AB6AXuDWv17QOVbfZPk9kO3e46KtKbJzpucPs99OOaVCKHmz2kSkcOdNeEneM_-NRb0z92MAptlBCnGHUtZ9a_zBH9FGGGc3CuUb5FBGZGlifDi5G7uZ5iuyYO4-XH-fNOuHZVEJqpkHIyIpA0sf1h01qqAIy9P5MIEPwc6XnRwYvAVz2exUikaWK2bWALEyVH_2h-FOjnU3mTm7OzCqoq3dSX7sjL8mmij62DeQaz1SBWDPC-d1luqm6r6HJQoOrBM14byZqO3OL7Fk9NVP';
 const LAWYER_AVATAR =
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ';
+	'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ';
 ---
 
 <main class="flex-grow flex items-center justify-center">
-    <div class="relative w-full max-w-7xl px-6 lg:px-8 py-12 lg:py-20">
-        <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+	<div class="relative w-full max-w-7xl px-6 lg:px-8 py-12 lg:py-20">
+		<div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+			<!-- ── Left: Text content ── -->
+			<div class="flex flex-col gap-8 order-2 lg:order-1">
+				<!-- Trust Badges -->
+				<div class="flex flex-wrap gap-3">
+					{
+						trustBadges.map((badge) => (
+							<div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
+								<span class="material-symbols-outlined text-primary text-[20px] font-bold">
+									{badge.icon}
+								</span>
+								<span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+									{badge.label}
+								</span>
+							</div>
+						))
+					}
+				</div>
 
-            <!-- ── Left: Text content ── -->
-            <div class="flex flex-col gap-8 order-2 lg:order-1">
+				<!-- Headlines -->
+				<div class="space-y-6">
+					<h1 class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl">
+						Documentos legales
+						<span class="relative whitespace-nowrap text-secondary">
+							listos
+							<span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"></span>
+						</span>
+						en minutos
+					</h1>
+					<p class="max-w-lg text-lg text-slate-600 leading-relaxed">
+						Genera contratos, pagarés y más documentos con validez legal en Colombia. Gratis, sin registro,
+						listos para descargar en PDF.
+					</p>
+				</div>
 
-                <!-- Trust Badges -->
-                <div class="flex flex-wrap gap-3">
-                    {trustBadges.map((badge) => (
-                        <div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
-                            <span class="material-symbols-outlined text-primary text-[20px] font-bold">
-                                {badge.icon}
-                            </span>
-                            <span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
-                                {badge.label}
-                            </span>
-                        </div>
-                    ))}
-                </div>
+				<!-- CTAs -->
+				<div class="flex flex-col sm:flex-row gap-4 pt-2">
+					<a
+						href="#herramientas"
+						class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:translate-y-[-2px] hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+					>
+						Ver herramientas
+						<span class="material-symbols-outlined text-[20px]">arrow_downward</span>
+					</a>
+					<a
+						href={CALENDAR_URL}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
+					>
+						Hablar con un abogado
+					</a>
+				</div>
 
-                <!-- Headlines -->
-                <div class="space-y-6">
-                    <h1 class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl">
-                        Documentos legales
-                        <span class="relative whitespace-nowrap text-secondary">
-                            listos
-                            <span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"></span>
-                        </span>
-                        en minutos
-                    </h1>
-                    <p class="max-w-lg text-lg text-slate-600 leading-relaxed">
-                        Genera contratos, pagarés y más documentos con validez legal en Colombia. Gratis, sin registro, listos para descargar en PDF.
-                    </p>
-                </div>
+				<!-- Social Proof -->
+				<div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
+					<div class="flex -space-x-4">
+						{
+							socialAvatars.map((avatar) => (
+								<img
+									alt={avatar.alt}
+									class="h-12 w-12 rounded-full border-2 border-white object-cover"
+									src={avatar.src}
+								/>
+							))
+						}
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+						>
+							+1.2k
+						</div>
+					</div>
+					<div class="flex flex-col justify-center">
+						<div class="flex text-yellow-400 text-sm">
+							{
+								Array.from({ length: 5 }).map(() => (
+									<span class="material-symbols-outlined text-[18px]">star</span>
+								))
+							}
+						</div>
+						<p class="text-sm font-medium text-slate-600">
+							Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
+						</p>
+					</div>
+				</div>
+			</div>
 
-                <!-- CTAs -->
-                <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                    <a
-                        href="#herramientas"
-                        class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:translate-y-[-2px] hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
-                    >
-                        Ver herramientas
-                        <span class="material-symbols-outlined text-[20px]">arrow_downward</span>
-                    </a>
-                    <a
-                        href={CALENDAR_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
-                    >
-                        Hablar con un abogado
-                    </a>
-                </div>
+			<!-- ── Right: Photo visual ── -->
+			<div class="relative order-1 lg:order-2">
+				<div
+					class="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+				>
+					<!-- Hero photo -->
+					<img
+						alt="Persona generando documentos legales con Lexia"
+						class="h-full w-full object-cover object-center"
+						src={HERO_IMAGE}
+					/>
 
-                <!-- Social Proof -->
-                <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
-                    <div class="flex -space-x-4">
-                        {socialAvatars.map((avatar) => (
-                            <img
-                                alt={avatar.alt}
-                                class="h-12 w-12 rounded-full border-2 border-white object-cover"
-                                src={avatar.src}
-                            />
-                        ))}
-                        <div class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white">
-                            +1.2k
-                        </div>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <div class="flex text-yellow-400 text-sm">
-                            {Array.from({ length: 5 }).map(() => (
-                                <span class="material-symbols-outlined text-[18px]">star</span>
-                            ))}
-                        </div>
-                        <p class="text-sm font-medium text-slate-600">
-                            Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
-                        </p>
-                    </div>
-                </div>
-            </div>
+					<!-- Gradient overlay -->
+					<div class="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
 
-            <!-- ── Right: Photo visual ── -->
-            <div class="relative order-1 lg:order-2">
-                <div class="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl">
+					<!-- Glass Widget: Lawyer chat -->
+					<div
+						class="glass-widget absolute top-8 right-6 flex max-w-[260px] flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+					>
+						<div class="flex items-center gap-3">
+							<div class="relative">
+								<img
+									alt="Abogada Camila de Lexia"
+									class="h-10 w-10 rounded-full object-cover border border-white"
+									src={LAWYER_AVATAR}
+								/>
+								<div
+									class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+								>
+								</div>
+							</div>
+							<div class="flex flex-col">
+								<span class="text-sm font-bold text-slate-800">Abogada Camila</span>
+								<span class="text-xs text-slate-500">Equipo Lexia · En línea</span>
+							</div>
+						</div>
+						<div class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm">
+							"Hola, ¿en qué documento legal te puedo ayudar hoy? Estamos disponibles."
+						</div>
+					</div>
 
-                    <!-- Hero photo -->
-                    <img
-                        alt="Persona generando documentos legales con Lexia"
-                        class="h-full w-full object-cover object-center"
-                        src={HERO_IMAGE}
-                    />
+					<!-- Glass Widget: PDF badge -->
+					<div
+						class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
+					>
+						<div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+							<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+						</div>
+						<div>
+							<p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Descarga en PDF</p>
+							<p class="text-sm font-bold text-slate-800">Lista en 5 minutos</p>
+						</div>
+					</div>
+				</div>
 
-                    <!-- Gradient overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
-
-                    <!-- Glass Widget: Lawyer chat -->
-                    <div class="glass-widget absolute top-8 right-6 flex max-w-[260px] flex-col gap-3 rounded-2xl p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]">
-                        <div class="flex items-center gap-3">
-                            <div class="relative">
-                                <img
-                                    alt="Abogada Camila de Lexia"
-                                    class="h-10 w-10 rounded-full object-cover border border-white"
-                                    src={LAWYER_AVATAR}
-                                />
-                                <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"></div>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-slate-800">Abogada Camila</span>
-                                <span class="text-xs text-slate-500">Equipo Lexia · En línea</span>
-                            </div>
-                        </div>
-                        <div class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm">
-                            "Hola, ¿en qué documento legal te puedo ayudar hoy? Estamos disponibles."
-                        </div>
-                    </div>
-
-                    <!-- Glass Widget: PDF badge -->
-                    <div class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                            <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Descarga en PDF</p>
-                            <p class="text-sm font-bold text-slate-800">Lista en 5 minutos</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Decorative blobs -->
-                <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl"></div>
-                <div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl"></div>
-            </div>
-
-        </div>
-    </div>
+				<!-- Decorative blobs -->
+				<div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl"></div>
+				<div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl"></div>
+			</div>
+		</div>
+	</div>
 </main>
