@@ -24,7 +24,7 @@ function Clause({ number, title, children }: { number: string; title: string; ch
 // ── VIVIENDA template (Ley 820 de 2003) ──────────────────────────────────────
 
 function ContractVivienda({ formData }: ContractTemplateProps) {
-    const { inmueble, arrendador, arrendatario, condiciones } = formData;
+    const { inmueble, condiciones } = formData;
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
     const depositoNum = parseInt(condiciones.depositoCOP.replace(/\D/g, ''), 10) || 0;
     const depositoMeses = canonNum > 0 ? Math.round(depositoNum / canonNum) : 1;
@@ -251,7 +251,7 @@ function ContractVivienda({ formData }: ContractTemplateProps) {
 // ── COMERCIAL template (Código de Comercio) ───────────────────────────────────
 
 function ContractComercial({ formData }: ContractTemplateProps) {
-    const { inmueble, arrendador, arrendatario, condiciones } = formData;
+    const { inmueble, condiciones } = formData;
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
     const depositoNum = parseInt(condiciones.depositoCOP.replace(/\D/g, ''), 10) || 0;
     const fechaStr = formatDate(condiciones.fechaInicio);
@@ -534,7 +534,7 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
     return (
         <div
             id="contract-content"
-            className="bg-white rounded-2xl p-8 lg:p-10 font-serif text-sm text-slate-800 leading-relaxed"
+            className="bg-white rounded-lg p-8 lg:p-10 font-serif text-sm text-slate-800 leading-relaxed"
         >
             {/* Custom logo for paid plans */}
             {isPaid && logoUrl && (

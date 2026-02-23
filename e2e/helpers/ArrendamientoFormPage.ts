@@ -1,4 +1,4 @@
-import type { Page, Download } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -38,7 +38,10 @@ export class ArrendamientoFormPage {
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto(plan?: 'free' | 'basico' | 'pro') {
-        const url = plan && plan !== 'free' ? `/herramientas/arrendamiento/generar?plan=${plan}` : '/herramientas/arrendamiento/generar';
+        const url =
+            plan && plan !== 'free'
+                ? `/herramientas/arrendamiento/generar?plan=${plan}`
+                : '/herramientas/arrendamiento/generar';
         await this.page.goto(url);
         // Wait for React island to hydrate
         await this.page.waitForSelector('button:has-text("Continuar")', { timeout: 10_000 });

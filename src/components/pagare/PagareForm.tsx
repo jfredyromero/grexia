@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import type { PagareFormData, AcreedorData, DeudorData, ObligacionData, PlanTier } from './types';
 import { INITIAL_PAGARE_DATA, PAGARE_STEPS } from './types';
 import StepProgress from '../shared/StepProgress';
@@ -20,12 +20,8 @@ function readPlanFromUrl(): PlanTier {
 export default function PagareForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<PagareFormData>(INITIAL_PAGARE_DATA);
-    const [plan, setPlan] = useState<PlanTier>('free');
+    const [plan, setPlan] = useState<PlanTier>(readPlanFromUrl);
     const [logoUrl, setLogoUrl] = useState<string>('');
-
-    useEffect(() => {
-        setPlan(readPlanFromUrl());
-    }, []);
 
     const updateAcreedor = useCallback((data: AcreedorData) => {
         setFormData((prev) => ({ ...prev, acreedor: data }));
@@ -100,13 +96,19 @@ export default function PagareForm() {
                     steps={PAGARE_STEPS}
                     currentStep={currentStep}
                 />
-                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sm:p-8">
+                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
                     {stepContent[currentStep]}
                 </div>
             </div>
 
             {/* Sidebar: upsell widget */}
-            <aside className={['no-print', isLastStep ? 'lg:col-span-2' : ''].join(' ')}>
+            <aside
+                className={[
+                    'no-print',
+                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
+                    isLastStep ? 'lg:col-span-2' : '',
+                ].join(' ')}
+            >
                 <UpsellWidget
                     calendarUrl={CALENDAR_URL}
                     plan={plan}
