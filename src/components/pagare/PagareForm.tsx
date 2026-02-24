@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { PagareFormData, AcreedorData, DeudorData, ObligacionData, PlanTier } from './types';
+import type { PagareFormData, AcreedorData, DeudorData, ObligacionData } from './types';
 import { INITIAL_PAGARE_DATA, PAGARE_STEPS } from './types';
 import StepProgress from '../shared/StepProgress';
 import UpsellWidget from '../shared/UpsellWidget';
@@ -10,18 +10,9 @@ import StepPreview from './steps/StepPreview';
 
 const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
 
-function readPlanFromUrl(): PlanTier {
-    if (typeof window === 'undefined') return 'free';
-    const param = new URLSearchParams(window.location.search).get('plan');
-    if (param === 'basico' || param === 'pro') return param;
-    return 'free';
-}
-
 export default function PagareForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<PagareFormData>(INITIAL_PAGARE_DATA);
-    const [plan, setPlan] = useState<PlanTier>(readPlanFromUrl);
-    const [logoUrl, setLogoUrl] = useState<string>('');
 
     const updateAcreedor = useCallback((data: AcreedorData) => {
         setFormData((prev) => ({ ...prev, acreedor: data }));
@@ -74,10 +65,6 @@ export default function PagareForm() {
         4: (
             <StepPreview
                 formData={formData}
-                plan={plan}
-                logoUrl={logoUrl}
-                onLogoChange={setLogoUrl}
-                onPlanChange={setPlan}
                 onBack={handleBack}
                 calendarUrl={CALENDAR_URL}
             />
@@ -111,8 +98,6 @@ export default function PagareForm() {
             >
                 <UpsellWidget
                     calendarUrl={CALENDAR_URL}
-                    plan={plan}
-                    onPlanChange={setPlan}
                     isStep5={isLastStep}
                 />
             </aside>

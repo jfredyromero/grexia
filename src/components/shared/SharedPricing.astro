@@ -70,8 +70,8 @@ const plans = [
 
 const planHrefs = {
     free: formHref,
-    basico: `${formHref}?plan=basico`,
-    pro: `${formHref}?plan=pro`,
+    basico: formHref,
+    pro: formHref,
 };
 ---
 
@@ -192,6 +192,7 @@ const planHrefs = {
                         {/* CTA */}
                         <a
                             href={planHrefs[plan.id]}
+                            data-plan={plan.id}
                             class={[
                                 'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:translate-y-[-1px]',
                                 plan.highlighted
@@ -216,3 +217,16 @@ const planHrefs = {
         </p>
     </div>
 </section>
+
+<script>
+    document.querySelectorAll<HTMLAnchorElement>('[data-plan]').forEach((el) => {
+        el.addEventListener('click', () => {
+            const plan = el.dataset.plan;
+            if (plan && plan !== 'free') {
+                localStorage.setItem('lexia_plan', plan);
+            } else {
+                localStorage.removeItem('lexia_plan');
+            }
+        });
+    });
+</script>

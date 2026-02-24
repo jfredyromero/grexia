@@ -1,13 +1,11 @@
 import { useState, useRef } from 'react';
+import { useStore } from '@nanostores/react';
 import type { PagareFormData, PlanTier } from '../types';
 import PagareTemplate from '../PagareTemplate';
+import { $plan, $logoUrl } from '../../../stores/plan';
 
 interface StepPreviewProps {
     formData: PagareFormData;
-    plan: PlanTier;
-    logoUrl: string;
-    onLogoChange: (url: string) => void;
-    onPlanChange: (plan: PlanTier) => void;
     onBack: () => void;
     calendarUrl: string;
 }
@@ -42,15 +40,11 @@ const PLAN_LABELS: Record<PlanTier, { label: string; color: string }> = {
     pro: { label: 'Plan Pro', color: 'bg-secondary text-primary font-bold' },
 };
 
-export default function StepPreview({
-    formData,
-    plan,
-    logoUrl,
-    onLogoChange,
-    onPlanChange,
-    onBack,
-    calendarUrl,
-}: StepPreviewProps) {
+export default function StepPreview({ formData, onBack, calendarUrl }: StepPreviewProps) {
+    const plan = useStore($plan);
+    const logoUrl = useStore($logoUrl);
+    const onPlanChange = $plan.set.bind($plan);
+    const onLogoChange = $logoUrl.set.bind($logoUrl);
     const [loading, setLoading] = useState(false);
     const [pdfError, setPdfError] = useState<string | null>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);

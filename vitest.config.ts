@@ -11,9 +11,10 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'html'],
-            include: ['src/components/**/*.{ts,tsx}'],
+            include: ['src/components/**/*.{ts,tsx}', 'src/stores/**/*.ts'],
             exclude: [
                 'src/components/**/__tests__/**',
+                'src/stores/**/__tests__/**',
                 'src/components/**/*PDF.tsx',
                 'src/components/**/steps/**',
                 'src/components/**/*Form.tsx',

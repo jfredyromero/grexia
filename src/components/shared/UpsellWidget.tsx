@@ -1,14 +1,15 @@
-import type { PlanTier } from '../../types/plans';
+import { useStore } from '@nanostores/react';
 import { PLANS, SESSION_COUNTS } from '../../types/plans';
+import { $plan } from '../../stores/plan';
 
 interface UpsellWidgetProps {
     calendarUrl: string;
-    plan: PlanTier;
-    onPlanChange: (plan: PlanTier) => void;
     isStep5?: boolean;
 }
 
-export default function UpsellWidget({ calendarUrl, plan, onPlanChange, isStep5 = false }: UpsellWidgetProps) {
+export default function UpsellWidget({ calendarUrl, isStep5 = false }: UpsellWidgetProps) {
+    const plan = useStore($plan);
+    const onPlanChange = $plan.set.bind($plan);
     const isPaid = plan === 'basico' || plan === 'pro';
     const sessions = SESSION_COUNTS[plan];
     const currentPlan = PLANS.find((p) => p.id === plan)!;

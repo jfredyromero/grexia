@@ -1,16 +1,8 @@
 import { useState, useCallback } from 'react';
-import type {
-    ArrendamientoFormData,
-    InmuebleData,
-    ArrendadorData,
-    ArrendatarioData,
-    CondicionesData,
-    PlanTier,
-} from './types';
-import { INITIAL_FORM_DATA } from './types';
+import type { ArrendamientoFormData, InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData } from './types';
+import { INITIAL_FORM_DATA, STEPS } from './types';
 import StepProgress from '../shared/StepProgress';
 import UpsellWidget from '../shared/UpsellWidget';
-import { STEPS } from './types';
 import StepInmueble from './steps/StepInmueble';
 import StepArrendador from './steps/StepArrendador';
 import StepArrendatario from './steps/StepArrendatario';
@@ -19,18 +11,9 @@ import StepPreview from './steps/StepPreview';
 
 const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
 
-function readPlanFromUrl(): PlanTier {
-    if (typeof window === 'undefined') return 'free';
-    const param = new URLSearchParams(window.location.search).get('plan');
-    if (param === 'basico' || param === 'pro') return param;
-    return 'free';
-}
-
 export default function ArrendamientoForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<ArrendamientoFormData>(INITIAL_FORM_DATA);
-    const [plan, setPlan] = useState<PlanTier>(readPlanFromUrl);
-    const [logoUrl, setLogoUrl] = useState<string>('');
 
     const updateInmueble = useCallback((data: InmuebleData) => {
         setFormData((prev) => ({ ...prev, inmueble: data }));
@@ -96,10 +79,6 @@ export default function ArrendamientoForm() {
         5: (
             <StepPreview
                 formData={formData}
-                plan={plan}
-                logoUrl={logoUrl}
-                onLogoChange={setLogoUrl}
-                onPlanChange={setPlan}
                 onBack={handleBack}
                 calendarUrl={CALENDAR_URL}
             />
@@ -134,8 +113,6 @@ export default function ArrendamientoForm() {
             >
                 <UpsellWidget
                     calendarUrl={CALENDAR_URL}
-                    plan={plan}
-                    onPlanChange={setPlan}
                     isStep5={isStep5}
                 />
             </aside>

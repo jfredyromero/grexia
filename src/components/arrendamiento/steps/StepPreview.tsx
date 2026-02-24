@@ -1,14 +1,12 @@
 import { useState, useRef } from 'react';
+import { useStore } from '@nanostores/react';
 import type { ArrendamientoFormData, PlanTier } from '../types';
 import { isComercial } from '../types';
 import ContractTemplate from '../ContractTemplate';
+import { $plan, $logoUrl } from '../../../stores/plan';
 
 interface StepPreviewProps {
     formData: ArrendamientoFormData;
-    plan: PlanTier;
-    logoUrl: string;
-    onLogoChange: (url: string) => void;
-    onPlanChange: (plan: PlanTier) => void;
     onBack: () => void;
     calendarUrl: string;
 }
@@ -50,15 +48,11 @@ const PLAN_LABELS: Record<PlanTier, { label: string; color: string }> = {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function StepPreview({
-    formData,
-    plan,
-    logoUrl,
-    onLogoChange,
-    onPlanChange,
-    onBack,
-    calendarUrl,
-}: StepPreviewProps) {
+export default function StepPreview({ formData, onBack, calendarUrl }: StepPreviewProps) {
+    const plan = useStore($plan);
+    const logoUrl = useStore($logoUrl);
+    const onPlanChange = $plan.set.bind($plan);
+    const onLogoChange = $logoUrl.set.bind($logoUrl);
     const [loading, setLoading] = useState(false);
     const [pdfError, setPdfError] = useState<string | null>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
