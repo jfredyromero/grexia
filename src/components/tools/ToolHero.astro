@@ -1,5 +1,6 @@
 ---
 import type { ToolConfig } from '../../config/tools';
+import Breadcrumb from '../shared/Breadcrumb.astro';
 
 interface Props {
     tool: ToolConfig;
@@ -40,31 +41,9 @@ const socialAvatars = [
 <section class="flex-grow flex items-center justify-center">
     <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
         <!-- Breadcrumb -->
-        <ol
-            class="flex items-center gap-1.5 text-sm font-medium mb-10"
-            aria-label="Ubicación"
-        >
-            <li>
-                <a
-                    href="/"
-                    class="text-slate-500 transition-colors hover:text-secondary"
-                >
-                    Herramientas
-                </a>
-            </li>
-            <li
-                aria-hidden="true"
-                class="text-slate-400 select-none"
-            >
-                /
-            </li>
-            <li
-                class="text-slate-600 font-semibold"
-                aria-current="page"
-            >
-                {name}
-            </li>
-        </ol>
+        <div class="mb-10">
+            <Breadcrumb items={[{ label: 'Herramientas', href: '/#herramientas' }, { label: name }]} />
+        </div>
 
         <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
             <!-- ── Left: Text content ── -->
