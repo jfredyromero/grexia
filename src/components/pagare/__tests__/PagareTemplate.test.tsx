@@ -271,24 +271,24 @@ describe('PagareTemplate — plan gratuito', () => {
 
 describe('PagareTemplate — plan básico con logo personalizado', () => {
     it('muestra la imagen del logo personalizado', () => {
-        renderTemplate(undefined, 'basico', 'data:image/png;base64,abc');
+        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
         const img = screen.getByRole('img');
         expect(img).toBeInTheDocument();
         expect(img).toHaveAttribute('src', 'data:image/png;base64,abc');
     });
 
     it('no muestra el texto LEXIA cuando hay logo personalizado', () => {
-        renderTemplate(undefined, 'basico', 'data:image/png;base64,abc');
+        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
         expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
     });
 
     it('no muestra la marca de agua', () => {
-        renderTemplate(undefined, 'basico', 'data:image/png;base64,abc');
+        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
         expect(screen.queryByText('LEXIA · DRAFT')).not.toBeInTheDocument();
     });
 
     it('no muestra el footer de plan gratuito', () => {
-        const { container } = renderTemplate(undefined, 'basico', 'data:image/png;base64,abc');
+        const { container } = renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
         expect(container.textContent).not.toContain('plan gratuito');
     });
 });
@@ -297,13 +297,13 @@ describe('PagareTemplate — plan básico con logo personalizado', () => {
 
 describe('PagareTemplate — plan básico sin logo', () => {
     it('no muestra imagen ni texto LEXIA', () => {
-        renderTemplate(undefined, 'basico', '');
+        renderTemplate(undefined, 'empresarial', '');
         expect(screen.queryByRole('img')).not.toBeInTheDocument();
         expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
     });
 
     it('no muestra la marca de agua ni el footer gratuito', () => {
-        const { container } = renderTemplate(undefined, 'basico', '');
+        const { container } = renderTemplate(undefined, 'empresarial', '');
         expect(screen.queryByText('LEXIA · DRAFT')).not.toBeInTheDocument();
         expect(container.textContent).not.toContain('plan gratuito');
     });
@@ -311,14 +311,14 @@ describe('PagareTemplate — plan básico sin logo', () => {
 
 // ── Plan: PRO ─────────────────────────────────────────────────────────────────
 
-describe('PagareTemplate — plan pro', () => {
-    it('muestra logo personalizado en plan pro', () => {
-        renderTemplate(undefined, 'pro', 'data:image/png;base64,xyz');
+describe('PagareTemplate — plan empresarial', () => {
+    it('muestra logo personalizado en plan empresarial', () => {
+        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,xyz');
         expect(screen.getByRole('img')).toHaveAttribute('src', 'data:image/png;base64,xyz');
     });
 
-    it('no muestra footer gratuito en plan pro', () => {
-        const { container } = renderTemplate(undefined, 'pro', '');
+    it('no muestra footer gratuito en plan empresarial', () => {
+        const { container } = renderTemplate(undefined, 'empresarial', '');
         expect(container.textContent).not.toContain('plan gratuito');
     });
 });

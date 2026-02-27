@@ -4,7 +4,7 @@ import type { PlanTier } from '../types/plans';
 
 export const $plan = persistentAtom<PlanTier>('lexia_plan', 'free', {
     encode: (v) => v,
-    decode: (v) => (v === 'basico' || v === 'pro' ? v : 'free'),
+    decode: (v) => (v === 'empresarial' ? v : 'free'),
 });
 
 export const $logoUrl = atom<string>('');

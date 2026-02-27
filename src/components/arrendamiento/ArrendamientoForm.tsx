@@ -9,8 +9,6 @@ import StepArrendatario from './steps/StepArrendatario';
 import StepCondiciones from './steps/StepCondiciones';
 import StepPreview from './steps/StepPreview';
 
-const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
-
 export default function ArrendamientoForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<ArrendamientoFormData>(INITIAL_FORM_DATA);
@@ -80,7 +78,6 @@ export default function ArrendamientoForm() {
             <StepPreview
                 formData={formData}
                 onBack={handleBack}
-                calendarUrl={CALENDAR_URL}
             />
         ),
     };
@@ -111,10 +108,7 @@ export default function ArrendamientoForm() {
                     isStep5 ? 'lg:col-span-2' : '',
                 ].join(' ')}
             >
-                <UpsellWidget
-                    calendarUrl={CALENDAR_URL}
-                    isStep5={isStep5}
-                />
+                <UpsellWidget isStep5={isStep5} />
             </aside>
         </div>
     );

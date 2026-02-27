@@ -529,7 +529,7 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
     const ciudadStr = inmueble.ciudad || '___________________';
     const fechaStr = formatDate(condiciones.fechaInicio);
     const phTag = inmueble.propiedadHorizontal ? ' en Propiedad Horizontal' : '';
-    const isPaid = plan === 'basico' || plan === 'pro';
+    const isPaid = plan === 'empresarial';
 
     return (
         <div

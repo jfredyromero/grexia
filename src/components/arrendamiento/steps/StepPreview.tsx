@@ -8,7 +8,6 @@ import { $plan, $logoUrl } from '../../../stores/plan';
 interface StepPreviewProps {
     formData: ArrendamientoFormData;
     onBack: () => void;
-    calendarUrl: string;
 }
 
 // ── PDF generation ────────────────────────────────────────────────────────────
@@ -42,22 +41,20 @@ async function generatePDF(formData: ArrendamientoFormData, plan: PlanTier, logo
 
 const PLAN_LABELS: Record<PlanTier, { label: string; color: string }> = {
     free: { label: 'Plan Gratuito', color: 'bg-slate-100 text-slate-600' },
-    basico: { label: 'Plan Básico', color: 'bg-primary/10 text-secondary font-bold' },
-    pro: { label: 'Plan Pro', color: 'bg-secondary text-primary font-bold' },
+    empresarial: { label: 'Plan Empresarial', color: 'bg-secondary text-primary font-bold' },
 };
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export default function StepPreview({ formData, onBack, calendarUrl }: StepPreviewProps) {
+export default function StepPreview({ formData, onBack }: StepPreviewProps) {
     const plan = useStore($plan);
     const logoUrl = useStore($logoUrl);
-    const onPlanChange = $plan.set.bind($plan);
     const onLogoChange = $logoUrl.set.bind($logoUrl);
     const [loading, setLoading] = useState(false);
     const [pdfError, setPdfError] = useState<string | null>(null);
     const logoInputRef = useRef<HTMLInputElement>(null);
     const esContratoCom = isComercial(formData.inmueble.tipoInmueble);
-    const isPaid = plan === 'basico' || plan === 'pro';
+    const isPaid = plan === 'empresarial';
     const planInfo = PLAN_LABELS[plan];
 
     const handleDownload = async () => {
@@ -153,17 +150,17 @@ export default function StepPreview({ formData, onBack, calendarUrl }: StepPrevi
                             info
                         </span>
                         <p className="text-xs text-slate-600 leading-relaxed">
-                            <strong>Plan Gratuito:</strong> el PDF incluye la marca de agua de Lexia. Actualiza a un
-                            plan de pago para eliminarla y agregar tu logo.
+                            <strong>Plan Gratuito:</strong> el PDF incluye la marca de agua de Lexia. ¿Tienes dudas
+                            sobre tu contrato? Habla con un abogado.
                         </p>
                     </div>
-                    <button
-                        onClick={() => onPlanChange('basico')}
+                    <a
+                        href="/asesoria/checkout"
                         className="flex-shrink-0 flex items-center gap-1 h-8 px-4 rounded-full bg-secondary text-xs font-bold text-white hover:bg-slate-700 transition-colors whitespace-nowrap"
                     >
-                        Actualizar plan
-                        <span className="material-symbols-outlined text-[14px]">arrow_upward</span>
-                    </button>
+                        Agendar
+                        <span className="material-symbols-outlined text-[14px]">calendar_month</span>
+                    </a>
                 </div>
             )}
 
@@ -235,9 +232,7 @@ export default function StepPreview({ formData, onBack, calendarUrl }: StepPrevi
                 </button>
                 <div className="flex gap-3 w-full sm:w-auto">
                     <a
-                        href={calendarUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="/asesoria/checkout"
                         className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-secondary text-sm font-bold text-white hover:bg-slate-800 transition-colors"
                     >
                         <span className="material-symbols-outlined text-[18px]">calendar_month</span>

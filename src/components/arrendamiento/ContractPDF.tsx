@@ -712,7 +712,7 @@ export default function ContractPDF({ formData, plan, logoUrl }: ContractPDFProp
     const ciudadStr = inmueble.ciudad || '___________________';
     const fechaStr = formatDate(condiciones.fechaInicio);
     const phTag = inmueble.propiedadHorizontal ? ' en Propiedad Horizontal' : '';
-    const isPaid = plan === 'basico' || plan === 'pro';
+    const isPaid = plan === 'empresarial';
 
     return (
         <Document language="es-CO">

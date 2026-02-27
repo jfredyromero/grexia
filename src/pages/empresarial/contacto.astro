@@ -1,0 +1,284 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import Breadcrumb from '../../components/shared/Breadcrumb.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+
+const FEATURES = [
+    { icon: 'description', text: 'Templates con tu logo y sin marca de agua' },
+    { icon: 'group', text: 'Múltiples usuarios en tu organización' },
+    { icon: 'speed', text: 'Generación ilimitada de documentos al mes' },
+    { icon: 'support_agent', text: 'Soporte prioritario por canal dedicado' },
+];
+---
+
+<Layout title="Plan Empresarial · Lexia">
+    <Navbar variant="home" />
+
+    <main class="flex-grow w-full bg-background-light">
+        <div class="mx-auto max-w-4xl px-6 lg:px-8 py-8 lg:py-14">
+            <div class="mb-8">
+                <Breadcrumb items={[{ label: 'Inicio', href: '/' }, { label: 'Plan Empresarial' }]} />
+                <h1 class="text-3xl font-black text-secondary mt-4">Plan Empresarial</h1>
+                <p class="mt-1.5 text-slate-500">
+                    Para empresas que generan documentos en volumen. Cuéntanos sobre tu organización.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                <!-- Left: plan summary -->
+                <aside class="lg:col-span-2 lg:sticky lg:top-28">
+                    <div
+                        class="relative flex flex-col gap-6 rounded-lg bg-secondary p-6 overflow-hidden shadow-xl shadow-secondary/20"
+                    >
+                        <div
+                            class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"
+                        >
+                        </div>
+
+                        <div class="relative">
+                            <span
+                                class="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-300"
+                            >
+                                ✦ Empresas
+                            </span>
+                            <h2 class="mt-3 text-xl font-black text-white">Empresarial</h2>
+                            <p class="mt-1 text-sm text-slate-400">
+                                Precio acordado según el tamaño y necesidades de tu organización.
+                            </p>
+                        </div>
+
+                        <div class="relative flex items-end gap-1.5">
+                            <span class="text-4xl font-black text-white">$119.000</span>
+                            <span class="text-sm text-slate-400 pb-1">COP / mes</span>
+                        </div>
+
+                        <ul class="relative flex flex-col gap-3">
+                            {
+                                FEATURES.map((f) => (
+                                    <li class="flex items-center gap-3 text-sm text-slate-300">
+                                        <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0">
+                                            {f.icon}
+                                        </span>
+                                        {f.text}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+
+                        <div class="relative border-t border-white/10 pt-4">
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Sin asesorías legales incluidas. Ideal para empresas con equipo legal propio.
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Right: contact form -->
+                <div class="lg:col-span-3">
+                    <div class="rounded-lg bg-white border border-slate-200 shadow-sm p-6 sm:p-8">
+                        <h2 class="text-lg font-black text-secondary mb-1">Cuéntanos sobre tu empresa</h2>
+                        <p class="text-sm text-slate-500 mb-6">Te contactamos en menos de 24 horas hábiles.</p>
+
+                        <form
+                            id="empresarial-form"
+                            novalidate
+                            class="flex flex-col gap-5"
+                        >
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="flex flex-col gap-1.5">
+                                    <label
+                                        for="nombre"
+                                        class="text-sm font-semibold text-slate-700"
+                                    >
+                                        Nombre <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="nombre"
+                                        type="text"
+                                        autocomplete="name"
+                                        placeholder="Tu nombre"
+                                        class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                                    />
+                                    <p
+                                        id="error-nombre"
+                                        class="hidden text-xs text-red-500"
+                                    >
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label
+                                        for="empresa"
+                                        class="text-sm font-semibold text-slate-700"
+                                    >
+                                        Empresa <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="empresa"
+                                        type="text"
+                                        autocomplete="organization"
+                                        placeholder="Nombre de tu empresa"
+                                        class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                                    />
+                                    <p
+                                        id="error-empresa"
+                                        class="hidden text-xs text-red-500"
+                                    >
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label
+                                    for="email"
+                                    class="text-sm font-semibold text-slate-700"
+                                >
+                                    Correo corporativo <span class="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    autocomplete="email"
+                                    placeholder="tu@empresa.com"
+                                    class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                                />
+                                <p
+                                    id="error-email"
+                                    class="hidden text-xs text-red-500"
+                                >
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label
+                                    for="volumen"
+                                    class="text-sm font-semibold text-slate-700"
+                                >
+                                    ¿Cuántos documentos generan al mes?
+                                </label>
+                                <select
+                                    id="volumen"
+                                    class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 bg-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                                >
+                                    <option value="">Selecciona un rango</option>
+                                    <option value="10-50">10 – 50 documentos</option>
+                                    <option value="50-200">50 – 200 documentos</option>
+                                    <option value="200+">Más de 200 documentos</option>
+                                </select>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label
+                                    for="mensaje"
+                                    class="text-sm font-semibold text-slate-700"
+                                >
+                                    ¿Algo más que quieras contarnos?
+                                    <span class="text-slate-400 font-normal">(opcional)</span>
+                                </label>
+                                <textarea
+                                    id="mensaje"
+                                    rows="3"
+                                    placeholder="Ej: Somos una inmobiliaria con 5 agentes y necesitamos contratos de arrendamiento diariamente…"
+                                    class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 resize-none transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                                ></textarea>
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="flex h-12 items-center justify-center gap-2 rounded-full bg-secondary text-sm font-bold text-white transition-all hover:bg-slate-800 hover:translate-y-[-1px]"
+                            >
+                                Solicitar información
+                                <span class="material-symbols-outlined text-[18px]">send</span>
+                            </button>
+                        </form>
+
+                        <!-- Success state (hidden) -->
+                        <div
+                            id="form-success"
+                            class="hidden flex flex-col items-center gap-4 py-8 text-center"
+                        >
+                            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                                <span
+                                    class="material-symbols-outlined text-primary text-[40px]"
+                                    style="font-variation-settings: 'FILL' 1"
+                                >
+                                    check_circle
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-lg font-black text-secondary">¡Mensaje recibido!</p>
+                                <p class="mt-1 text-sm text-slate-500">Te contactamos en menos de 24 horas hábiles.</p>
+                            </div>
+                            <a
+                                href="/"
+                                class="text-sm font-semibold text-primary hover:underline"
+                            >
+                                Volver al inicio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <WhatsAppButton />
+</Layout>
+
+<script>
+    const form = document.getElementById('empresarial-form') as HTMLFormElement;
+    const formSuccess = document.getElementById('form-success')!;
+
+    const inputNombre = document.getElementById('nombre') as HTMLInputElement;
+    const inputEmpresa = document.getElementById('empresa') as HTMLInputElement;
+    const inputEmail = document.getElementById('email') as HTMLInputElement;
+
+    const errorNombre = document.getElementById('error-nombre')!;
+    const errorEmpresa = document.getElementById('error-empresa')!;
+    const errorEmail = document.getElementById('error-email')!;
+
+    function showError(el: HTMLElement, msg: string) {
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    }
+
+    function clearErrors() {
+        [errorNombre, errorEmpresa, errorEmail].forEach((el) => {
+            el.textContent = '';
+            el.classList.add('hidden');
+        });
+    }
+
+    function validate(): boolean {
+        clearErrors();
+        let valid = true;
+
+        if (!inputNombre.value.trim()) {
+            showError(errorNombre, 'Ingresa tu nombre');
+            valid = false;
+        }
+        if (!inputEmpresa.value.trim()) {
+            showError(errorEmpresa, 'Ingresa el nombre de tu empresa');
+            valid = false;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) {
+            showError(errorEmail, 'Ingresa un correo válido');
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!validate()) return;
+
+        // TODO: send form data to your backend / email service
+        // e.g. fetch('/api/empresarial-contact', { method: 'POST', body: ... })
+
+        form.classList.add('hidden');
+        formSuccess.classList.remove('hidden');
+        formSuccess.classList.add('flex');
+    });
+</script>

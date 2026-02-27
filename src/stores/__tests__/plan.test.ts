@@ -13,52 +13,37 @@ describe('$plan', () => {
         expect($plan.get()).toBe('free');
     });
 
-    it('set("basico") actualiza el store', () => {
-        $plan.set('basico');
-        expect($plan.get()).toBe('basico');
+    it('set("empresarial") actualiza el store', () => {
+        $plan.set('empresarial');
+        expect($plan.get()).toBe('empresarial');
     });
 
-    it('set("pro") actualiza el store', () => {
-        $plan.set('pro');
-        expect($plan.get()).toBe('pro');
-    });
-
-    it('persiste "basico" en localStorage', () => {
-        $plan.set('basico');
-        expect(localStorage.getItem(STORAGE_KEY)).toBe('basico');
-    });
-
-    it('persiste "pro" en localStorage', () => {
-        $plan.set('pro');
-        expect(localStorage.getItem(STORAGE_KEY)).toBe('pro');
+    it('persiste "empresarial" en localStorage', () => {
+        $plan.set('empresarial');
+        expect(localStorage.getItem(STORAGE_KEY)).toBe('empresarial');
     });
 
     it('localStorage refleja el último plan seleccionado', () => {
-        $plan.set('basico');
-        $plan.set('pro');
-        expect(localStorage.getItem(STORAGE_KEY)).toBe('pro');
-        expect($plan.get()).toBe('pro');
+        $plan.set('empresarial');
+        expect(localStorage.getItem(STORAGE_KEY)).toBe('empresarial');
+        expect($plan.get()).toBe('empresarial');
     });
 
     it('notifica a los suscriptores al cambiar', () => {
         const received: string[] = [];
         const unsub = $plan.subscribe((v) => received.push(v));
-        $plan.set('basico');
-        $plan.set('pro');
+        $plan.set('empresarial');
         unsub();
-        expect(received).toEqual(['free', 'basico', 'pro']);
+        expect(received).toEqual(['free', 'empresarial']);
     });
 
     it('decode rechaza valores inválidos de localStorage y retorna "free"', () => {
-        // Simula un valor corrupto en localStorage previo a la inicialización
-        localStorage.setItem(STORAGE_KEY, 'invalido');
-        // El decode del persistentAtom debe devolver 'free' para valores no reconocidos
-        // Lo verificamos a través del comportamiento del encode/decode declarado en el store
-        const decoded = (v: string) => (v === 'basico' || v === 'pro' ? v : 'free');
+        const decoded = (v: string) => (v === 'empresarial' ? v : 'free');
         expect(decoded('invalido')).toBe('free');
-        expect(decoded('basico')).toBe('basico');
-        expect(decoded('pro')).toBe('pro');
+        expect(decoded('empresarial')).toBe('empresarial');
         expect(decoded('')).toBe('free');
+        expect(decoded('basico')).toBe('free');
+        expect(decoded('pro')).toBe('free');
         expect(decoded('FREE')).toBe('free');
     });
 });

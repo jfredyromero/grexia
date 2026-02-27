@@ -252,17 +252,17 @@ describe('ContractTemplate — marca de agua y planes', () => {
         render(
             <ContractTemplate
                 formData={base}
-                plan="basico"
+                plan="empresarial"
             />
         );
         expect(screen.queryByText(/Documento generado por Lexia/i)).not.toBeInTheDocument();
     });
 
-    it('oculta la marca de agua en plan pro', () => {
+    it('oculta la marca de agua en plan empresarial', () => {
         render(
             <ContractTemplate
                 formData={base}
-                plan="pro"
+                plan="empresarial"
             />
         );
         expect(screen.queryByText(/Documento generado por Lexia/i)).not.toBeInTheDocument();
@@ -283,7 +283,7 @@ describe('ContractTemplate — logo personalizado', () => {
         render(
             <ContractTemplate
                 formData={base}
-                plan="basico"
+                plan="empresarial"
                 logoUrl={LOGO_URL}
             />
         );
@@ -292,11 +292,11 @@ describe('ContractTemplate — logo personalizado', () => {
         expect(logo).toHaveAttribute('src', LOGO_URL);
     });
 
-    it('muestra el logo en plan pro', () => {
+    it('muestra el logo en plan empresarial', () => {
         render(
             <ContractTemplate
                 formData={base}
-                plan="pro"
+                plan="empresarial"
                 logoUrl={LOGO_URL}
             />
         );
@@ -318,7 +318,7 @@ describe('ContractTemplate — logo personalizado', () => {
         render(
             <ContractTemplate
                 formData={base}
-                plan="basico"
+                plan="empresarial"
                 logoUrl=""
             />
         );

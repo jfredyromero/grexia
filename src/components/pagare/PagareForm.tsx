@@ -8,8 +8,6 @@ import StepDeudor from './steps/StepDeudor';
 import StepObligacion from './steps/StepObligacion';
 import StepPreview from './steps/StepPreview';
 
-const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
-
 export default function PagareForm() {
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [formData, setFormData] = useState<PagareFormData>(INITIAL_PAGARE_DATA);
@@ -66,7 +64,6 @@ export default function PagareForm() {
             <StepPreview
                 formData={formData}
                 onBack={handleBack}
-                calendarUrl={CALENDAR_URL}
             />
         ),
     };
@@ -96,10 +93,7 @@ export default function PagareForm() {
                     isLastStep ? 'lg:col-span-2' : '',
                 ].join(' ')}
             >
-                <UpsellWidget
-                    calendarUrl={CALENDAR_URL}
-                    isStep5={isLastStep}
-                />
+                <UpsellWidget isStep5={isLastStep} />
             </aside>
         </div>
     );

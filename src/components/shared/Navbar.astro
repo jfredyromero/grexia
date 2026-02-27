@@ -2,8 +2,6 @@
 import { TOOLS } from '../../config/tools';
 import type { ToolSlug } from '../../config/tools';
 
-const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLACEHOLDER';
-
 interface Props {
     variant?: 'home' | 'tool-landing' | 'tool-form';
     activeTool?: ToolSlug;
@@ -12,19 +10,6 @@ interface Props {
 const { variant = 'home', activeTool } = Astro.props;
 
 const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefined;
-
-const logoSvg = `<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 flex-shrink-0">
-    <line x1="13" y1="17" x2="4" y2="31" stroke="#5BBDB9" stroke-width="5" stroke-linecap="round"/>
-    <g transform="rotate(-33, 19, 10)">
-        <rect x="12" y="7" width="15" height="6.5" rx="1.5" fill="#1B3070"/>
-        <rect x="12.5" y="8.2" width="3.2" height="1.3" rx="0.4" fill="white"/>
-        <rect x="12.5" y="10.2" width="3.2" height="1.3" rx="0.4" fill="white"/>
-    </g>
-    <rect x="22.5" y="9.5" width="9.5" height="2.2" rx="0.5" fill="#1B3070"/>
-    <rect x="25.5" y="11.7" width="3.5" height="13" fill="#1B3070"/>
-    <rect x="22.5" y="24.7" width="9.5" height="2.2" rx="0.5" fill="#1B3070"/>
-    <rect x="13" y="28.5" width="10.5" height="2" rx="1" fill="#1B3070"/>
-</svg>`;
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
@@ -34,9 +19,17 @@ const logoSvg = `<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2
             href="/"
             class="flex items-center gap-3"
         >
-            <Fragment set:html={logoSvg} />
+            <img
+                src="/logo.svg"
+                alt="Lexia"
+                class="h-9 w-9 flex-shrink-0"
+            />
             <div class="h-7 w-px bg-slate-200"></div>
-            <span class="text-xl font-black tracking-tight text-secondary">Lexia</span>
+            <span
+                class="text-xl font-bold uppercase tracking-[0.05em] text-[#112A46]"
+                style="font-family: 'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif;"
+                >Lexia</span
+            >
         </a>
 
         <!-- Desktop: nav links + CTA (right side) -->
@@ -60,9 +53,7 @@ const logoSvg = `<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2
 
             <div class="flex items-center gap-3">
                 <a
-                    href={CALENDAR_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/asesoria/checkout"
                     class="flex h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300"
                 >
                     Agendar Asesoría
@@ -131,9 +122,7 @@ const logoSvg = `<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2
                 Precios
             </a>
             <a
-                href={CALENDAR_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/asesoria/checkout"
                 class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
             >
                 <span class="material-symbols-outlined text-[18px] text-slate-400">calendar_month</span>

@@ -1,10 +1,4 @@
 ---
-interface Props {
-    formHref?: string;
-}
-
-const { formHref = '/herramientas/arrendamiento/generar' } = Astro.props;
-
 const plans = [
     {
         id: 'free',
@@ -13,66 +7,60 @@ const plans = [
         name: 'Gratis',
         price: '$0',
         period: 'COP · Sin registro',
-        description: 'Genera y descarga documentos sin límite.',
+        description: 'Genera y descarga documentos sin límite, sin crear cuenta.',
         highlighted: false,
         features: [
             { text: 'Generación ilimitada de documentos', included: true },
-            { text: 'Todos los tools disponibles en Lexia', included: true },
+            { text: 'Todos los documentos disponibles en Lexia', included: true },
             { text: 'Descarga en PDF sin registro', included: true },
             { text: 'Marca de agua Lexia en el documento', included: true, warning: true },
-            { text: 'Logo personalizado en el documento', included: false },
-            { text: 'Sesión virtual con equipo legal', included: false },
+            { text: 'Sin asesoría legal incluida', included: false },
         ],
         cta: 'Empezar gratis',
         ctaIcon: 'arrow_forward',
+        ctaHref: '/#herramientas',
     },
     {
-        id: 'basico',
+        id: 'acompanamiento',
         badge: '★ Recomendado',
         badgeColor: 'bg-white/15 text-white',
-        name: 'Básico',
+        name: 'Acompañamiento',
         price: '$59.900',
-        period: 'COP · Pago único',
-        description: 'Para quien quiere un documento con imagen profesional.',
+        period: 'COP · primera sesión',
+        description: 'Para quien necesita orientación legal continua en un caso particular.',
         highlighted: true,
         features: [
-            { text: 'Generación ilimitada de documentos', included: true },
-            { text: 'Todos los tools disponibles en Lexia', included: true },
-            { text: 'Descarga en PDF sin registro', included: true },
-            { text: 'Sin marca de agua Lexia', included: true },
-            { text: 'Logo personalizado en el documento', included: true },
-            { text: '1 sesión virtual con equipo legal', included: true },
+            { text: 'Sesión inicial de estudio de viabilidad', included: true },
+            { text: 'Diagnóstico y hoja de ruta legal', included: true },
+            { text: 'Precio del acompañamiento ajustado al caso', included: true },
+            { text: 'Acompañamiento en proceso legal completo', included: true },
+            { text: 'Templates empresariales personalizados', included: false },
         ],
-        cta: 'Contratar plan',
-        ctaIcon: 'arrow_forward',
+        cta: 'Agendar primera sesión',
+        ctaIcon: 'calendar_month',
+        ctaHref: '/asesoria/checkout',
     },
     {
-        id: 'pro',
-        badge: '✦ Suscripción',
+        id: 'empresarial',
+        badge: '✦ Empresas',
         badgeColor: 'bg-slate-100 text-slate-700',
-        name: 'Pro',
-        price: '$119.900',
+        name: 'Empresarial',
+        price: '$119.000',
         period: 'COP / mes',
-        description: 'Para inmobiliarias y usuarios con múltiples documentos al mes.',
+        description: 'Para empresas que generan documentos en volumen con branding propio.',
         highlighted: false,
         features: [
             { text: 'Generación ilimitada de documentos', included: true },
-            { text: 'Todos los tools disponibles en Lexia', included: true },
-            { text: 'Descarga en PDF sin registro', included: true },
-            { text: 'Sin marca de agua Lexia', included: true },
-            { text: 'Logo personalizado en el documento', included: true },
-            { text: '3 sesiones virtuales con equipo legal / mes', included: true },
+            { text: 'Templates con tu logo y sin marca de agua', included: true },
+            { text: 'Múltiples usuarios', included: true },
+            { text: 'Soporte prioritario', included: true },
+            { text: 'Asesorías legales no incluidas', included: false },
         ],
-        cta: 'Suscribirse',
-        ctaIcon: 'loop',
+        cta: 'Contratar plan',
+        ctaIcon: 'arrow_forward',
+        ctaHref: '/empresarial/contacto',
     },
 ] as const;
-
-const planHrefs = {
-    free: formHref,
-    basico: formHref,
-    pro: formHref,
-};
 ---
 
 <section
@@ -83,9 +71,7 @@ const planHrefs = {
         <!-- Section Header -->
         <div class="text-center mb-14">
             <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">Elige tu plan</h2>
-            <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">
-                Empieza gratis y escala cuando necesites más. Sin sorpresas.
-            </p>
+            <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">Empieza gratis. Escala cuando lo necesites.</p>
         </div>
 
         <!-- Cards -->
@@ -191,13 +177,15 @@ const planHrefs = {
 
                         {/* CTA */}
                         <a
-                            href={planHrefs[plan.id]}
+                            href={plan.ctaHref}
                             data-plan={plan.id}
+                            target={plan.ctaHref.startsWith('/') ? undefined : '_blank'}
+                            rel={plan.ctaHref.startsWith('/') ? undefined : 'noopener noreferrer'}
                             class={[
                                 'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:translate-y-[-1px]',
                                 plan.highlighted
                                     ? 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover'
-                                    : plan.id === 'pro'
+                                    : plan.id === 'empresarial'
                                       ? 'bg-secondary text-white hover:bg-slate-800 border border-slate-700'
                                       : 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover',
                             ].join(' ')}
@@ -212,8 +200,8 @@ const planHrefs = {
 
         <!-- Bottom note -->
         <p class="text-center text-xs text-slate-500 mt-8">
-            Los planes Básico y Pro incluyen acceso a toda la suite de documentos legales disponibles en Lexia durante
-            el periodo de vigencia. Las sesiones virtuales se agenden vía calendario.
+            El plan Empresarial incluye acceso a toda la suite de documentos con branding propio. El precio de
+            acompañamiento se acuerda en la primera sesión según la complejidad del caso.
         </p>
     </div>
 </section>
@@ -222,7 +210,7 @@ const planHrefs = {
     document.querySelectorAll<HTMLAnchorElement>('[data-plan]').forEach((el) => {
         el.addEventListener('click', () => {
             const plan = el.dataset.plan;
-            if (plan && plan !== 'free') {
+            if (plan === 'empresarial') {
                 localStorage.setItem('lexia_plan', plan);
             } else {
                 localStorage.removeItem('lexia_plan');
