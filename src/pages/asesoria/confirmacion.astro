@@ -8,7 +8,7 @@ const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLA
 <Layout title="¡Sesión confirmada! · Lexia">
     <Navbar variant="home" />
 
-    <main class="flex-grow w-full bg-background-light flex items-center justify-center">
+    <main class="grow w-full bg-background-light flex items-center justify-center">
         <div class="mx-auto max-w-lg px-6 py-16 text-center flex flex-col items-center gap-6">
             <!-- Success icon -->
             <div class="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
@@ -52,11 +52,11 @@ const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLA
                             { icon: 'video_call', text: 'Conéctate 5 minutos antes de la sesión.' },
                         ].map((step, i) => (
                             <li class="flex items-start gap-3">
-                                <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary mt-0.5">
+                                <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary mt-0.5">
                                     {i + 1}
                                 </div>
                                 <div class="flex items-center gap-2.5 text-sm text-slate-600">
-                                    <span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0">
+                                    <span class="material-symbols-outlined text-primary text-[18px] shrink-0">
                                         {step.icon}
                                     </span>
                                     {step.text}
@@ -73,7 +73,7 @@ const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLA
                     href={CALENDAR_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex h-12 flex-1 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+                    class="flex h-12 flex-1 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                 >
                     Agendar fecha y hora
                     <span class="material-symbols-outlined text-[18px]">calendar_month</span>

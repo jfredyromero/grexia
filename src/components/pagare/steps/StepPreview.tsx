@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Button } from '@headlessui/react';
 import { useStore } from '@nanostores/react';
 import type { PagareFormData, PlanTier } from '../types';
 import PagareTemplate from '../PagareTemplate';
@@ -87,10 +88,10 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                     </div>
                     <p className="text-sm text-slate-500">Título Valor · Código de Comercio de Colombia</p>
                 </div>
-                <button
+                <Button
                     onClick={handleDownload}
                     disabled={loading}
-                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:-translate-y-px transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 shrink-0"
+                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 data-hover:bg-primary-hover data-hover:-translate-y-px transition-all data-disabled:opacity-60 data-disabled:cursor-not-allowed data-disabled:translate-y-0 shrink-0"
                 >
                     {loading ? (
                         <>
@@ -105,7 +106,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                             Descargar PDF
                         </>
                     )}
-                </button>
+                </Button>
             </div>
 
             {/* PDF error notice */}
@@ -117,14 +118,14 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                             <strong>No se pudo generar el PDF.</strong> {pdfError} Por favor intenta de nuevo.
                         </span>
                     </div>
-                    <button
+                    <Button
                         onClick={handleDownload}
                         disabled={loading}
-                        className="shrink-0 flex items-center gap-1 h-7 px-3 rounded-full bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+                        className="shrink-0 flex items-center gap-1 h-7 px-3 rounded-full bg-red-600 text-white font-semibold data-hover:bg-red-700 transition-colors data-disabled:opacity-60 data-disabled:cursor-not-allowed whitespace-nowrap"
                     >
                         <span className="material-symbols-outlined text-[13px]">refresh</span>
                         Reintentar
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -165,26 +166,26 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                                 alt="Logo"
                                 className="h-10 max-w-30 object-contain rounded border border-slate-200 bg-white p-1"
                             />
-                            <button
+                            <Button
                                 onClick={() => {
                                     onLogoChange('');
                                     if (logoInputRef.current) logoInputRef.current.value = '';
                                 }}
-                                className="text-xs text-slate-500 hover:text-red-500 transition-colors flex items-center gap-1"
+                                className="text-xs text-slate-500 data-hover:text-red-500 transition-colors flex items-center gap-1"
                             >
                                 <span className="material-symbols-outlined text-[14px]">delete</span>
                                 Quitar logo
-                            </button>
+                            </Button>
                         </div>
                     ) : (
                         <>
-                            <button
+                            <Button
                                 onClick={() => logoInputRef.current?.click()}
-                                className="flex items-center gap-1.5 h-9 px-4 rounded-full border border-dashed border-primary/50 text-xs font-semibold text-secondary hover:bg-primary/10 transition-colors w-fit"
+                                className="flex items-center gap-1.5 h-9 px-4 rounded-full border border-dashed border-primary/50 text-xs font-semibold text-secondary data-hover:bg-primary/10 transition-colors w-fit"
                             >
                                 <span className="material-symbols-outlined text-[16px]">upload</span>
                                 Subir logo (PNG, JPG)
-                            </button>
+                            </Button>
                             <p className="text-xs text-slate-400">Aparecerá en el encabezado del pagaré.</p>
                         </>
                     )}
@@ -212,13 +213,13 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
 
             {/* Bottom actions */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-100">
-                <button
+                <Button
                     onClick={onBack}
-                    className="flex items-center gap-1.5 h-12 px-6 rounded-full border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center"
+                    className="flex items-center gap-1.5 h-12 px-6 rounded-full border border-slate-200 text-sm font-semibold text-slate-700 data-hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center"
                 >
                     <span className="material-symbols-outlined text-[18px]">arrow_back</span>
                     Modificar datos
-                </button>
+                </Button>
                 <div className="flex gap-3 w-full sm:w-auto">
                     <a
                         href="/asesoria/checkout"
@@ -227,10 +228,10 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                         <span className="material-symbols-outlined text-[18px]">calendar_month</span>
                         Agendar asesoría
                     </a>
-                    <button
+                    <Button
                         onClick={handleDownload}
                         disabled={loading}
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:-translate-y-px transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 data-hover:bg-primary-hover data-hover:-translate-y-px transition-all data-disabled:opacity-60 data-disabled:cursor-not-allowed data-disabled:translate-y-0"
                     >
                         {loading ? (
                             <>
@@ -245,7 +246,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                                 Descargar PDF
                             </>
                         )}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

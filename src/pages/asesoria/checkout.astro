@@ -23,7 +23,7 @@ const SESSION_FEATURES = [
 <Layout title="Checkout · Asesoría Legal · Lexia">
     <Navbar variant="home" />
 
-    <main class="flex-grow w-full bg-background-light">
+    <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-4xl px-6 lg:px-8 py-8 lg:py-14">
             <!-- Breadcrumb -->
             <div class="mb-8">
@@ -61,7 +61,7 @@ const SESSION_FEATURES = [
                             {
                                 SESSION_FEATURES.map((f) => (
                                     <li class="flex items-center gap-3 text-sm text-slate-300">
-                                        <span class="material-symbols-outlined text-blue-400 text-[18px] flex-shrink-0">
+                                        <span class="material-symbols-outlined text-blue-400 text-[18px] shrink-0">
                                             {f.icon}
                                         </span>
                                         {f.text}
@@ -71,7 +71,7 @@ const SESSION_FEATURES = [
                         </ul>
 
                         <div class="relative border-t border-white/10 pt-4 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-slate-400 text-[18px] flex-shrink-0">lock</span>
+                            <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0">lock</span>
                             <p class="text-xs text-slate-400 leading-relaxed">
                                 Pago seguro procesado por <strong class="text-slate-300">Wompi · Bancolombia</strong>.
                                 Tu información está protegida.
