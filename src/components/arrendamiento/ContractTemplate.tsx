@@ -542,7 +542,7 @@ export default function ContractTemplate({ formData, plan = 'free', logoUrl }: C
                     <img
                         src={logoUrl}
                         alt="Logo"
-                        className="h-12 max-w-[180px] object-contain"
+                        className="h-12 max-w-45 object-contain"
                     />
                 </div>
             )}

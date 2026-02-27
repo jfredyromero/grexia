@@ -90,7 +90,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                 <button
                     onClick={handleDownload}
                     disabled={loading}
-                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 flex-shrink-0"
+                    className="flex items-center gap-1.5 h-11 px-5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:-translate-y-px transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0 shrink-0"
                 >
                     {loading ? (
                         <>
@@ -112,7 +112,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
             {pdfError && (
                 <div className="flex items-start justify-between gap-3 rounded-[12px] bg-red-50 border border-red-200 p-3 text-xs text-red-700">
                     <div className="flex items-start gap-2">
-                        <span className="material-symbols-outlined text-[16px] flex-shrink-0 mt-0.5">error</span>
+                        <span className="material-symbols-outlined text-[16px] shrink-0 mt-0.5">error</span>
                         <span>
                             <strong>No se pudo generar el PDF.</strong> {pdfError} Por favor intenta de nuevo.
                         </span>
@@ -120,7 +120,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                     <button
                         onClick={handleDownload}
                         disabled={loading}
-                        className="flex-shrink-0 flex items-center gap-1 h-7 px-3 rounded-full bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+                        className="shrink-0 flex items-center gap-1 h-7 px-3 rounded-full bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
                     >
                         <span className="material-symbols-outlined text-[13px]">refresh</span>
                         Reintentar
@@ -132,7 +132,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
             {plan === 'free' && (
                 <div className="flex items-center justify-between gap-3 rounded-[12px] bg-slate-50 border border-slate-200 p-4">
                     <div className="flex items-start gap-2.5">
-                        <span className="material-symbols-outlined text-amber-500 text-[20px] flex-shrink-0 mt-0.5">
+                        <span className="material-symbols-outlined text-amber-500 text-[20px] shrink-0 mt-0.5">
                             info
                         </span>
                         <p className="text-xs text-slate-600 leading-relaxed">
@@ -142,7 +142,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                     </div>
                     <a
                         href="/asesoria/checkout"
-                        className="flex-shrink-0 flex items-center gap-1 h-8 px-4 rounded-full bg-secondary text-xs font-bold text-white hover:bg-slate-700 transition-colors whitespace-nowrap"
+                        className="shrink-0 flex items-center gap-1 h-8 px-4 rounded-full bg-secondary text-xs font-bold text-white hover:bg-slate-700 transition-colors whitespace-nowrap"
                     >
                         Agendar
                         <span className="material-symbols-outlined text-[14px]">calendar_month</span>
@@ -163,7 +163,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                             <img
                                 src={logoUrl}
                                 alt="Logo"
-                                className="h-10 max-w-[120px] object-contain rounded border border-slate-200 bg-white p-1"
+                                className="h-10 max-w-30 object-contain rounded border border-slate-200 bg-white p-1"
                             />
                             <button
                                 onClick={() => {
@@ -230,7 +230,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                     <button
                         onClick={handleDownload}
                         disabled={loading}
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:translate-y-[-1px] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 hover:bg-primary-hover hover:-translate-y-px transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
                     >
                         {loading ? (
                             <>

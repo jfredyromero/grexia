@@ -29,7 +29,7 @@ const LAWYER_AVATAR =
     'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ';
 ---
 
-<main class="flex-grow flex items-center justify-center">
+<main class="grow flex items-center justify-center">
     <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
         <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
             <!-- ── Left: Text content ── -->
@@ -70,7 +70,7 @@ const LAWYER_AVATAR =
                 <div class="flex flex-col sm:flex-row gap-4 pt-2">
                     <a
                         href="#herramientas"
-                        class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:translate-y-[-2px] hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+                        class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
                     >
                         Ver herramientas
                         <span class="material-symbols-outlined text-[20px]">arrow_downward</span>
@@ -121,7 +121,7 @@ const LAWYER_AVATAR =
             <!-- ── Right: Photo visual ── -->
             <div class="relative hidden lg:block order-1 lg:order-2">
                 <div
-                    class="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+                    class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
                 >
                     <!-- Hero photo -->
                     <img
@@ -131,11 +131,11 @@ const LAWYER_AVATAR =
                     />
 
                     <!-- Gradient overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent"></div>
+                    <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
 
                     <!-- Glass Widget: Lawyer chat -->
                     <div
-                        class="glass-widget absolute top-8 right-6 flex max-w-[260px] flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+                        class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
                     >
                         <div class="flex items-center gap-3">
                             <div class="relative">

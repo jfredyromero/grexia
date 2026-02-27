@@ -108,7 +108,7 @@ export default function ArrendamientoForm() {
                     isStep5 ? 'lg:col-span-2' : '',
                 ].join(' ')}
             >
-                <UpsellWidget isStep5={isStep5} />
+                <UpsellWidget />
             </aside>
         </div>
     );

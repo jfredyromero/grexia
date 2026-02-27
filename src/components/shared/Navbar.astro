@@ -22,7 +22,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
             <img
                 src="/logo.svg"
                 alt="Lexia"
-                class="h-9 w-9 flex-shrink-0"
+                class="h-9 w-9 shrink-0"
             />
             <div class="h-7 w-px bg-slate-200"></div>
             <span
@@ -63,7 +63,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                     variant === 'home' && (
                         <a
                             href="/#herramientas"
-                            class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+                            class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                         >
                             Ver herramientas
                             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
@@ -75,7 +75,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                     variant === 'tool-landing' && activeCfg && (
                         <a
                             href={activeCfg.href.form}
-                            class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+                            class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                         >
                             Generar {activeCfg.shortName}
                             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>

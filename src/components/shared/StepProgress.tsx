@@ -23,7 +23,7 @@ export default function StepProgress({ steps, currentStep }: StepProgressProps) 
                             className="flex flex-1 items-center"
                         >
                             {/* Circle + label */}
-                            <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                            <div className="flex flex-col items-center gap-1.5 shrink-0">
                                 <div
                                     className={[
                                         'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all',
@@ -66,7 +66,7 @@ export default function StepProgress({ steps, currentStep }: StepProgressProps) 
 
             {/* Mobile: compact text indicator */}
             <div className="no-print flex sm:hidden items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-white text-sm font-bold flex-shrink-0">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary text-white text-sm font-bold shrink-0">
                     {currentStep}
                 </div>
                 <div>

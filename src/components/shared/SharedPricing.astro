@@ -152,7 +152,7 @@ const plans = [
                                 >
                                     <span
                                         class={[
-                                            'material-symbols-outlined text-[18px] mt-0.5 flex-shrink-0',
+                                            'material-symbols-outlined text-[18px] mt-0.5 shrink-0',
                                             feature.included
                                                 ? (feature as { warning?: boolean }).warning
                                                     ? 'text-amber-400'
@@ -182,7 +182,7 @@ const plans = [
                             target={plan.ctaHref.startsWith('/') ? undefined : '_blank'}
                             rel={plan.ctaHref.startsWith('/') ? undefined : 'noopener noreferrer'}
                             class={[
-                                'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:translate-y-[-1px]',
+                                'relative mt-auto flex h-12 items-center justify-center gap-1.5 rounded-full text-sm font-bold transition-all hover:-translate-y-px',
                                 plan.highlighted
                                     ? 'bg-primary text-white shadow-md shadow-primary/20 hover:bg-primary-hover'
                                     : plan.id === 'empresarial'

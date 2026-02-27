@@ -93,7 +93,7 @@ export default function PagareForm() {
                     isLastStep ? 'lg:col-span-2' : '',
                 ].join(' ')}
             >
-                <UpsellWidget isStep5={isLastStep} />
+                <UpsellWidget />
             </aside>
         </div>
     );

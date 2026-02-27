@@ -26,7 +26,7 @@ export default function UpsellWidget() {
                             key={f}
                             className="flex items-center gap-2 text-sm text-slate-300"
                         >
-                            <span className="material-symbols-outlined text-blue-400 text-[16px] flex-shrink-0">
+                            <span className="material-symbols-outlined text-blue-400 text-[16px] shrink-0">
                                 check_circle
                             </span>
                             {f}
@@ -36,7 +36,7 @@ export default function UpsellWidget() {
 
                 <a
                     href="/asesoria/checkout"
-                    className="relative mt-auto flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:translate-y-[-1px]"
+                    className="relative mt-auto flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                 >
                     Agendar sesión
                     <span className="material-symbols-outlined text-[18px]">calendar_month</span>
