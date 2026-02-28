@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import ColombiaLocationSelect from '../ColombiaLocationSelect';
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
-
 const mockDepartments = [
     { id: 5, name: 'Antioquia' },
     { id: 11, name: 'Bogotá D.C.' },
@@ -16,12 +16,11 @@ const mockCitiesBogota = [
 ];
 
 const mockCitiesAntioquia = [
-    { id: 88, name: 'Medellín' },
-    { id: 89, name: 'Bello' },
+    { id: 87, name: 'Medellín' },
+    { id: 88, name: 'Marinilla' },
 ];
 
-// ── Fetch mock (set fresh before each test) ───────────────────────────────────
-
+// ── Fetch mock ────────────────────────────────────────────────────────────────
 function makeFetchMock() {
     return vi.fn().mockImplementation((url: string) => {
         if (url.includes('/Department/11/cities')) {
@@ -58,33 +57,54 @@ function renderSelect(value = '', onChange = vi.fn(), error?: string) {
     );
 }
 
-/** Wait until the department select is loaded and enabled */
 async function waitForDepts() {
     await waitFor(
         () => {
-            const sel = screen.getByLabelText('Departamento') as HTMLSelectElement;
-            expect(sel.disabled).toBe(false);
-            // At least one department option besides the placeholder
-            expect(sel.options.length).toBeGreaterThan(1);
+            const input = screen.getByLabelText('Departamento') as HTMLInputElement;
+            expect(input.disabled).toBe(false);
         },
         { timeout: 3000 }
     );
 }
 
-// ── Rendering ─────────────────────────────────────────────────────────────────
+async function selectDept(name: string) {
+    const user = userEvent.setup();
+    const input = screen.getByLabelText('Departamento');
+
+    // Escribir en el input (esto dispara focus, keydown, change, etc.)
+    await user.type(input, name);
+
+    // Buscar la opción y hacer click
+    const option = await screen.findByRole('option', { name: new RegExp(name, 'i') });
+    await user.click(option);
+}
+
+async function waitForCityEnabled(cityLabel = 'Ciudad / Municipio') {
+    await waitFor(
+        () => {
+            const input = screen.getByLabelText(cityLabel) as HTMLInputElement;
+            expect(input.disabled).toBe(false);
+        },
+        { timeout: 4000 }
+    );
+}
+
+// ── Tests Refactorizados ──────────────────────────────────────────────────────
 
 describe('ColombiaLocationSelect — renderizado', () => {
-    it('muestra el label Departamento', () => {
+    it('muestra el label Departamento', async () => {
         renderSelect();
+        await waitForDepts();
         expect(screen.getByLabelText('Departamento')).toBeInTheDocument();
     });
 
-    it('muestra el label Ciudad / Municipio por defecto', () => {
+    it('muestra el label Ciudad / Municipio por defecto', async () => {
         renderSelect();
+        await waitForDepts();
         expect(screen.getByLabelText('Ciudad / Municipio')).toBeInTheDocument();
     });
 
-    it('acepta un cityLabel personalizado', () => {
+    it('acepta un cityLabel personalizado', async () => {
         render(
             <ColombiaLocationSelect
                 idPrefix="test2"
@@ -93,61 +113,54 @@ describe('ColombiaLocationSelect — renderizado', () => {
                 cityLabel="Ciudad de suscripción"
             />
         );
+        await waitForDepts();
         expect(screen.getByLabelText('Ciudad de suscripción')).toBeInTheDocument();
     });
 
     it('muestra los departamentos en el selector después de la carga', async () => {
         renderSelect();
         await waitForDepts();
-        // Check options (sorted alphabetically by the component)
-        const opts = Array.from((screen.getByLabelText('Departamento') as HTMLSelectElement).options).map(
-            (o) => o.text
-        );
-        expect(opts).toContain('Antioquia');
-        expect(opts).toContain('Bogotá D.C.');
+
+        const input = screen.getByLabelText('Departamento');
+
+        // 1. Abrimos el selector
+        fireEvent.focus(input);
+        fireEvent.click(input);
+
+        // 2. Escribimos parte del nombre para filtrar
+        fireEvent.change(input, { target: { value: 'Ant' } });
+
+        // 3. Usamos findByRole con RegExp para ser más flexibles con espacios o mayúsculas
+        const option = await screen.findByRole('option', { name: /Antioquia/i });
+        expect(option).toBeInTheDocument();
+
+        // También verificamos que esté el otro departamento si borramos la búsqueda
+        fireEvent.change(input, { target: { value: '' } });
+        expect(await screen.findByRole('option', { name: /Bogotá/i })).toBeInTheDocument();
     });
 
     it('el selector de ciudad está deshabilitado hasta seleccionar departamento', async () => {
         renderSelect();
         await waitForDepts();
-        const citySelect = screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement;
-        expect(citySelect.disabled).toBe(true);
+        const cityInput = screen.getByLabelText('Ciudad / Municipio') as HTMLInputElement;
+        expect(cityInput.disabled).toBe(true);
     });
 });
 
-// ── Department selection ──────────────────────────────────────────────────────
-
 describe('ColombiaLocationSelect — selección de departamento', () => {
     it('carga las ciudades de Bogotá al seleccionar el departamento', async () => {
+        const user = userEvent.setup();
         renderSelect();
         await waitForDepts();
 
-        fireEvent.change(screen.getByLabelText('Departamento'), { target: { value: '11' } });
+        await selectDept('Bogotá D.C.');
+        await waitForCityEnabled();
 
-        // 'Soacha' is a city that only appears in cities list, not departments
-        await waitFor(
-            () => {
-                const cityOpts = Array.from(
-                    (screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).options
-                ).map((o) => o.text);
-                expect(cityOpts).toContain('Soacha');
-            },
-            { timeout: 3000 }
-        );
-    });
+        const cityInput = screen.getByLabelText('Ciudad / Municipio');
+        await user.type(cityInput, 'S');
 
-    it('habilita el selector de ciudad después de seleccionar departamento', async () => {
-        renderSelect();
-        await waitForDepts();
-
-        fireEvent.change(screen.getByLabelText('Departamento'), { target: { value: '11' } });
-
-        await waitFor(
-            () => {
-                expect((screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled).toBe(false);
-            },
-            { timeout: 3000 }
-        );
+        const option = await screen.findByRole('option', { name: 'Soacha' });
+        expect(option).toBeInTheDocument();
     });
 
     it('resetea la ciudad seleccionada al cambiar de departamento', async () => {
@@ -160,10 +173,8 @@ describe('ColombiaLocationSelect — selección de departamento', () => {
             />
         );
         await waitForDepts();
+        await selectDept('Bogotá D.C.');
 
-        fireEvent.change(screen.getByLabelText('Departamento'), { target: { value: '5' } });
-
-        // onChange is called with empty string to reset city
         expect(onChange).toHaveBeenCalledWith('');
     });
 });
@@ -172,6 +183,7 @@ describe('ColombiaLocationSelect — selección de departamento', () => {
 
 describe('ColombiaLocationSelect — selección de ciudad', () => {
     it('llama onChange con el nombre de la ciudad al seleccionarla', async () => {
+        const user = userEvent.setup();
         const onChange = vi.fn();
         render(
             <ColombiaLocationSelect
@@ -182,51 +194,48 @@ describe('ColombiaLocationSelect — selección de ciudad', () => {
         );
         await waitForDepts();
 
-        fireEvent.change(screen.getByLabelText('Departamento'), { target: { value: '11' } });
+        await selectDept('Bogotá D.C.');
+        await waitForCityEnabled();
 
-        await waitFor(
-            () => {
-                expect((screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).disabled).toBe(false);
-            },
-            { timeout: 3000 }
-        );
+        const cityInput = screen.getByLabelText('Ciudad / Municipio');
+        await user.type(cityInput, 'B');
 
-        fireEvent.change(screen.getByLabelText('Ciudad / Municipio'), {
-            target: { value: 'Bogotá D.C.' },
-        });
+        const option = await screen.findByRole('option', { name: 'Bogotá D.C.' });
+        await user.click(option);
 
         expect(onChange).toHaveBeenCalledWith('Bogotá D.C.');
     });
 
     it('carga las ciudades de Antioquia al seleccionar ese departamento', async () => {
+        const user = userEvent.setup();
         renderSelect();
         await waitForDepts();
 
-        fireEvent.change(screen.getByLabelText('Departamento'), { target: { value: '5' } });
+        await selectDept('Antioquia');
+        await waitForCityEnabled();
 
-        await waitFor(
-            () => {
-                const cityOpts = Array.from(
-                    (screen.getByLabelText('Ciudad / Municipio') as HTMLSelectElement).options
-                ).map((o) => o.text);
-                expect(cityOpts).toContain('Medellín');
-                expect(cityOpts).toContain('Bello');
-            },
-            { timeout: 3000 }
-        );
+        const cityInput = screen.getByLabelText('Ciudad / Municipio');
+
+        await user.type(cityInput, 'M');
+        const option1 = await screen.findByRole('option', { name: 'Medellín' });
+        const option2 = await screen.findByRole('option', { name: 'Marinilla' });
+        expect(option1).toBeInTheDocument();
+        expect(option2).toBeInTheDocument();
     });
 });
 
-// ── Error display ─────────────────────────────────────────────────────────────
-
 describe('ColombiaLocationSelect — errores de validación', () => {
-    it('muestra el mensaje de error cuando se provee', () => {
+    it('muestra el mensaje de error cuando se provee', async () => {
         renderSelect('', vi.fn(), 'La ciudad de residencia es requerida.');
+        await waitForDepts();
+
         expect(screen.getByText('La ciudad de residencia es requerida.')).toBeInTheDocument();
     });
 
-    it('no muestra mensaje de error cuando no se provee', () => {
+    it('no muestra mensaje de error cuando no se provee', async () => {
         renderSelect();
+        await waitForDepts();
+
         expect(screen.queryByText('La ciudad de residencia es requerida.')).not.toBeInTheDocument();
     });
 });
