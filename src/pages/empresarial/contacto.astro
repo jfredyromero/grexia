@@ -4,6 +4,7 @@ import Navbar from '../../components/shared/Navbar.astro';
 import Breadcrumb from '../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 
+const base = import.meta.env.BASE_URL;
 const FEATURES = [
     { icon: 'description', text: 'Templates con tu logo y sin marca de agua' },
     { icon: 'group', text: 'Múltiples usuarios en tu organización' },
@@ -18,7 +19,7 @@ const FEATURES = [
     <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-4xl px-6 lg:px-8 py-8 lg:py-14">
             <div class="mb-8">
-                <Breadcrumb items={[{ label: 'Inicio', href: '/' }, { label: 'Plan Empresarial' }]} />
+                <Breadcrumb items={[{ label: 'Inicio', href: base }, { label: 'Plan Empresarial' }]} />
                 <h1 class="text-3xl font-black text-secondary mt-4">Plan Empresarial</h1>
                 <p class="mt-1.5 text-slate-500">
                     Para empresas que generan documentos en volumen. Cuéntanos sobre tu organización.
@@ -211,7 +212,7 @@ const FEATURES = [
                                 <p class="mt-1 text-sm text-slate-500">Te contactamos en menos de 24 horas hábiles.</p>
                             </div>
                             <a
-                                href="/"
+                                href={base + '/'}
                                 class="text-sm font-semibold text-primary hover:underline"
                             >
                                 Volver al inicio

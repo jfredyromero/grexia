@@ -1,4 +1,5 @@
 const ASESORIA_FEATURES = ['Sesión virtual de 60 min', 'Abogado especialista en tu área', 'Resuelve todas tus dudas'];
+const base = import.meta.env.BASE_URL;
 
 export default function UpsellWidget() {
     return (
@@ -35,7 +36,7 @@ export default function UpsellWidget() {
                 </ul>
 
                 <a
-                    href="/asesoria/checkout"
+                    href={base + 'asesoria/checkout'}
                     className="relative mt-auto flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                 >
                     Agendar sesión

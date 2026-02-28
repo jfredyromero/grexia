@@ -10,17 +10,18 @@ interface Props {
 const { variant = 'home', activeTool } = Astro.props;
 
 const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefined;
+const base = import.meta.env.BASE_URL;
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur-md">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         <!-- Logo -->
         <a
-            href="/"
+            href={base}
             class="flex items-center gap-3"
         >
             <img
-                src="/logo.svg"
+                src={base + 'logo.svg'}
                 alt="Lexia"
                 class="h-9 w-9 shrink-0"
             />
@@ -36,13 +37,13 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
         <div class="hidden md:flex items-center gap-8">
             <nav class="flex items-center gap-8">
                 <a
-                    href="/#herramientas"
+                    href={base + '#herramientas'}
                     class="text-sm font-medium text-slate-700 transition-colors hover:text-secondary"
                 >
                     Herramientas
                 </a>
                 <a
-                    href="/#precios"
+                    href={base + '#precios'}
                     class="text-sm font-medium text-slate-700 transition-colors hover:text-secondary"
                 >
                     Precios
@@ -53,7 +54,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
 
             <div class="flex items-center gap-3">
                 <a
-                    href="/asesoria/checkout"
+                    href={base + 'asesoria/checkout'}
                     class="flex h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300"
                 >
                     Agendar Asesoría
@@ -62,7 +63,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                 {
                     variant === 'home' && (
                         <a
-                            href="/#herramientas"
+                            href={base + '#herramientas'}
                             class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                         >
                             Ver herramientas
@@ -74,7 +75,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                 {
                     variant === 'tool-landing' && activeCfg && (
                         <a
-                            href={activeCfg.href.form}
+                            href={base + activeCfg.href.form}
                             class="flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
                         >
                             Generar {activeCfg.shortName}
@@ -108,21 +109,21 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
     >
         <div class="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-1">
             <a
-                href="/#herramientas"
+                href={base + '#herramientas'}
                 class="mobile-menu-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
             >
                 <span class="material-symbols-outlined text-[18px] text-slate-400">handyman</span>
                 Herramientas
             </a>
             <a
-                href="/#precios"
+                href={base + '#precios'}
                 class="mobile-menu-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
             >
                 <span class="material-symbols-outlined text-[18px] text-slate-400">sell</span>
                 Precios
             </a>
             <a
-                href="/asesoria/checkout"
+                href={base + 'asesoria/checkout'}
                 class="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
             >
                 <span class="material-symbols-outlined text-[18px] text-slate-400">calendar_month</span>
@@ -133,7 +134,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                 {
                     variant === 'home' && (
                         <a
-                            href="/#herramientas"
+                            href={base + '#herramientas'}
                             class="mobile-menu-link flex h-12 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20"
                         >
                             Ver herramientas
@@ -144,7 +145,7 @@ const activeCfg = activeTool ? TOOLS.find((t) => t.slug === activeTool) : undefi
                 {
                     variant === 'tool-landing' && activeCfg && (
                         <a
-                            href={activeCfg.href.form}
+                            href={base + activeCfg.href.form}
                             class="flex h-12 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20"
                         >
                             Generar {activeCfg.shortName}

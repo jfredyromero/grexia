@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+const base = import.meta.env.BASE_URL;
 import { Button } from '@headlessui/react';
 import { useStore } from '@nanostores/react';
 import type { PagareFormData, PlanTier } from '../types';
@@ -142,7 +143,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                         </p>
                     </div>
                     <a
-                        href="/asesoria/checkout"
+                        href={base + 'asesoria/checkout'}
                         className="shrink-0 flex items-center gap-1 h-8 px-4 rounded-full bg-secondary text-xs font-bold text-white hover:bg-slate-700 transition-colors whitespace-nowrap"
                     >
                         Agendar
@@ -222,7 +223,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
                 </Button>
                 <div className="flex gap-3 w-full sm:w-auto">
                     <a
-                        href="/asesoria/checkout"
+                        href={base + 'asesoria/checkout'}
                         className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 h-12 px-6 rounded-full bg-secondary text-sm font-bold text-white hover:bg-slate-800 transition-colors"
                     >
                         <span className="material-symbols-outlined text-[18px]">calendar_month</span>

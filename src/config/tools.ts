@@ -35,8 +35,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'home_work',
         legalBasis: 'Ley 820 de 2003',
         href: {
-            landing: '/herramientas/arrendamiento',
-            form: '/herramientas/arrendamiento/generar',
+            landing: 'herramientas/arrendamiento',
+            form: 'herramientas/arrendamiento/generar',
         },
         heroHeadline: {
             prefix: 'Tu contrato de',
@@ -87,8 +87,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'receipt_long',
         legalBasis: 'Código de Comercio',
         href: {
-            landing: '/herramientas/pagare',
-            form: '/herramientas/pagare/generar',
+            landing: 'herramientas/pagare',
+            form: 'herramientas/pagare/generar',
         },
         heroHeadline: {
             prefix: 'Tu pagaré',

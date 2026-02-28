@@ -1,5 +1,6 @@
 ---
 import { TOOLS } from '../../config/tools';
+const base = import.meta.env.BASE_URL;
 ---
 
 <section
@@ -28,7 +29,7 @@ import { TOOLS } from '../../config/tools';
             {
                 TOOLS.map((tool) => (
                     <a
-                        href={tool.comingSoon ? '#' : tool.href.landing}
+                        href={tool.comingSoon ? '#' : base + tool.href.landing}
                         class={[
                             'group relative flex flex-col gap-5 rounded-lg border p-8 transition-all',
                             tool.comingSoon
