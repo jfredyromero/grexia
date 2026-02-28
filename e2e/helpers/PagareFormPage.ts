@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { mockColombiaApi } from '../fixtures/pagareTestData';
 
-type PlanTier = 'free' | 'basico' | 'pro';
+type PlanTier = 'free' | 'empresarial';
 
 interface AcreedorData {
     nombre: string;
@@ -42,8 +42,8 @@ export class PagareFormPage {
     // ── API mocking ───────────────────────────────────────────────────────────
 
     /**
-     * Intercepts requests to api-colombia.com and returns mock data.
-     * Call BEFORE page.goto() so mocks are in place before any fetch.
+     * Intercepta las peticiones a api-colombia.com y retorna datos mock.
+     * Llamar ANTES de page.goto() para que los mocks estén listos.
      */
     async mockColombiaApiRoutes() {
         await this.page.route('**/api-colombia.com/api/v1/Department', async (route) => {
@@ -63,11 +63,19 @@ export class PagareFormPage {
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
+    /**
+     * Navega al formulario con el plan indicado.
+     * El plan se inyecta en localStorage antes de cargar la página
+     * (nanostores persistentAtom clave: 'lexia_plan').
+     */
     async goto(plan: PlanTier = 'free') {
+        if (plan === 'empresarial') {
+            await this.page.addInitScript(() => {
+                localStorage.setItem('lexia_plan', 'empresarial');
+            });
+        }
         await this.mockColombiaApiRoutes();
-        const url = plan !== 'free' ? `/herramientas/pagare/generar?plan=${plan}` : '/herramientas/pagare/generar';
-        await this.page.goto(url);
-        // Wait for React island to hydrate
+        await this.page.goto('/herramientas/pagare/generar');
         await this.page.waitForSelector('h2:has-text("El acreedor")', { timeout: 10_000 });
     }
 
@@ -93,14 +101,10 @@ export class PagareFormPage {
         await this.page.fill('#deudor-tel', data.telefono);
         if (data.email) await this.page.fill('#deudor-email', data.email);
 
-        // Department → city cascade
-        await this.page.waitForSelector('#deudor-ciudad-dept:not([disabled])', {
-            timeout: 8_000,
-        });
+        // Cascade departamento → ciudad
+        await this.page.waitForSelector('#deudor-ciudad-dept:not([disabled])', { timeout: 8_000 });
         await this.page.selectOption('#deudor-ciudad-dept', data.departamentoId);
-        await this.page.waitForSelector('#deudor-ciudad-city:not([disabled])', {
-            timeout: 8_000,
-        });
+        await this.page.waitForSelector('#deudor-ciudad-city:not([disabled])', { timeout: 8_000 });
         await this.page.selectOption('#deudor-ciudad-city', data.ciudad);
 
         await this.page.getByRole('button', { name: 'Continuar' }).click();
@@ -110,13 +114,9 @@ export class PagareFormPage {
     // ── Step 3: Obligación ────────────────────────────────────────────────────
 
     async fillObligacion(data: ObligacionData) {
-        // Amount
         await this.page.locator('#obligacion-valor').fill(data.valor);
-
-        // Subscription date
         await this.page.fill('#obligacion-fecha-suscripcion', data.fechaSuscripcion);
 
-        // Payment mode
         if (data.modalidad === 'unico') {
             await this.page.getByRole('button', { name: /Pago único/ }).click();
             await this.page.fill('#obligacion-fecha-vencimiento', data.fechaVencimiento ?? '');
@@ -126,17 +126,12 @@ export class PagareFormPage {
             await this.page.selectOption('#obligacion-periodo', data.periodoCuotas ?? 'mensual');
         }
 
-        // Department → city cascade for subscription city
-        await this.page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', {
-            timeout: 8_000,
-        });
+        // Cascade departamento → ciudad para ciudad de suscripción
+        await this.page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
         await this.page.selectOption('#obligacion-ciudad-dept', data.departamentoId);
-        await this.page.waitForSelector('#obligacion-ciudad-city:not([disabled])', {
-            timeout: 8_000,
-        });
+        await this.page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
         await this.page.selectOption('#obligacion-ciudad-city', data.ciudad);
 
-        // Optional mora rate
         if (data.mora) {
             await this.page.fill('#obligacion-mora', data.mora);
         }
@@ -155,7 +150,7 @@ export class PagareFormPage {
 
     // ── PDF download ──────────────────────────────────────────────────────────
 
-    async downloadPDF(outputPath: string): Promise<{ sizeBytes: number }> {
+    async downloadPDF(outputPath: string): Promise<{ sizeBytes: number; filename: string }> {
         const downloadBtn = this.page.getByRole('button', { name: /Descargar PDF/ }).first();
 
         const downloadPromise = this.page.waitForEvent('download', { timeout: 60_000 });
@@ -164,10 +159,11 @@ export class PagareFormPage {
         await this.page.waitForSelector('text=Generando...', { timeout: 5_000 }).catch(() => {});
 
         const download = await downloadPromise;
+        const filename = download.suggestedFilename();
         await download.saveAs(outputPath);
 
         const stats = fs.statSync(outputPath);
-        return { sizeBytes: stats.size };
+        return { sizeBytes: stats.size, filename };
     }
 
     // ── Screenshot ────────────────────────────────────────────────────────────
@@ -178,44 +174,67 @@ export class PagareFormPage {
         await el.screenshot({ path: outputPath });
     }
 
-    // ── Assertions ────────────────────────────────────────────────────────────
+    // ── Preview content assertions ────────────────────────────────────────────
 
     async assertPreviewContains(text: string | RegExp) {
         await expect(this.page.locator('#pagare-preview')).toContainText(text);
     }
 
-    async assertWatermarkVisible() {
-        await expect(this.page.locator('#pagare-preview').getByText(/plan gratuito/i)).toBeVisible();
-    }
-
-    async assertWatermarkHidden() {
-        await expect(this.page.locator('#pagare-preview').getByText(/plan gratuito/i)).not.toBeVisible();
-    }
-
-    async assertLogoImageVisible() {
-        await expect(this.page.locator('#pagare-preview img')).toBeVisible();
-    }
-
-    async assertLogoImageHidden() {
-        await expect(this.page.locator('#pagare-preview img')).not.toBeVisible();
+    async assertPreviewNotContains(text: string | RegExp) {
+        await expect(this.page.locator('#pagare-preview')).not.toContainText(text);
     }
 
     async assertClauseVisible(clause: 'PRIMERA' | 'SEGUNDA' | 'TERCERA' | 'CUARTA') {
         await expect(this.page.locator('#pagare-preview')).toContainText(new RegExp(`${clause}\\.`));
     }
 
+    // ── Plan UI assertions (Step 4 — preview) ────────────────────────────────
+
+    /** Verifica el badge de plan visible en el encabezado del Step 4. */
+    async assertPlanBadge(plan: PlanTier) {
+        const label = plan === 'free' ? 'Plan Gratuito' : 'Plan Empresarial';
+        await expect(this.page.getByText(label).first()).toBeVisible();
+    }
+
+    /** Verifica que el banner de upgrade del plan gratuito es visible. */
+    async assertUpgradeBannerVisible() {
+        await expect(this.page.getByText(/Plan Gratuito:/).first()).toBeVisible();
+    }
+
+    /** Verifica que el banner de upgrade NO es visible (plan empresarial). */
+    async assertUpgradeBannerHidden() {
+        await expect(this.page.getByText(/Plan Gratuito:/).first()).not.toBeVisible();
+    }
+
+    /** Verifica que la sección de logo personalizado es visible (solo plan empresarial). */
+    async assertLogoUploadVisible() {
+        await expect(this.page.getByText('Logo personalizado')).toBeVisible();
+    }
+
+    /** Verifica que la sección de logo personalizado NO es visible (plan gratuito). */
+    async assertLogoUploadHidden() {
+        await expect(this.page.getByText('Logo personalizado')).not.toBeVisible();
+    }
+
+    /** Verifica que el botón de subir logo está disponible y es clickeable. */
+    async assertLogoUploadButtonVisible() {
+        await expect(this.page.getByRole('button', { name: /Subir logo/i })).toBeVisible();
+    }
+
+    /** Simula la carga de una imagen de logo desde disco. */
     async uploadLogo(imagePath: string) {
         const input = this.page.locator('input[type="file"]');
         await input.setInputFiles(imagePath);
     }
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── PDF validation helper ─────────────────────────────────────────────────────
 
 export function assertValidPDF(pdfPath: string) {
     expect(fs.existsSync(pdfPath), `PDF should exist at ${pdfPath}`).toBe(true);
     const buffer = fs.readFileSync(pdfPath);
     expect(buffer.length).toBeGreaterThan(0);
+    // Todos los PDFs válidos comienzan con el header %PDF-
     expect(buffer.subarray(0, 5).toString('ascii')).toBe('%PDF-');
     return buffer;
 }

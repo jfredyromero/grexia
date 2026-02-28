@@ -1,55 +1,40 @@
 import { test, expect } from '@playwright/test';
 import * as path from 'path';
 import { PagareFormPage, assertValidPDF, artifactDir } from './helpers/PagareFormPage';
-import { pagareSimple, pagareEnCuotas } from './fixtures/pagareTestData';
+import {
+    pagareSimple,
+    pagareEnCuotas,
+    pagareEnCuotasBimestral,
+    pagareEnCuotasTrimestral,
+    pagareNIT,
+} from './fixtures/pagareTestData';
 
-// ── Suite 1: Pagaré simple (pago único) ───────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 1: Pago único — flujo completo
+// ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Pagaré — pago único (plan gratuito)', () => {
+test.describe('Pagaré — pago único', () => {
     test('completa el flujo de 3 pasos y muestra el preview', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        const dir = artifactDir('pagare-pago-unico');
 
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
             obligacion: pagareSimple.obligacion,
         });
 
-        await form.screenshotPreview(path.join(artifactDir('pagare-pago-unico'), 'preview.png'));
+        await form.screenshotPreview(path.join(dir, 'preview.png'));
 
-        // Parties visible in preview
         await form.assertPreviewContains('Juan Carlos Gómez Martínez');
         await form.assertPreviewContains('María Fernanda López Castro');
-    });
-
-    test('muestra la marca de agua en plan gratuito', async ({ page }) => {
-        const form = new PagareFormPage(page);
-        await form.goto('free');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
-        });
-        await form.assertWatermarkVisible();
-    });
-
-    test('muestra el texto LEXIA como logo en plan gratuito', async ({ page }) => {
-        const form = new PagareFormPage(page);
-        await form.goto('free');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
-        });
-        await expect(page.locator('#pagare-preview')).toContainText('LEXIA');
-        // No custom logo image
-        await form.assertLogoImageHidden();
+        await form.assertPreviewContains('Bogotá D.C.');
     });
 
     test('muestra las 4 cláusulas en el preview', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
@@ -63,31 +48,34 @@ test.describe('Pagaré — pago único (plan gratuito)', () => {
 
     test('muestra el valor en letras (CINCO MILLONES)', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
             obligacion: pagareSimple.obligacion,
         });
-        // 5.000.000 → CINCO MILLONES PESOS
+        // 5.000.000 → CINCO MILLONES
         await form.assertPreviewContains(/CINCO MILLONES/i);
     });
 
-    test('muestra la ciudad de suscripción en la caja de monto', async ({ page }) => {
+    test('muestra la condición de pago único con fecha de vencimiento', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
             obligacion: pagareSimple.obligacion,
         });
-        await form.assertPreviewContains('Bogotá D.C.');
+        await form.assertPreviewContains(/Pago único/i);
+        // La fecha de vencimiento debe aparecer en el preview
+        await form.assertPreviewContains(/22 de febrero de 2027/i);
     });
 
     test('descarga un PDF válido', async ({ page }) => {
         const form = new PagareFormPage(page);
         const dir = artifactDir('pagare-pago-unico');
-        await form.goto('free');
+
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
@@ -95,49 +83,55 @@ test.describe('Pagaré — pago único (plan gratuito)', () => {
         });
 
         const pdfPath = path.join(dir, 'pagare.pdf');
-        const { sizeBytes } = await form.downloadPDF(pdfPath);
+        const { sizeBytes, filename } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
         expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(filename).toBe('pagare.pdf');
     });
 });
 
-// ── Suite 2: Pago por cuotas ──────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 2: Pago en cuotas mensuales
+// ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Pagaré — pago por cuotas', () => {
-    test('muestra las cuotas y el período en el preview', async ({ page }) => {
+test.describe('Pagaré — cuotas mensuales', () => {
+    test('muestra número de cuotas y período mensual en el preview', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareEnCuotas.acreedor,
             deudor: pagareEnCuotas.deudor,
-            obligacion: {
-                ...pagareEnCuotas.obligacion,
-                modalidad: 'cuotas',
-                numeroCuotas: '12',
-                periodoCuotas: 'mensual',
-            },
+            obligacion: pagareEnCuotas.obligacion,
         });
         await form.assertPreviewContains(/12/);
         await form.assertPreviewContains(/mensuales/i);
     });
 
-    test('descarga un PDF válido para pago en cuotas', async ({ page }) => {
+    test('no muestra fecha de vencimiento (pago por cuotas)', async ({ page }) => {
         const form = new PagareFormPage(page);
-        const dir = artifactDir('pagare-cuotas');
-        await form.goto('free');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareEnCuotas.acreedor,
             deudor: pagareEnCuotas.deudor,
-            obligacion: {
-                ...pagareEnCuotas.obligacion,
-                modalidad: 'cuotas',
-                numeroCuotas: '12',
-                periodoCuotas: 'mensual',
-            },
+            obligacion: pagareEnCuotas.obligacion,
+        });
+        // El bloque de condiciones de pago no debe mostrar "Pago único"
+        await form.assertPreviewNotContains(/Pago único/i);
+    });
+
+    test('descarga un PDF válido', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        const dir = artifactDir('pagare-cuotas-mensuales');
+
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareEnCuotas.acreedor,
+            deudor: pagareEnCuotas.deudor,
+            obligacion: pagareEnCuotas.obligacion,
         });
 
-        const pdfPath = path.join(dir, 'pagare-cuotas.pdf');
+        const pdfPath = path.join(dir, 'pagare-cuotas-mensuales.pdf');
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
@@ -145,129 +139,434 @@ test.describe('Pagaré — pago por cuotas', () => {
     });
 });
 
-// ── Suite 3: Plan básico — sin marca de agua ──────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 3: Pago en cuotas bimestrales
+// ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Plan básico — sin marca de agua', () => {
-    test('no muestra la marca de agua de Lexia', async ({ page }) => {
+test.describe('Pagaré — cuotas bimestrales', () => {
+    test('muestra número de cuotas y período bimestral en el preview', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('basico');
+        await form.goto();
         await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
+            acreedor: pagareEnCuotasBimestral.acreedor,
+            deudor: pagareEnCuotasBimestral.deudor,
+            obligacion: pagareEnCuotasBimestral.obligacion,
         });
-        await form.assertWatermarkHidden();
+        await form.assertPreviewContains(/6/);
+        await form.assertPreviewContains(/bimestrales/i);
     });
 
-    test('muestra el panel de subida de logo en plan básico', async ({ page }) => {
+    test('descarga un PDF válido', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('basico');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
-        });
-        await expect(page.getByText('Logo personalizado')).toBeVisible();
-    });
+        const dir = artifactDir('pagare-cuotas-bimestral');
 
-    test('descarga PDF sin marca de agua (plan básico)', async ({ page }) => {
-        const form = new PagareFormPage(page);
-        const dir = artifactDir('pagare-plan-basico');
-        await form.goto('basico');
+        await form.goto();
         await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
+            acreedor: pagareEnCuotasBimestral.acreedor,
+            deudor: pagareEnCuotasBimestral.deudor,
+            obligacion: pagareEnCuotasBimestral.obligacion,
         });
 
-        await form.screenshotPreview(path.join(dir, 'preview-basico.png'));
-
-        const pdfPath = path.join(dir, 'pagare-basico.pdf');
+        const pdfPath = path.join(dir, 'pagare-bimestral.pdf');
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(5_000);
+        expect(sizeBytes).toBeGreaterThan(10_000);
     });
 });
 
-// ── Suite 4: Plan pro ─────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 4: Pago en cuotas trimestrales
+// ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Plan pro — sin marca de agua', () => {
-    test('no muestra la marca de agua', async ({ page }) => {
+test.describe('Pagaré — cuotas trimestrales', () => {
+    test('muestra número de cuotas y período trimestral en el preview', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('pro');
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareEnCuotasTrimestral.acreedor,
+            deudor: pagareEnCuotasTrimestral.deudor,
+            obligacion: pagareEnCuotasTrimestral.obligacion,
+        });
+        await form.assertPreviewContains(/4/);
+        await form.assertPreviewContains(/trimestrales/i);
+    });
+
+    test('descarga un PDF válido', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        const dir = artifactDir('pagare-cuotas-trimestral');
+
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareEnCuotasTrimestral.acreedor,
+            deudor: pagareEnCuotasTrimestral.deudor,
+            obligacion: pagareEnCuotasTrimestral.obligacion,
+        });
+
+        const pdfPath = path.join(dir, 'pagare-trimestral.pdf');
+        const { sizeBytes } = await form.downloadPDF(pdfPath);
+
+        assertValidPDF(pdfPath);
+        expect(sizeBytes).toBeGreaterThan(10_000);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 5: Acreedor empresa con NIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Pagaré — acreedor con NIT', () => {
+    test('muestra el nombre y NIT del acreedor empresa en el preview', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareNIT.acreedor,
+            deudor: pagareNIT.deudor,
+            obligacion: pagareNIT.obligacion,
+        });
+        await form.assertPreviewContains('Inversiones Lexia S.A.S.');
+        await form.assertPreviewContains('900123456-1');
+    });
+
+    test('muestra el documento CE del deudor extranjero', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareNIT.acreedor,
+            deudor: pagareNIT.deudor,
+            obligacion: pagareNIT.obligacion,
+        });
+        await form.assertPreviewContains('Roberto Andrés Silva Ríos');
+        await form.assertPreviewContains('E-456789');
+    });
+
+    test('descarga un PDF válido con acreedor NIT', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        const dir = artifactDir('pagare-nit');
+
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareNIT.acreedor,
+            deudor: pagareNIT.deudor,
+            obligacion: pagareNIT.obligacion,
+        });
+
+        const pdfPath = path.join(dir, 'pagare-nit.pdf');
+        const { sizeBytes } = await form.downloadPDF(pdfPath);
+
+        assertValidPDF(pdfPath);
+        expect(sizeBytes).toBeGreaterThan(10_000);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 6: Tasa de mora
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Tasa de mora', () => {
+    test('muestra la tasa personalizada cuando se ingresa', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: { ...pagareSimple.obligacion, mora: '2.5' },
+        });
+        await form.assertPreviewContains(/2\.5% mensual/);
+    });
+
+    test('muestra "tasa máxima legal vigente" cuando no se ingresa mora', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: { ...pagareSimple.obligacion, mora: '' },
+        });
+        await form.assertPreviewContains(/tasa máxima legal vigente/i);
+    });
+
+    test('la cláusula SEGUNDA refleja la tasa de mora personalizada', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareNIT.acreedor,
+            deudor: pagareNIT.deudor,
+            obligacion: pagareNIT.obligacion, // mora: '1.5'
+        });
+        // La cláusula SEGUNDA menciona la tasa de mora
+        await form.assertClauseVisible('SEGUNDA');
+        await form.assertPreviewContains(/1\.5% mensual/);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 7: Plan Gratuito — UI en Step 4 (preview)
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Plan Gratuito — UI en Step 4', () => {
+    test('muestra el badge "Plan Gratuito"', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
             obligacion: pagareSimple.obligacion,
         });
-        await form.assertWatermarkHidden();
+        await form.assertPlanBadge('free');
     });
 
-    test('muestra el panel de logo personalizado en plan pro', async ({ page }) => {
+    test('muestra el banner de upgrade al plan de asesoría', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('pro');
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
             obligacion: pagareSimple.obligacion,
         });
-        await expect(page.getByText('Logo personalizado')).toBeVisible();
+        await form.assertUpgradeBannerVisible();
+    });
+
+    test('no muestra la sección de logo personalizado', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+        await form.assertLogoUploadHidden();
+    });
+
+    test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        const dir = artifactDir('pagare-plan-free');
+
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+
+        const pdfPath = path.join(dir, 'pagare-free.pdf');
+        const { sizeBytes } = await form.downloadPDF(pdfPath);
+
+        assertValidPDF(pdfPath);
+        expect(sizeBytes).toBeGreaterThan(10_000);
     });
 });
 
-// ── Suite 5: Validación de formularios ────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 8: Plan Empresarial — UI en Step 4 (preview)
+// El plan se inyecta en localStorage antes de cargar la página
+// ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Validación — no avanza con campos vacíos', () => {
-    test('Step 1 no avanza sin nombre del acreedor', async ({ page }) => {
+test.describe('Plan Empresarial — UI en Step 4', () => {
+    test('muestra el badge "Plan Empresarial"', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto('empresarial');
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+        await form.assertPlanBadge('empresarial');
+    });
 
-        // Click Continuar without filling anything
+    test('no muestra el banner de upgrade del plan gratuito', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto('empresarial');
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+        await form.assertUpgradeBannerHidden();
+    });
+
+    test('muestra la sección de logo personalizado', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto('empresarial');
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+        await form.assertLogoUploadVisible();
+        await form.assertLogoUploadButtonVisible();
+    });
+
+    test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        const dir = artifactDir('pagare-plan-empresarial');
+
+        await form.goto('empresarial');
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: pagareSimple.obligacion,
+        });
+
+        await form.screenshotPreview(path.join(dir, 'preview-empresarial.png'));
+
+        const pdfPath = path.join(dir, 'pagare-empresarial.pdf');
+        const { sizeBytes } = await form.downloadPDF(pdfPath);
+
+        assertValidPDF(pdfPath);
+        expect(sizeBytes).toBeGreaterThan(10_000);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 9: Validación de formulario
+// Cubre: bloqueo por campos vacíos, campos condicionales de modalidad
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Validación de formulario', () => {
+    test('Step 1: no avanza sin nombre del acreedor', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+
         await page.getByRole('button', { name: 'Continuar' }).click();
 
-        // Should still be on step 1
         await expect(page.getByText('El acreedor')).toBeVisible();
-        // Error message appears
         await expect(page.getByText(/requerido/i).first()).toBeVisible();
     });
 
-    test('Step 2 no avanza sin ciudad del deudor', async ({ page }) => {
+    test('Step 1: no avanza sin número de documento', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
+
+        await page.fill('#acreedor-nombre', 'Test Acreedor');
+        await page.selectOption('#acreedor-tipo-doc', 'CC');
+        await page.fill('#acreedor-tel', '300 000 0000');
+        // Omitir número de documento
+
+        await page.getByRole('button', { name: 'Continuar' }).click();
+
+        await expect(page.getByText('El acreedor')).toBeVisible();
+        await expect(page.getByText(/número de documento.*requerido/i)).toBeVisible();
+    });
+
+    test('Step 2: no avanza sin ciudad de residencia del deudor', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
 
-        // Fill deudor without city
         await page.fill('#deudor-nombre', 'Test Deudor');
         await page.selectOption('#deudor-tipo-doc', 'CC');
         await page.fill('#deudor-num-doc', '12345678');
         await page.fill('#deudor-tel', '300 000 0000');
+        // No seleccionar ciudad
 
-        // Don't select city — try to continue
         await page.getByRole('button', { name: 'Continuar' }).click();
 
-        // Should still be on step 2
         await expect(page.getByText('El deudor')).toBeVisible();
         await expect(page.getByText(/ciudad de residencia.*requerida/i)).toBeVisible();
     });
+
+    test('Step 3: no avanza sin valor principal', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        // Seleccionar modalidad pero no ingresar valor
+        await page.getByRole('button', { name: /Pago único/ }).click();
+        await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
+        await page.fill('#obligacion-fecha-vencimiento', '2027-03-01');
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-dept', '11');
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+
+        await page.getByRole('button', { name: /Ver pagaré/ }).click();
+
+        await expect(page.locator('#pagare-preview')).not.toBeVisible();
+        await expect(page.getByText(/valor.*requerido/i)).toBeVisible();
+    });
+
+    test('Step 3: pago único requiere fecha de vencimiento', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.locator('#obligacion-valor').fill('5000000');
+        await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
+        await page.getByRole('button', { name: /Pago único/ }).click();
+        // No llenar fecha de vencimiento
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-dept', '11');
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+
+        await page.getByRole('button', { name: /Ver pagaré/ }).click();
+
+        await expect(page.locator('#pagare-preview')).not.toBeVisible();
+        await expect(page.getByText(/fecha de vencimiento.*requerida/i)).toBeVisible();
+    });
+
+    test('Step 3: pago en cuotas requiere número de cuotas', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.locator('#obligacion-valor').fill('5000000');
+        await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
+        await page.getByRole('button', { name: /Por cuotas/ }).click();
+        // Seleccionar período pero NO número de cuotas
+        await page.selectOption('#obligacion-periodo', 'mensual');
+        await page.locator('#obligacion-num-cuotas').clear();
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-dept', '11');
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
+        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+
+        await page.getByRole('button', { name: /Ver pagaré/ }).click();
+
+        await expect(page.locator('#pagare-preview')).not.toBeVisible();
+        await expect(page.getByText(/número de cuotas.*requerido/i)).toBeVisible();
+    });
+
+    test('Step 3: no avanza sin ciudad de suscripción', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.locator('#obligacion-valor').fill('5000000');
+        await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
+        await page.getByRole('button', { name: /Pago único/ }).click();
+        await page.fill('#obligacion-fecha-vencimiento', '2027-03-01');
+        // No seleccionar ciudad de suscripción
+
+        await page.getByRole('button', { name: /Ver pagaré/ }).click();
+
+        await expect(page.locator('#pagare-preview')).not.toBeVisible();
+        await expect(page.getByText(/ciudad de suscripción.*requerida/i)).toBeVisible();
+    });
 });
 
-// ── Suite 6: Dropdowns de departamento/ciudad ─────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 10: Dropdowns departamento/ciudad (API mocked)
+// ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Selección departamento/ciudad (API mocked)', () => {
     test('el selector de ciudad está deshabilitado hasta seleccionar departamento (deudor)', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
 
         await page.waitForSelector('#deudor-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        const citySelect = page.locator('#deudor-ciudad-city');
-        await expect(citySelect).toBeDisabled();
+        await expect(page.locator('#deudor-ciudad-city')).toBeDisabled();
     });
 
-    test('las ciudades se cargan al seleccionar departamento (deudor)', async ({ page }) => {
+    test('las ciudades del deudor se cargan al seleccionar departamento', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
 
         await page.waitForSelector('#deudor-ciudad-dept:not([disabled])', { timeout: 8_000 });
@@ -277,9 +576,19 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
         await expect(page.locator('#deudor-ciudad-city option', { hasText: 'Bogotá D.C.' })).toBeAttached();
     });
 
-    test('las ciudades se cargan al seleccionar departamento (obligación)', async ({ page }) => {
+    test('el selector de ciudad de obligación está deshabilitado hasta seleccionar departamento', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
+        await expect(page.locator('#obligacion-ciudad-city')).toBeDisabled();
+    });
+
+    test('las ciudades de obligación se cargan al seleccionar departamento', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
         await form.fillDeudor(pagareSimple.deudor);
 
@@ -291,22 +600,33 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
     });
 });
 
-// ── Suite 7: Navegación (Volver a modificar datos) ────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 11: Navegación entre pasos
+// ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Navegación entre pasos', () => {
-    test('el botón "Anterior" regresa al paso anterior', async ({ page }) => {
+    test('el botón "Anterior" en Step 2 regresa a Step 1', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
 
-        // We are on step 2 — click Anterior
         await page.getByRole('button', { name: 'Anterior' }).click();
         await expect(page.getByText('El acreedor')).toBeVisible();
     });
 
-    test('"Modificar datos" desde el preview regresa al paso anterior', async ({ page }) => {
+    test('el botón "Anterior" en Step 3 regresa a Step 2', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.getByRole('button', { name: 'Anterior' }).click();
+        await expect(page.getByText('El deudor')).toBeVisible();
+    });
+
+    test('"Modificar datos" desde el preview regresa a Step 3', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
         await form.fillAllSteps({
             acreedor: pagareSimple.acreedor,
             deudor: pagareSimple.deudor,
@@ -316,30 +636,27 @@ test.describe('Navegación entre pasos', () => {
         await page.getByRole('button', { name: /Modificar datos/i }).click();
         await expect(page.getByText('La obligación')).toBeVisible();
     });
-});
 
-// ── Suite 8: Tasa de mora personalizada ───────────────────────────────────────
-
-test.describe('Tasa de mora', () => {
-    test('muestra la tasa personalizada cuando se ingresa', async ({ page }) => {
+    test('volver a Step 2 conserva el nombre del deudor', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: { ...pagareSimple.obligacion, mora: '2.5' },
-        });
-        await form.assertPreviewContains(/2\.5% mensual/);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+        await form.fillDeudor(pagareSimple.deudor);
+
+        await page.getByRole('button', { name: 'Anterior' }).click();
+        await page.waitForSelector('h2:has-text("El deudor")');
+
+        await expect(page.locator('#deudor-nombre')).toHaveValue('María Fernanda López Castro');
     });
 
-    test('muestra "tasa máxima legal" cuando no se ingresa mora', async ({ page }) => {
+    test('volver a Step 1 conserva el nombre del acreedor', async ({ page }) => {
         const form = new PagareFormPage(page);
-        await form.goto('free');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: { ...pagareSimple.obligacion, mora: '' },
-        });
-        await form.assertPreviewContains(/tasa máxima legal vigente/i);
+        await form.goto();
+        await form.fillAcreedor(pagareSimple.acreedor);
+
+        await page.getByRole('button', { name: 'Anterior' }).click();
+        await page.waitForSelector('h2:has-text("El acreedor")');
+
+        await expect(page.locator('#acreedor-nombre')).toHaveValue('Juan Carlos Gómez Martínez');
     });
 });
