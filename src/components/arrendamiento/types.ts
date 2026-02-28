@@ -96,7 +96,7 @@ export const DEPARTAMENTOS = [
     'Antioquia',
     'Arauca',
     'Atlántico',
-    'Bogotá D.C.',
+    'Bogotá',
     'Bolívar',
     'Boyacá',
     'Caldas',

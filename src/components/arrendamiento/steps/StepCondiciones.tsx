@@ -46,6 +46,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
 
             {tipoInmueble === 'Local Comercial' && (
                 <InputField
+                    id="actividad"
                     label="Actividad comercial permitida"
                     type="text"
                     value={data.actividadComercial}
@@ -61,6 +62,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
+                    id="fecha-inicio"
                     label="Fecha de inicio"
                     type="date"
                     value={data.fechaInicio}
@@ -71,6 +73,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
                     error={errors.fechaInicio}
                 />
                 <InputField
+                    id="duracion"
                     label="Duración (meses)"
                     type="number"
                     min={1}
@@ -82,6 +85,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
+                    id="canon"
                     label="Canon mensual (COP)"
                     type="text"
                     inputMode="numeric"
@@ -92,6 +96,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
                     error={errors.canonMensual}
                 />
                 <InputField
+                    id="deposito"
                     label="Depósito de garantía (COP)"
                     type="text"
                     inputMode="numeric"
@@ -108,6 +113,7 @@ export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, 
                 <label className="text-sm font-semibold text-slate-700">Día de pago mensual (1–28)</label>
                 <div className="flex items-center gap-3">
                     <input
+                        id="dia-pago"
                         type="range"
                         min={1}
                         max={28}

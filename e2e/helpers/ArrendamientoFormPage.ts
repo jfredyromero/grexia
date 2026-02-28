@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 type TipoInmueble = 'Apartamento' | 'Casa' | 'Local Comercial' | 'Oficina';
+type PlanTier = 'free' | 'empresarial';
 
 interface InmuebleData {
     tipo: TipoInmueble;
@@ -32,28 +33,49 @@ interface CondicionesData {
     actividad?: string;
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+/** Mapea el valor interno del tipo de documento a la etiqueta visible en el Listbox. */
+function docLabel(tipoDoc: string): string {
+    const labels: Record<string, string> = {
+        CC: 'Cédula de Ciudadanía',
+        CE: 'Cédula de Extranjería',
+        NIT: 'NIT',
+        Pasaporte: 'Pasaporte',
+    };
+    return labels[tipoDoc] ?? tipoDoc;
+}
+
+// ── Page Object ───────────────────────────────────────────────────────────────
+
 export class ArrendamientoFormPage {
     constructor(private page: Page) {}
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
-    async goto(plan?: 'free' | 'basico' | 'pro') {
-        const url =
-            plan && plan !== 'free'
-                ? `/herramientas/arrendamiento/generar?plan=${plan}`
-                : '/herramientas/arrendamiento/generar';
-        await this.page.goto(url);
-        // Wait for React island to hydrate
+    /**
+     * Navega al formulario con el plan indicado.
+     * El plan se inyecta en localStorage antes de cargar la página
+     * (nanostores persistentAtom clave: 'lexia_plan').
+     */
+    async goto(plan?: PlanTier) {
+        if (plan === 'empresarial') {
+            await this.page.addInitScript(() => {
+                localStorage.setItem('lexia_plan', 'empresarial');
+            });
+        }
+        await this.page.goto('/herramientas/arrendamiento/generar');
+        // client:only="react" — el componente no se SSR, el botón sólo existe tras el render de React
         await this.page.waitForSelector('button:has-text("Continuar")', { timeout: 10_000 });
     }
 
     // ── Step 1: Inmueble ──────────────────────────────────────────────────────
 
     async fillInmueble(data: InmuebleData) {
-        // Click property type (accessible name includes icon ligature text, so no exact match)
+        // Tipo de inmueble (botones)
         await this.page.getByRole('button', { name: data.tipo }).click();
 
-        // PH toggle appears after selecting type
+        // Propiedad Horizontal (botones condicionales)
         await this.page.waitForSelector('text=¿Está en propiedad horizontal?');
         if (data.ph) {
             await this.page.getByRole('button', { name: /Sí, es en PH/ }).click();
@@ -61,13 +83,33 @@ export class ArrendamientoFormPage {
             await this.page.getByRole('button', { name: /No, es independiente/ }).click();
         }
 
+        // Dirección
         await this.page.fill('#direccion', data.direccion);
-        await this.page.fill('#ciudad', data.ciudad);
-        await this.page.selectOption('#departamento', data.departamento);
-        // Estrato is already set to 3 by default — only change if different
+
+        // Departamento — Combobox (ColombiaLocationSelect)
+        // Hace click para abrir y luego filtra escribiendo
+        await this.page.locator('#inmueble-ciudad-dept').click();
+        await this.page.locator('#inmueble-ciudad-dept').fill(data.departamento);
+        await this.page
+            .getByRole('option', { name: data.departamento, exact: true })
+            .first()
+            .waitFor({ timeout: 15_000 });
+        await this.page.getByRole('option', { name: data.departamento, exact: true }).first().click();
+
+        // Ciudad — Combobox (esperar a que carguen las ciudades del departamento)
+        await this.page.locator('#inmueble-ciudad-city:not([disabled])').waitFor({ timeout: 15_000 });
+        await this.page.locator('#inmueble-ciudad-city').click();
+        await this.page.locator('#inmueble-ciudad-city').fill(data.ciudad);
+        await this.page.getByRole('option', { name: data.ciudad, exact: true }).first().waitFor({ timeout: 15_000 });
+        await this.page.getByRole('option', { name: data.ciudad, exact: true }).first().click();
+
+        // Estrato — Listbox (solo si difiere del default '3')
         if (data.estrato !== '3') {
-            await this.page.selectOption('#estrato', `Estrato ${data.estrato}`);
+            await this.page.locator('#estrato').click();
+            await this.page.getByRole('option', { name: `Estrato ${data.estrato}` }).click();
         }
+
+        // Área
         await this.page.fill('#areaMq', data.areaMq);
 
         await this.page.getByRole('button', { name: 'Continuar' }).click();
@@ -78,7 +120,14 @@ export class ArrendamientoFormPage {
 
     async fillArrendador(data: PersonaData) {
         await this.page.fill('#arrendador-nombre', data.nombre);
-        await this.page.selectOption('#arrendador-tipo-doc', data.tipoDoc);
+
+        // Tipo de documento — Listbox: abrir + seleccionar opción por etiqueta
+        await this.page.locator('#arrendador-tipo-doc').click();
+        await this.page
+            .getByRole('option', { name: docLabel(data.tipoDoc) })
+            .first()
+            .click();
+
         await this.page.fill('#arrendador-num-doc', data.numDoc);
         await this.page.fill('#arrendador-tel', data.telefono);
         if (data.email) await this.page.fill('#arrendador-email', data.email);
@@ -91,7 +140,14 @@ export class ArrendamientoFormPage {
 
     async fillArrendatario(data: PersonaData) {
         await this.page.fill('#arrendatario-nombre', data.nombre);
-        await this.page.selectOption('#arrendatario-tipo-doc', data.tipoDoc);
+
+        // Tipo de documento — Listbox: abrir + seleccionar opción por etiqueta
+        await this.page.locator('#arrendatario-tipo-doc').click();
+        await this.page
+            .getByRole('option', { name: docLabel(data.tipoDoc) })
+            .first()
+            .click();
+
         await this.page.fill('#arrendatario-num-doc', data.numDoc);
         await this.page.fill('#arrendatario-tel', data.telefono);
         if (data.email) await this.page.fill('#arrendatario-email', data.email);
@@ -103,7 +159,6 @@ export class ArrendamientoFormPage {
     // ── Step 4: Condiciones ───────────────────────────────────────────────────
 
     async fillCondiciones(data: CondicionesData, tipo?: TipoInmueble) {
-        // Commercial activity field (only for Local Comercial)
         if (tipo === 'Local Comercial' && data.actividad) {
             await this.page.waitForSelector('#actividad');
             await this.page.fill('#actividad', data.actividad);
@@ -111,14 +166,13 @@ export class ArrendamientoFormPage {
 
         await this.page.fill('#fecha-inicio', data.fechaInicio);
         await this.page.fill('#duracion', data.duracion);
-
-        // Money inputs: clear first, then type raw digits
         await this.page.locator('#canon').fill(data.canon);
         await this.page.locator('#deposito').fill(data.deposito);
+
+        // Día de pago — range slider: fill() dispara el evento input que React captura
         await this.page.fill('#dia-pago', data.diaPago);
 
         await this.page.getByRole('button', { name: 'Ver mi contrato' }).click();
-        // Wait for contract preview to render
         await this.page.waitForSelector('#contract-content', { timeout: 10_000 });
     }
 
@@ -139,21 +193,20 @@ export class ArrendamientoFormPage {
 
     // ── PDF download ──────────────────────────────────────────────────────────
 
-    async downloadPDF(outputPath: string): Promise<{ path: string; sizeBytes: number }> {
-        // Click the first "Descargar PDF" button (top area)
+    async downloadPDF(outputPath: string): Promise<{ path: string; sizeBytes: number; filename: string }> {
         const downloadBtn = this.page.getByRole('button', { name: /Descargar PDF/ }).first();
 
         const downloadPromise = this.page.waitForEvent('download', { timeout: 60_000 });
         await downloadBtn.click();
 
-        // Wait for spinner to appear ("Generando...")
         await this.page.waitForSelector('text=Generando...', { timeout: 5_000 }).catch(() => {});
 
         const download = await downloadPromise;
+        const filename = download.suggestedFilename();
         await download.saveAs(outputPath);
 
         const stats = fs.statSync(outputPath);
-        return { path: outputPath, sizeBytes: stats.size };
+        return { path: outputPath, sizeBytes: stats.size, filename };
     }
 
     // ── Contract screenshot ───────────────────────────────────────────────────
@@ -164,20 +217,47 @@ export class ArrendamientoFormPage {
         await contractEl.screenshot({ path: outputPath });
     }
 
-    // ── Assertions ────────────────────────────────────────────────────────────
+    // ── Contract content assertions ───────────────────────────────────────────
 
     async assertContractContains(text: string | RegExp) {
         await expect(this.page.locator('#contract-content')).toContainText(text);
     }
 
-    async assertWatermarkVisible() {
-        await expect(this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i)).toBeVisible();
+    async assertContractNotContains(text: string | RegExp) {
+        await expect(this.page.locator('#contract-content')).not.toContainText(text);
     }
 
-    async assertWatermarkHidden() {
-        await expect(
-            this.page.locator('#contract-content').getByText(/Documento generado por Lexia/i)
-        ).not.toBeVisible();
+    // ── Plan UI assertions (Step 5) ───────────────────────────────────────────
+
+    /** Verifica el badge de plan visible en el encabezado del Step 5. */
+    async assertPlanBadge(plan: PlanTier) {
+        const label = plan === 'free' ? 'Plan Gratuito' : 'Plan Empresarial';
+        await expect(this.page.getByText(label).first()).toBeVisible();
+    }
+
+    /** Verifica que el banner de upgrade del plan gratuito es visible. */
+    async assertUpgradeBannerVisible() {
+        await expect(this.page.getByText(/Plan Gratuito:/).first()).toBeVisible();
+    }
+
+    /** Verifica que el banner de upgrade NO es visible (plan empresarial). */
+    async assertUpgradeBannerHidden() {
+        await expect(this.page.getByText(/Plan Gratuito:/).first()).not.toBeVisible();
+    }
+
+    /** Verifica que la sección de logo personalizado es visible (solo plan empresarial). */
+    async assertLogoUploadVisible() {
+        await expect(this.page.getByText('Logo personalizado')).toBeVisible();
+    }
+
+    /** Verifica que la sección de logo personalizado NO es visible (plan gratuito). */
+    async assertLogoUploadHidden() {
+        await expect(this.page.getByText('Logo personalizado')).not.toBeVisible();
+    }
+
+    /** Verifica que el botón de subir logo está disponible y es clickeable. */
+    async assertLogoUploadButtonVisible() {
+        await expect(this.page.getByRole('button', { name: /Subir logo/i })).toBeVisible();
     }
 }
 
@@ -189,7 +269,7 @@ export function assertValidPDF(pdfPath: string) {
     const buffer = fs.readFileSync(pdfPath);
     expect(buffer.length, 'PDF should not be empty').toBeGreaterThan(0);
 
-    // All PDFs start with the %PDF- header
+    // Todos los PDFs válidos comienzan con el header %PDF-
     const header = buffer.subarray(0, 5).toString('ascii');
     expect(header, 'File should be a valid PDF').toBe('%PDF-');
 

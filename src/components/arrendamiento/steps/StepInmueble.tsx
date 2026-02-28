@@ -111,6 +111,7 @@ export default function StepInmueble({ data, onChange, onNext }: StepInmueblePro
 
             {/* Dirección */}
             <InputField
+                id="direccion"
                 label="Dirección completa"
                 type="text"
                 value={data.direccion}
@@ -143,6 +144,7 @@ export default function StepInmueble({ data, onChange, onNext }: StepInmueblePro
                 <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-semibold text-slate-700">Estrato socioeconómico</label>
                     <SelectField
+                        id="estrato"
                         value={data.estrato}
                         onChange={(val) => {
                             onChange({ ...data, estrato: val });
@@ -152,6 +154,7 @@ export default function StepInmueble({ data, onChange, onNext }: StepInmueblePro
                     />
                 </div>
                 <InputField
+                    id="areaMq"
                     label="Área (m²)"
                     type="text"
                     inputMode="numeric"

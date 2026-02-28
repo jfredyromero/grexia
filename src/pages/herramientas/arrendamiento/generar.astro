@@ -43,7 +43,7 @@ const tool = getToolBySlug('arrendamiento')!;
             </div>
 
             <!-- React island: full form with internal 2-col layout -->
-            <ArrendamientoForm client:load />
+            <ArrendamientoForm client:only="react" />
         </div>
     </main>
     <WhatsAppButton />

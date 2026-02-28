@@ -43,6 +43,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
             </div>
 
             <InputField
+                id="arrendador-nombre"
                 label="Nombre completo o razón social"
                 type="text"
                 value={data.nombreCompleto}
@@ -55,6 +56,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
                 <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-semibold text-slate-700">Tipo de documento</label>
                     <SelectField
+                        id="arrendador-tipo-doc"
                         value={data.tipoDocumento}
                         onChange={(val) => {
                             onChange({ ...data, tipoDocumento: val as TipoDocArrendador });
@@ -66,6 +68,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
                 </div>
                 <div className="sm:col-span-2">
                     <InputField
+                        id="arrendador-num-doc"
                         label="Número de documento"
                         type="text"
                         inputMode="numeric"
@@ -79,6 +82,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
+                    id="arrendador-tel"
                     label="Teléfono de contacto"
                     type="tel"
                     value={data.telefono}
@@ -87,6 +91,7 @@ export default function StepArrendador({ data, onChange, onNext, onBack }: StepA
                     error={errors.telefono}
                 />
                 <InputField
+                    id="arrendador-email"
                     label={
                         <>
                             Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
