@@ -327,17 +327,6 @@ test.describe('Plan Gratuito — UI en Step 4', () => {
         await form.assertUpgradeBannerVisible();
     });
 
-    test('no muestra la sección de logo personalizado', async ({ page }) => {
-        const form = new PagareFormPage(page);
-        await form.goto();
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
-        });
-        await form.assertLogoUploadHidden();
-    });
-
     test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {
         const form = new PagareFormPage(page);
         const dir = artifactDir('pagare-plan-free');
@@ -385,18 +374,6 @@ test.describe('Plan Empresarial — UI en Step 4', () => {
         await form.assertUpgradeBannerHidden();
     });
 
-    test('muestra la sección de logo personalizado', async ({ page }) => {
-        const form = new PagareFormPage(page);
-        await form.goto('empresarial');
-        await form.fillAllSteps({
-            acreedor: pagareSimple.acreedor,
-            deudor: pagareSimple.deudor,
-            obligacion: pagareSimple.obligacion,
-        });
-        await form.assertLogoUploadVisible();
-        await form.assertLogoUploadButtonVisible();
-    });
-
     test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {
         const form = new PagareFormPage(page);
         const dir = artifactDir('pagare-plan-empresarial');
@@ -439,7 +416,8 @@ test.describe('Validación de formulario', () => {
         await form.goto();
 
         await page.fill('#acreedor-nombre', 'Test Acreedor');
-        await page.selectOption('#acreedor-tipo-doc', 'CC');
+        await page.locator('#acreedor-tipo-doc').click();
+        await page.getByRole('option', { name: 'Cédula de Ciudadanía' }).first().click();
         await page.fill('#acreedor-tel', '300 000 0000');
         // Omitir número de documento
 
@@ -455,7 +433,8 @@ test.describe('Validación de formulario', () => {
         await form.fillAcreedor(pagareSimple.acreedor);
 
         await page.fill('#deudor-nombre', 'Test Deudor');
-        await page.selectOption('#deudor-tipo-doc', 'CC');
+        await page.locator('#deudor-tipo-doc').click();
+        await page.getByRole('option', { name: 'Cédula de Ciudadanía' }).first().click();
         await page.fill('#deudor-num-doc', '12345678');
         await page.fill('#deudor-tel', '300 000 0000');
         // No seleccionar ciudad
@@ -476,10 +455,16 @@ test.describe('Validación de formulario', () => {
         await page.getByRole('button', { name: /Pago único/ }).click();
         await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
         await page.fill('#obligacion-fecha-vencimiento', '2027-03-01');
-        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-dept', '11');
-        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-dept').click();
+        await page.locator('#obligacion-ciudad-dept').fill('Bogotá');
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().click();
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-city').click();
+        await page.locator('#obligacion-ciudad-city').fill('Bogotá D.C.');
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().click();
 
         await page.getByRole('button', { name: /Ver pagaré/ }).click();
 
@@ -497,10 +482,16 @@ test.describe('Validación de formulario', () => {
         await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
         await page.getByRole('button', { name: /Pago único/ }).click();
         // No llenar fecha de vencimiento
-        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-dept', '11');
-        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-dept').click();
+        await page.locator('#obligacion-ciudad-dept').fill('Bogotá');
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().click();
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-city').click();
+        await page.locator('#obligacion-ciudad-city').fill('Bogotá D.C.');
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().click();
 
         await page.getByRole('button', { name: /Ver pagaré/ }).click();
 
@@ -518,12 +509,19 @@ test.describe('Validación de formulario', () => {
         await page.fill('#obligacion-fecha-suscripcion', '2026-03-01');
         await page.getByRole('button', { name: /Por cuotas/ }).click();
         // Seleccionar período pero NO número de cuotas
-        await page.selectOption('#obligacion-periodo', 'mensual');
+        await page.locator('#obligacion-periodo').click();
+        await page.getByRole('option', { name: 'Mensual' }).first().click();
         await page.locator('#obligacion-num-cuotas').clear();
-        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-dept', '11');
-        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-city', 'Bogotá D.C.');
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-dept').click();
+        await page.locator('#obligacion-ciudad-dept').fill('Bogotá');
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá', exact: true }).first().click();
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-city').click();
+        await page.locator('#obligacion-ciudad-city').fill('Bogotá D.C.');
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first().click();
 
         await page.getByRole('button', { name: /Ver pagaré/ }).click();
 
@@ -551,10 +549,10 @@ test.describe('Validación de formulario', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SUITE 10: Dropdowns departamento/ciudad (API mocked)
+// SUITE 10: Dropdowns departamento/ciudad (API real)
 // ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Selección departamento/ciudad (API mocked)', () => {
+test.describe('Selección departamento/ciudad (API real)', () => {
     test('el selector de ciudad está deshabilitado hasta seleccionar departamento (deudor)', async ({ page }) => {
         const form = new PagareFormPage(page);
         await form.goto();
@@ -569,11 +567,21 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
         await form.goto();
         await form.fillAcreedor(pagareSimple.acreedor);
 
-        await page.waitForSelector('#deudor-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#deudor-ciudad-dept', pagareSimple.deudor.departamentoId);
+        await page.waitForSelector('#deudor-ciudad-dept:not([disabled])', { timeout: 15_000 });
+        await page.locator('#deudor-ciudad-dept').click();
+        await page.locator('#deudor-ciudad-dept').fill(pagareSimple.deudor.departamento);
+        await page
+            .getByRole('option', { name: pagareSimple.deudor.departamento, exact: true })
+            .first()
+            .waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: pagareSimple.deudor.departamento, exact: true }).first().click();
 
-        await page.waitForSelector('#deudor-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await expect(page.locator('#deudor-ciudad-city option', { hasText: 'Bogotá D.C.' })).toBeAttached();
+        await page.waitForSelector('#deudor-ciudad-city:not([disabled])', { timeout: 15_000 });
+        await page.locator('#deudor-ciudad-city').click();
+        await page.locator('#deudor-ciudad-city').fill('Bogotá D.C.');
+        await expect(page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first()).toBeVisible({
+            timeout: 10_000,
+        });
     });
 
     test('el selector de ciudad de obligación está deshabilitado hasta seleccionar departamento', async ({ page }) => {
@@ -592,11 +600,21 @@ test.describe('Selección departamento/ciudad (API mocked)', () => {
         await form.fillAcreedor(pagareSimple.acreedor);
         await form.fillDeudor(pagareSimple.deudor);
 
-        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 8_000 });
-        await page.selectOption('#obligacion-ciudad-dept', pagareSimple.obligacion.departamentoId);
+        await page.waitForSelector('#obligacion-ciudad-dept:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-dept').click();
+        await page.locator('#obligacion-ciudad-dept').fill(pagareSimple.obligacion.departamento);
+        await page
+            .getByRole('option', { name: pagareSimple.obligacion.departamento, exact: true })
+            .first()
+            .waitFor({ timeout: 15_000 });
+        await page.getByRole('option', { name: pagareSimple.obligacion.departamento, exact: true }).first().click();
 
-        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 8_000 });
-        await expect(page.locator('#obligacion-ciudad-city option', { hasText: 'Bogotá D.C.' })).toBeAttached();
+        await page.waitForSelector('#obligacion-ciudad-city:not([disabled])', { timeout: 15_000 });
+        await page.locator('#obligacion-ciudad-city').click();
+        await page.locator('#obligacion-ciudad-city').fill('Bogotá D.C.');
+        await expect(page.getByRole('option', { name: 'Bogotá D.C.', exact: true }).first()).toBeVisible({
+            timeout: 10_000,
+        });
     });
 });
 

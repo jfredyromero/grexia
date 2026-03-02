@@ -57,6 +57,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             </div>
 
             <InputField
+                id="obligacion-valor"
                 label="Valor del pagaré (COP)"
                 type="text"
                 inputMode="numeric"
@@ -72,6 +73,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             />
 
             <InputField
+                id="obligacion-fecha-suscripcion"
                 label="Fecha de suscripción del pagaré"
                 type="date"
                 value={data.fechaSuscripcion}
@@ -110,6 +112,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
 
             {isUnico && (
                 <InputField
+                    id="obligacion-fecha-vencimiento"
                     label="Fecha de vencimiento"
                     type="date"
                     value={data.fechaVencimiento}
@@ -121,6 +124,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             {isCuotas && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <InputField
+                        id="obligacion-num-cuotas"
                         label="Número de cuotas"
                         type="number"
                         min="2"
@@ -133,6 +137,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                     <div className="flex flex-col gap-1.5">
                         <label className="text-sm font-semibold text-slate-700">Período de pago</label>
                         <SelectField
+                            id="obligacion-periodo"
                             value={data.periodoCuotas}
                             onChange={(val) => {
                                 onChange({ ...data, periodoCuotas: val as PeriodoCuotas });
@@ -157,6 +162,7 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
             />
 
             <InputField
+                id="obligacion-mora"
                 label={
                     <>
                         Tasa de interés de mora <span className="text-slate-400 font-normal">(opcional, %)</span>

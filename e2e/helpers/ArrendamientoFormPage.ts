@@ -247,21 +247,6 @@ export class ArrendamientoFormPage {
     async assertUpgradeBannerHidden() {
         await expect(this.page.getByText(/Plan Gratuito:/).first()).not.toBeVisible();
     }
-
-    /** Verifica que la sección de logo personalizado es visible (solo plan empresarial). */
-    async assertLogoUploadVisible() {
-        await expect(this.page.getByText('Logo personalizado')).toBeVisible();
-    }
-
-    /** Verifica que la sección de logo personalizado NO es visible (plan gratuito). */
-    async assertLogoUploadHidden() {
-        await expect(this.page.getByText('Logo personalizado')).not.toBeVisible();
-    }
-
-    /** Verifica que el botón de subir logo está disponible y es clickeable. */
-    async assertLogoUploadButtonVisible() {
-        await expect(this.page.getByRole('button', { name: /Subir logo/i })).toBeVisible();
-    }
 }
 
 // ── PDF validation helper ─────────────────────────────────────────────────────

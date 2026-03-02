@@ -22,7 +22,7 @@ const deudorBogota = {
     numDoc: '9876543210',
     telefono: '310 987 6543',
     email: '',
-    departamentoId: '11',
+    departamento: 'Bogotá',
     ciudad: 'Bogotá D.C.',
 } as const;
 
@@ -32,7 +32,7 @@ const deudorExtranjero = {
     numDoc: 'E-456789',
     telefono: '315 555 1234',
     email: 'roberto.silva@lexiatest.co',
-    departamentoId: '11',
+    departamento: 'Bogotá',
     ciudad: 'Bogotá D.C.',
 } as const;
 
@@ -46,7 +46,7 @@ export const pagareSimple = {
         fechaSuscripcion: '2026-02-22',
         modalidad: 'unico' as const,
         fechaVencimiento: '2027-02-22',
-        departamentoId: '11',
+        departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
         mora: '',
     },
@@ -64,7 +64,7 @@ export const pagareEnCuotas = {
         fechaVencimiento: '',
         numeroCuotas: '12',
         periodoCuotas: 'mensual' as const,
-        departamentoId: '11',
+        departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
         mora: '',
     },
@@ -82,7 +82,7 @@ export const pagareEnCuotasBimestral = {
         fechaVencimiento: '',
         numeroCuotas: '6',
         periodoCuotas: 'bimestral' as const,
-        departamentoId: '11',
+        departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
         mora: '',
     },
@@ -100,7 +100,7 @@ export const pagareEnCuotasTrimestral = {
         fechaVencimiento: '',
         numeroCuotas: '4',
         periodoCuotas: 'trimestral' as const,
-        departamentoId: '11',
+        departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
         mora: '',
     },
@@ -116,26 +116,8 @@ export const pagareNIT = {
         fechaSuscripcion: '2026-03-15',
         modalidad: 'unico' as const,
         fechaVencimiento: '2027-03-15',
-        departamentoId: '11',
+        departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
         mora: '1.5',
     },
-} as const;
-
-// ── Mocked Colombia API responses ─────────────────────────────────────────────
-
-/** Use these with page.route() in tests. */
-export const mockColombiaApi = {
-    departments: [
-        { id: 11, name: 'Bogotá D.C.' },
-        { id: 5, name: 'Antioquia' },
-    ],
-    citiesBogota: [
-        { id: 149, name: 'Bogotá D.C.' },
-        { id: 150, name: 'Soacha' },
-    ],
-    citiesAntioquia: [
-        { id: 63, name: 'Medellín' },
-        { id: 64, name: 'Bello' },
-    ],
 } as const;

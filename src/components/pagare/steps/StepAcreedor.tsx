@@ -40,6 +40,7 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
             </div>
 
             <InputField
+                id="acreedor-nombre"
                 label="Nombre completo o razón social"
                 type="text"
                 value={data.nombreCompleto}
@@ -52,6 +53,7 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                 <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-semibold text-slate-700">Tipo de documento</label>
                     <SelectField
+                        id="acreedor-tipo-doc"
                         value={data.tipoDocumento}
                         onChange={(val) => {
                             onChange({ ...data, tipoDocumento: val as TipoDocPersona });
@@ -63,6 +65,7 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                 </div>
                 <div className="sm:col-span-2">
                     <InputField
+                        id="acreedor-num-doc"
                         label="Número de documento"
                         type="text"
                         inputMode="numeric"
@@ -76,6 +79,7 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
+                    id="acreedor-tel"
                     label="Teléfono de contacto"
                     type="tel"
                     value={data.telefono}
@@ -84,6 +88,7 @@ export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorPro
                     error={errors.telefono}
                 />
                 <InputField
+                    id="acreedor-email"
                     label={
                         <>
                             Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>

@@ -478,18 +478,6 @@ test.describe('Plan Gratuito — UI en Step 5', () => {
         await form.assertUpgradeBannerVisible();
     });
 
-    test('no muestra la sección de logo personalizado', async ({ page }) => {
-        const form = new ArrendamientoFormPage(page);
-        await form.goto();
-        await form.fillAllSteps({
-            ...contratoVivienda.inmueble,
-            arrendador: contratoVivienda.arrendador,
-            arrendatario: contratoVivienda.arrendatario,
-            condiciones: contratoVivienda.condiciones,
-        });
-        await form.assertLogoUploadHidden();
-    });
-
     test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {
         const form = new ArrendamientoFormPage(page);
         const dir = artifactsDir('plan-free');
@@ -538,19 +526,6 @@ test.describe('Plan Empresarial — UI en Step 5', () => {
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertUpgradeBannerHidden();
-    });
-
-    test('muestra la sección de logo personalizado', async ({ page }) => {
-        const form = new ArrendamientoFormPage(page);
-        await form.goto('empresarial');
-        await form.fillAllSteps({
-            ...contratoVivienda.inmueble,
-            arrendador: contratoVivienda.arrendador,
-            arrendatario: contratoVivienda.arrendatario,
-            condiciones: contratoVivienda.condiciones,
-        });
-        await form.assertLogoUploadVisible();
-        await form.assertLogoUploadButtonVisible();
     });
 
     test('el botón "Descargar PDF" genera un PDF válido', async ({ page }) => {

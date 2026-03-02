@@ -42,6 +42,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
             </div>
 
             <InputField
+                id="deudor-nombre"
                 label="Nombre completo o razón social"
                 type="text"
                 value={data.nombreCompleto}
@@ -54,6 +55,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                 <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-semibold text-slate-700">Tipo de documento</label>
                     <SelectField
+                        id="deudor-tipo-doc"
                         value={data.tipoDocumento}
                         onChange={(val) => {
                             onChange({ ...data, tipoDocumento: val as TipoDocPersona });
@@ -65,6 +67,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                 </div>
                 <div className="sm:col-span-2">
                     <InputField
+                        id="deudor-num-doc"
                         label="Número de documento"
                         type="text"
                         inputMode="numeric"
@@ -78,6 +81,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InputField
+                    id="deudor-tel"
                     label="Teléfono de contacto"
                     type="tel"
                     value={data.telefono}
@@ -86,6 +90,7 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                     error={errors.telefono}
                 />
                 <InputField
+                    id="deudor-email"
                     label={
                         <>
                             Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
