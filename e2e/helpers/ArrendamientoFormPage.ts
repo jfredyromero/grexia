@@ -119,6 +119,7 @@ export class ArrendamientoFormPage {
     // ── Step 2: Arrendador ────────────────────────────────────────────────────
 
     async fillArrendador(data: PersonaData) {
+        await this.page.evaluate(() => window.scrollTo(0, 0));
         await this.page.fill('#arrendador-nombre', data.nombre);
 
         // Tipo de documento — Listbox: abrir + seleccionar opción por etiqueta
@@ -139,6 +140,7 @@ export class ArrendamientoFormPage {
     // ── Step 3: Arrendatario ──────────────────────────────────────────────────
 
     async fillArrendatario(data: PersonaData) {
+        await this.page.evaluate(() => window.scrollTo(0, 0));
         await this.page.fill('#arrendatario-nombre', data.nombre);
 
         // Tipo de documento — Listbox: abrir + seleccionar opción por etiqueta
@@ -159,6 +161,7 @@ export class ArrendamientoFormPage {
     // ── Step 4: Condiciones ───────────────────────────────────────────────────
 
     async fillCondiciones(data: CondicionesData, tipo?: TipoInmueble) {
+        await this.page.evaluate(() => window.scrollTo(0, 0));
         if (tipo === 'Local Comercial' && data.actividad) {
             await this.page.waitForSelector('#actividad');
             await this.page.fill('#actividad', data.actividad);

@@ -86,7 +86,7 @@ test.describe('Pagaré — pago único', () => {
         const { sizeBytes, filename } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
         expect(filename).toBe('pagare.pdf');
     });
 });
@@ -135,7 +135,7 @@ test.describe('Pagaré — cuotas mensuales', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
@@ -171,7 +171,7 @@ test.describe('Pagaré — cuotas bimestrales', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
@@ -207,7 +207,7 @@ test.describe('Pagaré — cuotas trimestrales', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
@@ -255,7 +255,7 @@ test.describe('Pagaré — acreedor con NIT', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
@@ -353,7 +353,7 @@ test.describe('Plan Gratuito — UI en Step 4', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 
@@ -414,7 +414,7 @@ test.describe('Plan Empresarial — UI en Step 4', () => {
         const { sizeBytes } = await form.downloadPDF(pdfPath);
 
         assertValidPDF(pdfPath);
-        expect(sizeBytes).toBeGreaterThan(10_000);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });
 

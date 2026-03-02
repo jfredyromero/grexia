@@ -353,9 +353,8 @@ function ContractComercial({ formData }: ContractTemplateProps) {
                         {numberToWordsCOP(canonNum)} ({formatCOP(condiciones.canonMensual)} COP)
                     </strong>
                     . El ARRENDATARIO se obliga a pagarlo a más tardar el día <strong>{condiciones.diaPagoMes}</strong>{' '}
-                    de cada mes. Las partes podrán acordar libremente el reajuste anual del canon, sin que aplique el
-                    límite del IPC previsto en la Ley 820 de 2003, por tratarse de un arrendamiento comercial regido por
-                    el Código de Comercio.
+                    de cada mes. Las partes podrán acordar libremente el reajuste anual del canon, conforme al régimen
+                    del Código de Comercio.
                 </p>
             </Clause>
 
