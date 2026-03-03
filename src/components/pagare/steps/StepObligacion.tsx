@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { ObligacionData, ModalidadPago, PeriodoCuotas } from '../types';
 import { validateObligacion, hasErrors } from '../validation';
@@ -12,6 +12,7 @@ interface StepObligacionProps {
     onChange: (data: ObligacionData) => void;
     onNext: () => void;
     onBack: () => void;
+    forceValidate?: number;
 }
 
 const PERIODOS: SelectOption<PeriodoCuotas>[] = [
@@ -26,8 +27,14 @@ function formatCOPInput(raw: string): string {
     return new Intl.NumberFormat('es-CO').format(parseInt(digits, 10));
 }
 
-export default function StepObligacion({ data, onChange, onNext, onBack }: StepObligacionProps) {
+export default function StepObligacion({ data, onChange, onNext, onBack, forceValidate }: StepObligacionProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateObligacion(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const set = (field: keyof ObligacionData) => (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange({ ...data, [field]: e.target.value });
@@ -154,10 +161,12 @@ export default function StepObligacion({ data, onChange, onNext, onBack }: StepO
                 idPrefix="obligacion-ciudad"
                 cityLabel="Ciudad de suscripción"
                 value={data.ciudadSuscripcion}
+                departmentValue={data.departamentoSuscripcion}
                 onChange={(city) => {
                     onChange({ ...data, ciudadSuscripcion: city });
                     if (errors.ciudadSuscripcion) setErrors((prev) => ({ ...prev, ciudadSuscripcion: '' }));
                 }}
+                onDepartmentChange={(dept) => onChange({ ...data, departamentoSuscripcion: dept })}
                 error={errors.ciudadSuscripcion}
             />
 

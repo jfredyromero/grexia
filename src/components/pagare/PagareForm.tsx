@@ -1,6 +1,9 @@
-import { useState, useCallback } from 'react';
-import type { PagareFormData, AcreedorData, DeudorData, ObligacionData } from './types';
-import { INITIAL_PAGARE_DATA, PAGARE_STEPS } from './types';
+import { useCallback, useState } from 'react';
+import { useStore } from '@nanostores/react';
+import type { AcreedorData, DeudorData, ObligacionData } from './types';
+import { PAGARE_STEPS } from './types';
+import { validateAcreedor, validateDeudor, validateObligacion, hasErrors } from './validation';
+import { $pagareFormData, $pagareStep, $pagareMaxStep } from '../../stores/pagare';
 import StepProgress from '../shared/StepProgress';
 import UpsellWidget from '../shared/UpsellWidget';
 import StepAcreedor from './steps/StepAcreedor';
@@ -9,28 +12,51 @@ import StepObligacion from './steps/StepObligacion';
 import StepPreview from './steps/StepPreview';
 
 export default function PagareForm() {
-    const [currentStep, setCurrentStep] = useState<number>(1);
-    const [formData, setFormData] = useState<PagareFormData>(INITIAL_PAGARE_DATA);
+    const formData = useStore($pagareFormData);
+    const currentStep = useStore($pagareStep);
+    const maxStep = useStore($pagareMaxStep);
+    const maxReachedStep = Math.max(currentStep, maxStep);
+    const [validateTick, setValidateTick] = useState(0);
 
     const updateAcreedor = useCallback((data: AcreedorData) => {
-        setFormData((prev) => ({ ...prev, acreedor: data }));
+        $pagareFormData.set({ ...$pagareFormData.get(), acreedor: data });
     }, []);
 
     const updateDeudor = useCallback((data: DeudorData) => {
-        setFormData((prev) => ({ ...prev, deudor: data }));
+        $pagareFormData.set({ ...$pagareFormData.get(), deudor: data });
     }, []);
 
     const updateObligacion = useCallback((data: ObligacionData) => {
-        setFormData((prev) => ({ ...prev, obligacion: data }));
+        $pagareFormData.set({ ...$pagareFormData.get(), obligacion: data });
     }, []);
 
     const handleNext = useCallback(() => {
-        setCurrentStep((s) => Math.min(s + 1, PAGARE_STEPS.length));
+        const next = Math.min($pagareStep.get() + 1, PAGARE_STEPS.length);
+        $pagareStep.set(next);
+        $pagareMaxStep.set(Math.max($pagareMaxStep.get(), next));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     const handleBack = useCallback(() => {
-        setCurrentStep((s) => Math.max(s - 1, 1));
+        $pagareStep.set(Math.max($pagareStep.get() - 1, 1));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    const handleStepClick = useCallback((n: number) => {
+        const current = $pagareStep.get();
+        if (n > current) {
+            const data = $pagareFormData.get();
+            const stepValidators: Record<number, () => boolean> = {
+                1: () => hasErrors(validateAcreedor(data.acreedor)),
+                2: () => hasErrors(validateDeudor(data.deudor)),
+                3: () => hasErrors(validateObligacion(data.obligacion)),
+            };
+            if (stepValidators[current]?.()) {
+                setValidateTick((t) => t + 1);
+                return;
+            }
+        }
+        $pagareStep.set(n);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
@@ -42,6 +68,7 @@ export default function PagareForm() {
                 data={formData.acreedor}
                 onChange={updateAcreedor}
                 onNext={handleNext}
+                forceValidate={validateTick}
             />
         ),
         2: (
@@ -50,6 +77,7 @@ export default function PagareForm() {
                 onChange={updateDeudor}
                 onNext={handleNext}
                 onBack={handleBack}
+                forceValidate={validateTick}
             />
         ),
         3: (
@@ -58,6 +86,7 @@ export default function PagareForm() {
                 onChange={updateObligacion}
                 onNext={handleNext}
                 onBack={handleBack}
+                forceValidate={validateTick}
             />
         ),
         4: (
@@ -79,6 +108,8 @@ export default function PagareForm() {
                 <StepProgress
                     steps={PAGARE_STEPS}
                     currentStep={currentStep}
+                    maxReachedStep={maxReachedStep}
+                    onStepClick={handleStepClick}
                 />
                 <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
                     {stepContent[currentStep]}

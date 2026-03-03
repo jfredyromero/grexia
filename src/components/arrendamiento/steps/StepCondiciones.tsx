@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { CondicionesData, TipoInmueble } from '../types';
 import { isComercial } from '../types';
@@ -11,6 +11,7 @@ interface StepCondicionesProps {
     onChange: (data: CondicionesData) => void;
     onNext: () => void;
     onBack: () => void;
+    forceValidate?: number;
 }
 
 function formatDisplayCOP(raw: string): string {
@@ -19,9 +20,22 @@ function formatDisplayCOP(raw: string): string {
     return num.toLocaleString('es-CO');
 }
 
-export default function StepCondiciones({ data, tipoInmueble, onChange, onNext, onBack }: StepCondicionesProps) {
+export default function StepCondiciones({
+    data,
+    tipoInmueble,
+    onChange,
+    onNext,
+    onBack,
+    forceValidate,
+}: StepCondicionesProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const esComercial = isComercial(tipoInmueble);
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateCondiciones(data, tipoInmueble));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const handleNext = () => {
         const newErrors = validateCondiciones(data, tipoInmueble);

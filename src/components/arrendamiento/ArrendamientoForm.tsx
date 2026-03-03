@@ -1,6 +1,15 @@
-import { useState, useCallback } from 'react';
-import type { ArrendamientoFormData, InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData } from './types';
-import { INITIAL_FORM_DATA, STEPS } from './types';
+import { useCallback, useState } from 'react';
+import { useStore } from '@nanostores/react';
+import type { InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData } from './types';
+import { STEPS } from './types';
+import {
+    validateInmueble,
+    validateArrendador,
+    validateArrendatario,
+    validateCondiciones,
+    hasErrors,
+} from './validation';
+import { $arrendamientoFormData, $arrendamientoStep, $arrendamientoMaxStep } from '../../stores/arrendamiento';
 import StepProgress from '../shared/StepProgress';
 import UpsellWidget from '../shared/UpsellWidget';
 import StepInmueble from './steps/StepInmueble';
@@ -10,32 +19,56 @@ import StepCondiciones from './steps/StepCondiciones';
 import StepPreview from './steps/StepPreview';
 
 export default function ArrendamientoForm() {
-    const [currentStep, setCurrentStep] = useState<number>(1);
-    const [formData, setFormData] = useState<ArrendamientoFormData>(INITIAL_FORM_DATA);
+    const formData = useStore($arrendamientoFormData);
+    const currentStep = useStore($arrendamientoStep);
+    const maxStep = useStore($arrendamientoMaxStep);
+    const maxReachedStep = Math.max(currentStep, maxStep);
+    const [validateTick, setValidateTick] = useState(0);
 
     const updateInmueble = useCallback((data: InmuebleData) => {
-        setFormData((prev) => ({ ...prev, inmueble: data }));
+        $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), inmueble: data });
     }, []);
 
     const updateArrendador = useCallback((data: ArrendadorData) => {
-        setFormData((prev) => ({ ...prev, arrendador: data }));
+        $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), arrendador: data });
     }, []);
 
     const updateArrendatario = useCallback((data: ArrendatarioData) => {
-        setFormData((prev) => ({ ...prev, arrendatario: data }));
+        $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), arrendatario: data });
     }, []);
 
     const updateCondiciones = useCallback((data: CondicionesData) => {
-        setFormData((prev) => ({ ...prev, condiciones: data }));
+        $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), condiciones: data });
     }, []);
 
     const handleNext = useCallback(() => {
-        setCurrentStep((s) => Math.min(s + 1, 5));
+        const next = Math.min($arrendamientoStep.get() + 1, STEPS.length);
+        $arrendamientoStep.set(next);
+        $arrendamientoMaxStep.set(Math.max($arrendamientoMaxStep.get(), next));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     const handleBack = useCallback(() => {
-        setCurrentStep((s) => Math.max(s - 1, 1));
+        $arrendamientoStep.set(Math.max($arrendamientoStep.get() - 1, 1));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+
+    const handleStepClick = useCallback((n: number) => {
+        const current = $arrendamientoStep.get();
+        if (n > current) {
+            const data = $arrendamientoFormData.get();
+            const stepValidators: Record<number, () => boolean> = {
+                1: () => hasErrors(validateInmueble(data.inmueble)),
+                2: () => hasErrors(validateArrendador(data.arrendador)),
+                3: () => hasErrors(validateArrendatario(data.arrendatario)),
+                4: () => hasErrors(validateCondiciones(data.condiciones, data.inmueble.tipoInmueble)),
+            };
+            if (stepValidators[current]?.()) {
+                setValidateTick((t) => t + 1);
+                return;
+            }
+        }
+        $arrendamientoStep.set(n);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
@@ -47,6 +80,7 @@ export default function ArrendamientoForm() {
                 data={formData.inmueble}
                 onChange={updateInmueble}
                 onNext={handleNext}
+                forceValidate={validateTick}
             />
         ),
         2: (
@@ -55,6 +89,7 @@ export default function ArrendamientoForm() {
                 onChange={updateArrendador}
                 onNext={handleNext}
                 onBack={handleBack}
+                forceValidate={validateTick}
             />
         ),
         3: (
@@ -63,6 +98,7 @@ export default function ArrendamientoForm() {
                 onChange={updateArrendatario}
                 onNext={handleNext}
                 onBack={handleBack}
+                forceValidate={validateTick}
             />
         ),
         4: (
@@ -72,6 +108,7 @@ export default function ArrendamientoForm() {
                 onChange={updateCondiciones}
                 onNext={handleNext}
                 onBack={handleBack}
+                forceValidate={validateTick}
             />
         ),
         5: (
@@ -92,6 +129,8 @@ export default function ArrendamientoForm() {
                 <StepProgress
                     steps={STEPS}
                     currentStep={currentStep}
+                    maxReachedStep={maxReachedStep}
+                    onStepClick={handleStepClick}
                 />
 
                 {/* Step card */}

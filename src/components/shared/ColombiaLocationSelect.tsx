@@ -15,13 +15,15 @@ interface ColombiaLocationSelectProps {
     value: string;
     onChange: (cityName: string) => void;
     onDepartmentChange?: (deptName: string) => void;
+    departmentValue?: string;
     idPrefix: string;
     cityLabel?: string;
     error?: string;
 }
 
-// Module-level cache so departments are only fetched once per page load
+// Module-level caches so data is only fetched once per page load
 let cachedDepartments: Department[] | null = null;
+const citiesCache = new Map<number, City[]>();
 
 const inputClass =
     'h-12 w-full rounded-[12px] border border-slate-200 bg-white px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
@@ -32,23 +34,44 @@ const optionsClass =
 const optionClass =
     'cursor-pointer select-none px-4 py-2.5 text-sm text-slate-700 data-focus:bg-slate-50 data-selected:font-semibold data-selected:text-secondary';
 
+function fetchAndCacheCities(deptId: number): Promise<City[]> {
+    if (citiesCache.has(deptId)) {
+        return Promise.resolve(citiesCache.get(deptId)!);
+    }
+    return fetch(`https://api-colombia.com/api/v1/Department/${deptId}/cities`)
+        .then((r) => r.json())
+        .then((data: City[]) => {
+            const sorted = data.sort((a, b) => a.name.localeCompare(b.name, 'es'));
+            citiesCache.set(deptId, sorted);
+            return sorted;
+        });
+}
+
 export default function ColombiaLocationSelect({
     value,
     onChange,
     onDepartmentChange,
+    departmentValue,
     idPrefix,
     cityLabel = 'Ciudad / Municipio',
     error,
 }: ColombiaLocationSelectProps) {
     const [departments, setDepartments] = useState<Department[]>(cachedDepartments ?? []);
-    const [cities, setCities] = useState<City[]>([]);
-    const [selectedDept, setSelectedDept] = useState<Department | null>(null);
+    // Track selected department as a name string — derived selectedDept avoids setState in effects
+    const [activeDeptName, setActiveDeptName] = useState(departmentValue ?? '');
+    // Cities keyed by dept id — when id doesn't match selectedDept, cities = [] (loading)
+    const [citiesForDeptId, setCitiesForDeptId] = useState<{ id: number; list: City[] } | null>(null);
     const [deptQuery, setDeptQuery] = useState('');
     const [cityQuery, setCityQuery] = useState('');
     const [loadingDepts, setLoadingDepts] = useState(!cachedDepartments);
-    const [loadingCities, setLoadingCities] = useState(false);
     const [deptError, setDeptError] = useState(false);
 
+    // Derived state — no synchronous setState needed in effects
+    const selectedDept = departments.find((d) => d.name === activeDeptName) ?? null;
+    const cities = citiesForDeptId?.id === selectedDept?.id ? (citiesForDeptId?.list ?? []) : [];
+    const loadingCities = !!selectedDept && citiesForDeptId?.id !== selectedDept?.id;
+
+    // Fetch departments (only if not cached)
     useEffect(() => {
         if (cachedDepartments) return;
         fetch('https://api-colombia.com/api/v1/Department')
@@ -65,6 +88,17 @@ export default function ColombiaLocationSelect({
             });
     }, []);
 
+    // Fetch cities whenever the active department changes (handles both user selection and restoration)
+    // All setState calls are inside async .then()/.catch() — no synchronous setState in effect body
+    useEffect(() => {
+        if (!activeDeptName || departments.length === 0) return;
+        const dept = departments.find((d) => d.name === activeDeptName);
+        if (!dept) return;
+        fetchAndCacheCities(dept.id)
+            .then((sorted) => setCitiesForDeptId({ id: dept.id, list: sorted }))
+            .catch(() => setCitiesForDeptId({ id: dept.id, list: [] }));
+    }, [activeDeptName, departments]);
+
     const filteredDepts =
         deptQuery === ''
             ? departments
@@ -74,21 +108,9 @@ export default function ColombiaLocationSelect({
         cityQuery === '' ? cities : cities.filter((c) => c.name.toLowerCase().includes(cityQuery.toLowerCase()));
 
     const handleDeptChange = (dept: Department | null) => {
-        setSelectedDept(dept);
+        setActiveDeptName(dept?.name ?? '');
         onChange('');
-        setCities([]);
         if (onDepartmentChange) onDepartmentChange(dept?.name ?? '');
-
-        if (!dept) return;
-
-        setLoadingCities(true);
-        fetch(`https://api-colombia.com/api/v1/Department/${dept.id}/cities`)
-            .then((r) => r.json())
-            .then((data: City[]) => {
-                setCities(data.sort((a, b) => a.name.localeCompare(b.name, 'es')));
-                setLoadingCities(false);
-            })
-            .catch(() => setLoadingCities(false));
     };
 
     const handleCityChange = (city: City | null) => {

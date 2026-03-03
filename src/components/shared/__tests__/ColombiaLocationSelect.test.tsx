@@ -224,6 +224,51 @@ describe('ColombiaLocationSelect — selección de ciudad', () => {
     });
 });
 
+describe('ColombiaLocationSelect — restauración de estado', () => {
+    it('restaura el departamento y la ciudad al montar con departmentValue y value', async () => {
+        render(
+            <ColombiaLocationSelect
+                idPrefix="restore-test"
+                value="Soacha"
+                onChange={vi.fn()}
+                departmentValue="Bogotá D.C."
+            />
+        );
+
+        await waitFor(
+            () => {
+                const deptInput = screen.getByLabelText('Departamento') as HTMLInputElement;
+                expect(deptInput.value).toBe('Bogotá D.C.');
+            },
+            { timeout: 3000 }
+        );
+
+        await waitFor(
+            () => {
+                const cityInput = screen.getByLabelText('Ciudad / Municipio') as HTMLInputElement;
+                expect(cityInput.value).toBe('Soacha');
+            },
+            { timeout: 3000 }
+        );
+    });
+
+    it('no restaura si departmentValue está vacío', async () => {
+        render(
+            <ColombiaLocationSelect
+                idPrefix="no-restore-test"
+                value=""
+                onChange={vi.fn()}
+            />
+        );
+        await waitFor(() => {
+            const input = screen.getByLabelText('Departamento') as HTMLInputElement;
+            expect(input.disabled).toBe(false);
+        });
+        const deptInput = screen.getByLabelText('Departamento') as HTMLInputElement;
+        expect(deptInput.value).toBe('');
+    });
+});
+
 describe('ColombiaLocationSelect — errores de validación', () => {
     it('muestra el mensaje de error cuando se provee', async () => {
         renderSelect('', vi.fn(), 'La ciudad de residencia es requerida.');

@@ -179,7 +179,6 @@ describe('ContractTemplate — cláusulas por tipo de contrato', () => {
 
     it('contrato comercial menciona reajuste libre sin límite de IPC', () => {
         render(<ContractTemplate formData={withLocal('Restaurante')} />);
-        // El texto exacto del template: "sin que aplique el límite del IPC"
         expect(screen.getByText(/sin que aplique el límite del IPC/i)).toBeInTheDocument();
     });
 

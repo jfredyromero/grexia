@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { AcreedorData, TipoDocPersona } from '../types';
 import { TIPOS_DOC_PERSONA, DOC_LABELS } from '../types';
@@ -11,6 +11,7 @@ interface StepAcreedorProps {
     data: AcreedorData;
     onChange: (data: AcreedorData) => void;
     onNext: () => void;
+    forceValidate?: number;
 }
 
 const DOC_OPTIONS: SelectOption<TipoDocPersona>[] = TIPOS_DOC_PERSONA.map((tipo) => ({
@@ -18,8 +19,14 @@ const DOC_OPTIONS: SelectOption<TipoDocPersona>[] = TIPOS_DOC_PERSONA.map((tipo)
     label: DOC_LABELS[tipo],
 }));
 
-export default function StepAcreedor({ data, onChange, onNext }: StepAcreedorProps) {
+export default function StepAcreedor({ data, onChange, onNext, forceValidate }: StepAcreedorProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateAcreedor(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const set = (field: keyof AcreedorData) => (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange({ ...data, [field]: e.target.value });

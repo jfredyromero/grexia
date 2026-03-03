@@ -18,6 +18,7 @@ export interface DeudorData {
     telefono: string;
     email: string;
     ciudadResidencia: string;
+    departamentoResidencia?: string;
 }
 
 export interface ObligacionData {
@@ -28,6 +29,7 @@ export interface ObligacionData {
     numeroCuotas: string;
     periodoCuotas: PeriodoCuotas | '';
     ciudadSuscripcion: string;
+    departamentoSuscripcion?: string;
     tasaInteresMora: string;
 }
 

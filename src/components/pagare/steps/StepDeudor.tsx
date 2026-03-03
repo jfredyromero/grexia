@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { DeudorData, TipoDocPersona } from '../types';
 import { TIPOS_DOC_PERSONA, DOC_LABELS } from '../types';
@@ -13,6 +13,7 @@ interface StepDeudorProps {
     onChange: (data: DeudorData) => void;
     onNext: () => void;
     onBack: () => void;
+    forceValidate?: number;
 }
 
 const DOC_OPTIONS: SelectOption<TipoDocPersona>[] = TIPOS_DOC_PERSONA.map((tipo) => ({
@@ -20,8 +21,14 @@ const DOC_OPTIONS: SelectOption<TipoDocPersona>[] = TIPOS_DOC_PERSONA.map((tipo)
     label: DOC_LABELS[tipo],
 }));
 
-export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudorProps) {
+export default function StepDeudor({ data, onChange, onNext, onBack, forceValidate }: StepDeudorProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateDeudor(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const set = (field: keyof DeudorData) => (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange({ ...data, [field]: e.target.value });
@@ -108,10 +115,12 @@ export default function StepDeudor({ data, onChange, onNext, onBack }: StepDeudo
                 idPrefix="deudor-ciudad"
                 cityLabel="Ciudad de residencia"
                 value={data.ciudadResidencia}
+                departmentValue={data.departamentoResidencia}
                 onChange={(city) => {
                     onChange({ ...data, ciudadResidencia: city });
                     if (errors.ciudadResidencia) setErrors((prev) => ({ ...prev, ciudadResidencia: '' }));
                 }}
+                onDepartmentChange={(dept) => onChange({ ...data, departamentoResidencia: dept })}
                 error={errors.ciudadResidencia}
             />
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { ArrendadorData, TipoDocArrendador } from '../types';
 import { validateArrendador, hasErrors } from '../validation';
@@ -11,6 +11,7 @@ interface StepArrendadorProps {
     onChange: (data: ArrendadorData) => void;
     onNext: () => void;
     onBack: () => void;
+    forceValidate?: number;
 }
 
 const DOC_OPTIONS: SelectOption<TipoDocArrendador>[] = [
@@ -19,8 +20,14 @@ const DOC_OPTIONS: SelectOption<TipoDocArrendador>[] = [
     { value: 'NIT', label: 'NIT' },
 ];
 
-export default function StepArrendador({ data, onChange, onNext, onBack }: StepArrendadorProps) {
+export default function StepArrendador({ data, onChange, onNext, onBack, forceValidate }: StepArrendadorProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateArrendador(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const set = (field: keyof ArrendadorData) => (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange({ ...data, [field]: e.target.value });

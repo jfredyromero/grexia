@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@headlessui/react';
 import type { InmuebleData, TipoInmueble } from '../types';
 import { validateInmueble, hasErrors } from '../validation';
@@ -11,6 +11,7 @@ interface StepInmuebleProps {
     data: InmuebleData;
     onChange: (data: InmuebleData) => void;
     onNext: () => void;
+    forceValidate?: number;
 }
 
 const TIPOS_INMUEBLE: { tipo: TipoInmueble; icon: string; label: string }[] = [
@@ -25,7 +26,7 @@ const ESTRATO_OPTIONS: SelectOption[] = ['1', '2', '3', '4', '5', '6'].map((e) =
     label: `Estrato ${e}`,
 }));
 
-export default function StepInmueble({ data, onChange, onNext }: StepInmuebleProps) {
+export default function StepInmueble({ data, onChange, onNext, forceValidate }: StepInmuebleProps) {
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const validate = (): boolean => {
@@ -33,6 +34,12 @@ export default function StepInmueble({ data, onChange, onNext }: StepInmueblePro
         setErrors(newErrors);
         return !hasErrors(newErrors);
     };
+
+    useEffect(() => {
+        if (!forceValidate) return;
+        setErrors(validateInmueble(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [forceValidate]);
 
     const handleNext = () => {
         if (validate()) onNext();
@@ -128,6 +135,7 @@ export default function StepInmueble({ data, onChange, onNext }: StepInmueblePro
                 idPrefix="inmueble-ciudad"
                 cityLabel="Ciudad / Municipio"
                 value={data.ciudad}
+                departmentValue={data.departamento}
                 onChange={(city) => {
                     onChange({ ...data, ciudad: city });
                     if (errors.ciudad) setErrors((prev) => ({ ...prev, ciudad: '' }));
