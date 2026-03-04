@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useStore } from '@nanostores/react';
-import type { InmuebleData, ArrendadorData, ArrendatarioData, CondicionesData } from './types';
+import type { InmuebleData, ArrendadorData, ArrendatarioData, CoarrendatarioData, CondicionesData } from './types';
 import { STEPS } from './types';
 import {
     validateInmueble,
     validateArrendador,
     validateArrendatario,
+    validateCoarrendatario,
     validateCondiciones,
     hasErrors,
 } from './validation';
@@ -37,6 +38,10 @@ export default function ArrendamientoForm() {
         $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), arrendatario: data });
     }, []);
 
+    const updateCoarrendatario = useCallback((data: CoarrendatarioData | undefined) => {
+        $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), coarrendatario: data });
+    }, []);
+
     const updateCondiciones = useCallback((data: CondicionesData) => {
         $arrendamientoFormData.set({ ...$arrendamientoFormData.get(), condiciones: data });
     }, []);
@@ -60,7 +65,11 @@ export default function ArrendamientoForm() {
             const stepValidators: Record<number, () => boolean> = {
                 1: () => hasErrors(validateInmueble(data.inmueble)),
                 2: () => hasErrors(validateArrendador(data.arrendador)),
-                3: () => hasErrors(validateArrendatario(data.arrendatario)),
+                3: () => {
+                    if (hasErrors(validateArrendatario(data.arrendatario))) return true;
+                    if (data.coarrendatario && hasErrors(validateCoarrendatario(data.coarrendatario))) return true;
+                    return false;
+                },
                 4: () => hasErrors(validateCondiciones(data.condiciones, data.inmueble.tipoInmueble)),
             };
             if (stepValidators[current]?.()) {
@@ -99,6 +108,8 @@ export default function ArrendamientoForm() {
                 onNext={handleNext}
                 onBack={handleBack}
                 forceValidate={validateTick}
+                coarrendatario={formData.coarrendatario}
+                onCoarrendatarioChange={updateCoarrendatario}
             />
         ),
         4: (

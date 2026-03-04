@@ -249,20 +249,24 @@ describe('PagareTemplate — bloques de firma', () => {
 // ── Plan: FREE ────────────────────────────────────────────────────────────────
 
 describe('PagareTemplate — plan gratuito', () => {
-    it('muestra el logo de texto LEXIA (no una imagen)', () => {
+    it('muestra el logo de Lexia (icono SVG + texto LEXIA)', () => {
         renderTemplate(undefined, 'free');
-        expect(screen.getByText('LEXIA')).toBeInTheDocument();
-        expect(screen.queryByRole('img')).not.toBeInTheDocument();
+        const logo = screen.getByAltText('Lexia');
+        expect(logo).toBeInTheDocument();
+        expect(logo).toHaveAttribute('src', '/logo.svg');
+        expect(screen.getAllByText('LEXIA').length).toBeGreaterThanOrEqual(1);
     });
 
-    it('muestra la marca de agua LEXIA · DRAFT', () => {
-        renderTemplate(undefined, 'free');
-        expect(screen.getByText('LEXIA · DRAFT')).toBeInTheDocument();
-    });
-
-    it('muestra el footer de plan gratuito', () => {
+    it('muestra la marca de agua LEXIA', () => {
         const { container } = renderTemplate(undefined, 'free');
-        expect(container.textContent).toContain('plan gratuito');
+        const watermark = container.querySelector('[aria-hidden="true"]');
+        expect(watermark).toBeInTheDocument();
+        expect(watermark?.textContent).toBe('LEXIA');
+    });
+
+    it('muestra el footer con la marca Lexia', () => {
+        const { container } = renderTemplate(undefined, 'free');
+        expect(container.textContent).toContain('Generado con');
         expect(container.textContent).toContain('lexia.co');
     });
 });
@@ -284,7 +288,7 @@ describe('PagareTemplate — plan básico con logo personalizado', () => {
 
     it('no muestra la marca de agua', () => {
         renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
-        expect(screen.queryByText('LEXIA · DRAFT')).not.toBeInTheDocument();
+        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
     });
 
     it('no muestra el footer de plan gratuito', () => {
@@ -304,7 +308,7 @@ describe('PagareTemplate — plan básico sin logo', () => {
 
     it('no muestra la marca de agua ni el footer gratuito', () => {
         const { container } = renderTemplate(undefined, 'empresarial', '');
-        expect(screen.queryByText('LEXIA · DRAFT')).not.toBeInTheDocument();
+        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
         expect(container.textContent).not.toContain('plan gratuito');
     });
 });

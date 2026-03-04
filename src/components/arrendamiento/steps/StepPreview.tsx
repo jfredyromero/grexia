@@ -4,24 +4,60 @@ import { Button } from '@headlessui/react';
 import { useStore } from '@nanostores/react';
 import type { ArrendamientoFormData, PlanTier } from '../types';
 import { isComercial } from '../types';
-import ContractTemplate from '../ContractTemplate';
+import ViviendasPHTemplate from '../html/ViviendasPH';
+import ViviendasTemplate from '../html/Viviendas';
+import OficinaPHTemplate from '../html/OficinaPH';
+import OficinaTemplate from '../html/Oficina';
+import LocalComercialPHTemplate from '../html/LocalComercialPH';
+import LocalComercialTemplate from '../html/LocalComercial';
 import { $plan, $logoUrl } from '../../../stores/plan';
 
-interface StepPreviewProps {
-    formData: ArrendamientoFormData;
-    onBack: () => void;
+// ── Template key ──────────────────────────────────────────────────────────────
+
+type TemplateKey = 'Viviendas' | 'ViviendasPH' | 'LocalComercial' | 'LocalComercialPH' | 'Oficina' | 'OficinaPH';
+
+function getTemplateKey(tipoInmueble: string, propiedadHorizontal: boolean): TemplateKey {
+    const ph = propiedadHorizontal;
+    switch (tipoInmueble) {
+        case 'Apartamento':
+        case 'Casa':
+            return ph ? 'ViviendasPH' : 'Viviendas';
+        case 'Local Comercial':
+            return ph ? 'LocalComercialPH' : 'LocalComercial';
+        case 'Oficina':
+            return ph ? 'OficinaPH' : 'Oficina';
+        default:
+            return 'Viviendas';
+    }
 }
 
 // ── PDF generation ────────────────────────────────────────────────────────────
 
+type PDFProps = { formData: ArrendamientoFormData; plan: PlanTier; logoUrl?: string };
+
+async function getPDFComponent(key: TemplateKey): Promise<React.ComponentType<PDFProps>> {
+    switch (key) {
+        case 'ViviendasPH':
+            return (await import('../pdf/ViviendasPH')).default;
+        case 'Viviendas':
+            return (await import('../pdf/Viviendas')).default;
+        case 'OficinaPH':
+            return (await import('../pdf/OficinaPH')).default;
+        case 'Oficina':
+            return (await import('../pdf/Oficina')).default;
+        case 'LocalComercialPH':
+            return (await import('../pdf/LocalComercialPH')).default;
+        case 'LocalComercial':
+            return (await import('../pdf/LocalComercial')).default;
+    }
+}
+
 async function generatePDF(formData: ArrendamientoFormData, plan: PlanTier, logoUrl: string): Promise<void> {
-    const [{ pdf }, { default: ContractPDF }] = await Promise.all([
-        import('@react-pdf/renderer'),
-        import('../ContractPDF'),
-    ]);
+    const key = getTemplateKey(formData.inmueble.tipoInmueble, formData.inmueble.propiedadHorizontal);
+    const [{ pdf }, PDFComponent] = await Promise.all([import('@react-pdf/renderer'), getPDFComponent(key)]);
 
     const blob = await pdf(
-        <ContractPDF
+        <PDFComponent
             formData={formData}
             plan={plan}
             logoUrl={logoUrl}
@@ -39,6 +75,68 @@ async function generatePDF(formData: ArrendamientoFormData, plan: PlanTier, logo
     URL.revokeObjectURL(url);
 }
 
+// ── HTML preview ──────────────────────────────────────────────────────────────
+
+interface PreviewProps {
+    formData: ArrendamientoFormData;
+    plan: PlanTier;
+    logoUrl: string;
+}
+
+function ContractPreview({ formData, plan, logoUrl }: PreviewProps) {
+    const key = getTemplateKey(formData.inmueble.tipoInmueble, formData.inmueble.propiedadHorizontal);
+    switch (key) {
+        case 'ViviendasPH':
+            return (
+                <ViviendasPHTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+        case 'Viviendas':
+            return (
+                <ViviendasTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+        case 'OficinaPH':
+            return (
+                <OficinaPHTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+        case 'Oficina':
+            return (
+                <OficinaTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+        case 'LocalComercialPH':
+            return (
+                <LocalComercialPHTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+        case 'LocalComercial':
+            return (
+                <LocalComercialTemplate
+                    formData={formData}
+                    plan={plan}
+                    logoUrl={logoUrl}
+                />
+            );
+    }
+}
+
 // ── Plan selector chip ────────────────────────────────────────────────────────
 
 const PLAN_LABELS: Record<PlanTier, { label: string; color: string }> = {
@@ -47,6 +145,11 @@ const PLAN_LABELS: Record<PlanTier, { label: string; color: string }> = {
 };
 
 // ── Main component ────────────────────────────────────────────────────────────
+
+interface StepPreviewProps {
+    formData: ArrendamientoFormData;
+    onBack: () => void;
+}
 
 export default function StepPreview({ formData, onBack }: StepPreviewProps) {
     const plan = useStore($plan);
@@ -217,7 +320,7 @@ export default function StepPreview({ formData, onBack }: StepPreviewProps) {
             )}
 
             {/* Contract preview */}
-            <ContractTemplate
+            <ContractPreview
                 formData={formData}
                 plan={plan}
                 logoUrl={logoUrl}

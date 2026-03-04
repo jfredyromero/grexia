@@ -33,6 +33,14 @@ export interface ArrendatarioData {
     email: string;
 }
 
+export interface CoarrendatarioData {
+    nombreCompleto: string;
+    tipoDocumento: TipoDocArrendatario | '';
+    numeroDocumento: string;
+    telefono: string;
+    email: string;
+}
+
 export interface CondicionesData {
     fechaInicio: string;
     duracionMeses: number;
@@ -46,6 +54,7 @@ export interface ArrendamientoFormData {
     inmueble: InmuebleData;
     arrendador: ArrendadorData;
     arrendatario: ArrendatarioData;
+    coarrendatario?: CoarrendatarioData;
     condiciones: CondicionesData;
 }
 

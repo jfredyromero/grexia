@@ -1,4 +1,4 @@
-import type { ArrendadorData, ArrendatarioData, InmuebleData, CondicionesData, TipoInmueble } from './types';
+import type { ArrendadorData, ArrendatarioData, CoarrendatarioData, InmuebleData, CondicionesData, TipoInmueble } from './types';
 
 export type ValidationErrors = Record<string, string>;
 
@@ -19,6 +19,18 @@ export function validateArrendador(data: ArrendadorData): ValidationErrors {
 // ── Arrendatario ──────────────────────────────────────────────────────────────
 
 export function validateArrendatario(data: ArrendatarioData): ValidationErrors {
+    const errors: ValidationErrors = {};
+    if (!data.nombreCompleto.trim()) errors.nombreCompleto = 'Campo requerido';
+    if (!data.tipoDocumento) errors.tipoDocumento = 'Selecciona el tipo de documento';
+    if (!data.numeroDocumento.trim()) errors.numeroDocumento = 'Campo requerido';
+    if (!data.telefono.trim()) errors.telefono = 'Campo requerido';
+    if (data.email && !EMAIL_RE.test(data.email)) errors.email = 'Correo inválido';
+    return errors;
+}
+
+// ── Coarrendatario ────────────────────────────────────────────────────────────
+
+export function validateCoarrendatario(data: CoarrendatarioData): ValidationErrors {
     const errors: ValidationErrors = {};
     if (!data.nombreCompleto.trim()) errors.nombreCompleto = 'Campo requerido';
     if (!data.tipoDocumento) errors.tipoDocumento = 'Selecciona el tipo de documento';

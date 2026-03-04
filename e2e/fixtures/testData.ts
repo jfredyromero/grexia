@@ -1,3 +1,13 @@
+// ── Coarrendatario reutilizable ───────────────────────────────────────────────
+
+export const coarrendatarioPrincipal = {
+    nombre: 'Carlos Arturo Ruiz Gómez',
+    tipoDoc: 'CC',
+    numDoc: '1098765432',
+    telefono: '320 555 1234',
+    email: 'carlos.ruiz@lexiatest.co',
+} as const;
+
 // ── Personas reutilizables ────────────────────────────────────────────────────
 
 const arrendadorPrincipal = {
@@ -62,6 +72,7 @@ export const contratoVivienda = {
     },
     arrendador: arrendadorPrincipal,
     arrendatario: arrendatarioPrincipal,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-03-01',
         duracion: '12',
@@ -85,6 +96,7 @@ export const contratoApartamentoPH = {
     },
     arrendador: arrendadorBogota,
     arrendatario: arrendatarioExtranjero,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-04-01',
         duracion: '12',
@@ -108,6 +120,7 @@ export const contratoCasa = {
     },
     arrendador: arrendadorMedellin,
     arrendatario: arrendatarioMedellin,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-05-01',
         duracion: '24',
@@ -131,6 +144,7 @@ export const contratoCasaPH = {
     },
     arrendador: arrendadorMedellin,
     arrendatario: arrendatarioMedellin,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-05-01',
         duracion: '24',
@@ -154,6 +168,7 @@ export const contratoLocalComercialSinPH = {
     },
     arrendador: arrendadorPrincipal,
     arrendatario: arrendatarioPrincipal,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-04-01',
         duracion: '36',
@@ -178,6 +193,7 @@ export const contratoLocalComercial = {
     },
     arrendador: arrendadorPrincipal,
     arrendatario: arrendatarioPrincipal,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-03-01',
         duracion: '36',
@@ -202,6 +218,7 @@ export const contratoOficinaSinPH = {
     },
     arrendador: arrendadorPrincipal,
     arrendatario: arrendatarioPrincipal,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-04-01',
         duracion: '12',
@@ -225,6 +242,7 @@ export const contratoOficinaPH = {
     },
     arrendador: arrendadorPrincipal,
     arrendatario: arrendatarioPrincipal,
+    coarrendatario: coarrendatarioPrincipal,
     condiciones: {
         fechaInicio: '2026-03-01',
         duracion: '12',

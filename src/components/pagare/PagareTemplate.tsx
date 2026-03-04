@@ -55,14 +55,16 @@ export default function PagareTemplate({ formData, plan, logoUrl }: PagareTempla
                         transform: 'translate(-50%, -50%) rotate(-42deg)',
                         fontSize: '76px',
                         fontWeight: 900,
-                        color: 'rgba(27,48,112,0.055)',
+                        color: 'rgba(17, 47, 79, 0.10)',
                         whiteSpace: 'nowrap',
                         pointerEvents: 'none',
                         userSelect: 'none',
                         zIndex: 0,
+                        fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
+                        letterSpacing: '8px',
                     }}
                 >
-                    LEXIA · DRAFT
+                    LEXIA
                 </div>
             )}
 
@@ -71,39 +73,54 @@ export default function PagareTemplate({ formData, plan, logoUrl }: PagareTempla
                 <div
                     style={{
                         display: 'flex',
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
                         justifyContent: 'space-between',
                         marginBottom: '14px',
                     }}
                 >
-                    <div>
-                        {isFree ? (
+                    {isFree ? (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <img
+                                src="/logo.svg"
+                                alt="Lexia"
+                                style={{ height: '38px', width: '38px', objectFit: 'contain', flexShrink: 0 }}
+                            />
                             <div
+                                style={{
+                                    width: '1px',
+                                    height: '30px',
+                                    backgroundColor: '#e2e8f0',
+                                    flexShrink: 0,
+                                }}
+                            />
+                            <span
                                 style={{
                                     fontSize: '22px',
                                     fontWeight: 900,
-                                    color: '#1b3070',
-                                    letterSpacing: '-0.5px',
+                                    letterSpacing: '0.05em',
+                                    color: '#112F4F',
+                                    fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
+                                    textTransform: 'uppercase',
                                 }}
                             >
                                 LEXIA
-                            </div>
-                        ) : logoUrl ? (
-                            <img
-                                src={logoUrl}
-                                alt="Logo"
-                                style={{ height: '48px', objectFit: 'contain' }}
-                            />
-                        ) : (
-                            <div style={{ height: '48px' }} />
-                        )}
-                    </div>
+                            </span>
+                        </div>
+                    ) : logoUrl ? (
+                        <img
+                            src={logoUrl}
+                            alt="Logo"
+                            style={{ height: '48px', objectFit: 'contain' }}
+                        />
+                    ) : (
+                        <div style={{ height: '48px' }} />
+                    )}
                     <div style={{ textAlign: 'right' }}>
                         <div
                             style={{
                                 fontSize: '30px',
                                 fontWeight: 900,
-                                color: '#1b3070',
+                                color: '#112F4F',
                                 letterSpacing: '4px',
                                 lineHeight: 1,
                             }}
@@ -116,7 +133,7 @@ export default function PagareTemplate({ formData, plan, logoUrl }: PagareTempla
                     </div>
                 </div>
 
-                <hr style={{ border: 'none', borderTop: '2.5px solid #1b3070', marginBottom: '14px' }} />
+                <hr style={{ border: 'none', borderTop: '2.5px solid #112F4F', marginBottom: '14px' }} />
 
                 {/* ── AMOUNT BOX ── */}
                 <div
@@ -437,25 +454,29 @@ export default function PagareTemplate({ formData, plan, logoUrl }: PagareTempla
                     </div>
                 </div>
 
-                {/* ── FREE FOOTER ── */}
-                {isFree && (
-                    <div
-                        style={{
-                            marginTop: '24px',
-                            padding: '10px 14px',
-                            background: '#f8fafc',
-                            border: '1px solid #e2e8f0',
-                            borderRadius: '6px',
-                            fontSize: '9px',
-                            color: '#94a3b8',
-                            textAlign: 'center',
-                        }}
-                    >
-                        Documento generado con <strong style={{ color: '#64748b' }}>Lexia</strong> (plan gratuito).
-                        Actualiza tu plan en <strong style={{ color: '#64748b' }}>lexia.co</strong> para eliminar esta
-                        marca de agua y agregar tu logo personalizado.
-                    </div>
-                )}
+                {/* ── FOOTER (all plans) ── */}
+                <div
+                    style={{
+                        marginTop: '24px',
+                        paddingTop: '12px',
+                        borderTop: '1px solid #e2e8f0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                    }}
+                >
+                    <span style={{ fontSize: '8px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
+                        Generado con <strong style={{ color: '#112F4F' }}>Lexia</strong>
+                    </span>
+                    <span style={{ fontSize: '8px', color: '#64748b', textAlign: 'center', flex: 1 }}>
+                        ¿Tienes preguntas sobre este documento?{' '}
+                        <strong style={{ color: '#112F4F' }}>
+                            Agenda una sesión con uno de nuestros asesores legales
+                        </strong>{' '}
+                        en <strong style={{ color: '#112F4F' }}>lexia.co</strong>
+                    </span>
+                </div>
             </div>
         </div>
     );

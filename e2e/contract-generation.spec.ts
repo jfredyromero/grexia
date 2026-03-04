@@ -27,6 +27,7 @@ test.describe('Vivienda — Apartamento sin PH', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
 
@@ -52,6 +53,7 @@ test.describe('Vivienda — Apartamento sin PH', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         // 1.500.000 → UN MILLÓN QUINIENTOS MIL PESOS
@@ -65,6 +67,7 @@ test.describe('Vivienda — Apartamento sin PH', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertContractNotContains(/PROPIEDAD HORIZONTAL/i);
@@ -86,6 +89,7 @@ test.describe('Vivienda — Apartamento con PH', () => {
             ...contratoApartamentoPH.inmueble,
             arrendador: contratoApartamentoPH.arrendador,
             arrendatario: contratoApartamentoPH.arrendatario,
+            coarrendatario: contratoApartamentoPH.coarrendatario,
             condiciones: contratoApartamentoPH.condiciones,
         });
 
@@ -110,6 +114,7 @@ test.describe('Vivienda — Apartamento con PH', () => {
             ...contratoApartamentoPH.inmueble,
             arrendador: contratoApartamentoPH.arrendador,
             arrendatario: contratoApartamentoPH.arrendatario,
+            coarrendatario: contratoApartamentoPH.coarrendatario,
             condiciones: contratoApartamentoPH.condiciones,
         });
         await form.assertContractContains(/PROPIEDAD HORIZONTAL/i);
@@ -122,6 +127,7 @@ test.describe('Vivienda — Apartamento con PH', () => {
             ...contratoApartamentoPH.inmueble,
             arrendador: contratoApartamentoPH.arrendador,
             arrendatario: contratoApartamentoPH.arrendatario,
+            coarrendatario: contratoApartamentoPH.coarrendatario,
             condiciones: contratoApartamentoPH.condiciones,
         });
         await form.assertContractContains(/Ley 820 de 2003/i);
@@ -144,6 +150,7 @@ test.describe('Vivienda — Casa sin PH', () => {
             ...contratoCasa.inmueble,
             arrendador: contratoCasa.arrendador,
             arrendatario: contratoCasa.arrendatario,
+            coarrendatario: contratoCasa.coarrendatario,
             condiciones: contratoCasa.condiciones,
         });
 
@@ -169,6 +176,7 @@ test.describe('Vivienda — Casa sin PH', () => {
             ...contratoCasa.inmueble,
             arrendador: contratoCasa.arrendador,
             arrendatario: contratoCasa.arrendatario,
+            coarrendatario: contratoCasa.coarrendatario,
             condiciones: contratoCasa.condiciones,
         });
         await form.assertContractNotContains(/PROPIEDAD HORIZONTAL/i);
@@ -181,6 +189,7 @@ test.describe('Vivienda — Casa sin PH', () => {
             ...contratoCasa.inmueble,
             arrendador: contratoCasa.arrendador,
             arrendatario: contratoCasa.arrendatario,
+            coarrendatario: contratoCasa.coarrendatario,
             condiciones: contratoCasa.condiciones,
         });
         await form.assertContractContains(/Ley 820 de 2003/i);
@@ -203,6 +212,7 @@ test.describe('Vivienda — Casa con PH', () => {
             ...contratoCasaPH.inmueble,
             arrendador: contratoCasaPH.arrendador,
             arrendatario: contratoCasaPH.arrendatario,
+            coarrendatario: contratoCasaPH.coarrendatario,
             condiciones: contratoCasaPH.condiciones,
         });
 
@@ -225,6 +235,7 @@ test.describe('Vivienda — Casa con PH', () => {
             ...contratoCasaPH.inmueble,
             arrendador: contratoCasaPH.arrendador,
             arrendatario: contratoCasaPH.arrendatario,
+            coarrendatario: contratoCasaPH.coarrendatario,
             condiciones: contratoCasaPH.condiciones,
         });
         await form.assertContractContains(/PROPIEDAD HORIZONTAL/i);
@@ -246,6 +257,7 @@ test.describe('Comercial — Local Comercial sin PH', () => {
             ...contratoLocalComercialSinPH.inmueble,
             arrendador: contratoLocalComercialSinPH.arrendador,
             arrendatario: contratoLocalComercialSinPH.arrendatario,
+            coarrendatario: contratoLocalComercialSinPH.coarrendatario,
             condiciones: contratoLocalComercialSinPH.condiciones,
         });
 
@@ -270,9 +282,10 @@ test.describe('Comercial — Local Comercial sin PH', () => {
             ...contratoLocalComercialSinPH.inmueble,
             arrendador: contratoLocalComercialSinPH.arrendador,
             arrendatario: contratoLocalComercialSinPH.arrendatario,
+            coarrendatario: contratoLocalComercialSinPH.coarrendatario,
             condiciones: contratoLocalComercialSinPH.condiciones,
         });
-        await form.assertContractContains(/ACTIVIDAD COMERCIAL AUTORIZADA/i);
+        await form.assertContractContains(/Artículo 523 del Código de Comercio/i);
         await form.assertContractContains('Venta de ropa y accesorios');
     });
 
@@ -283,6 +296,7 @@ test.describe('Comercial — Local Comercial sin PH', () => {
             ...contratoLocalComercialSinPH.inmueble,
             arrendador: contratoLocalComercialSinPH.arrendador,
             arrendatario: contratoLocalComercialSinPH.arrendatario,
+            coarrendatario: contratoLocalComercialSinPH.coarrendatario,
             condiciones: contratoLocalComercialSinPH.condiciones,
         });
         await form.assertContractContains(/Código de Comercio/i);
@@ -305,6 +319,7 @@ test.describe('Comercial — Local Comercial con PH', () => {
             ...contratoLocalComercial.inmueble,
             arrendador: contratoLocalComercial.arrendador,
             arrendatario: contratoLocalComercial.arrendatario,
+            coarrendatario: contratoLocalComercial.coarrendatario,
             condiciones: contratoLocalComercial.condiciones,
         });
 
@@ -328,9 +343,11 @@ test.describe('Comercial — Local Comercial con PH', () => {
             ...contratoLocalComercial.inmueble,
             arrendador: contratoLocalComercial.arrendador,
             arrendatario: contratoLocalComercial.arrendatario,
+            coarrendatario: contratoLocalComercial.coarrendatario,
             condiciones: contratoLocalComercial.condiciones,
         });
-        await form.assertContractContains(/ACTIVIDAD COMERCIAL AUTORIZADA/i);
+        await form.assertContractContains(/Artículo 523 del Código de Comercio/i);
+        await form.assertContractContains('Restaurante de comida rápida');
     });
 
     test('incluye ambas cláusulas: PH y actividad comercial', async ({ page }) => {
@@ -340,10 +357,12 @@ test.describe('Comercial — Local Comercial con PH', () => {
             ...contratoLocalComercial.inmueble,
             arrendador: contratoLocalComercial.arrendador,
             arrendatario: contratoLocalComercial.arrendatario,
+            coarrendatario: contratoLocalComercial.coarrendatario,
             condiciones: contratoLocalComercial.condiciones,
         });
         await form.assertContractContains(/PROPIEDAD HORIZONTAL/i);
-        await form.assertContractContains(/ACTIVIDAD COMERCIAL AUTORIZADA/i);
+        await form.assertContractContains(/Artículo 523 del Código de Comercio/i);
+        await form.assertContractContains('Restaurante de comida rápida');
     });
 });
 
@@ -362,6 +381,7 @@ test.describe('Comercial — Oficina sin PH', () => {
             ...contratoOficinaSinPH.inmueble,
             arrendador: contratoOficinaSinPH.arrendador,
             arrendatario: contratoOficinaSinPH.arrendatario,
+            coarrendatario: contratoOficinaSinPH.coarrendatario,
             condiciones: contratoOficinaSinPH.condiciones,
         });
 
@@ -387,6 +407,7 @@ test.describe('Comercial — Oficina sin PH', () => {
             ...contratoOficinaSinPH.inmueble,
             arrendador: contratoOficinaSinPH.arrendador,
             arrendatario: contratoOficinaSinPH.arrendatario,
+            coarrendatario: contratoOficinaSinPH.coarrendatario,
             condiciones: contratoOficinaSinPH.condiciones,
         });
         await form.assertContractNotContains(/ACTIVIDAD COMERCIAL AUTORIZADA/i);
@@ -408,6 +429,7 @@ test.describe('Comercial — Oficina con PH', () => {
             ...contratoOficinaPH.inmueble,
             arrendador: contratoOficinaPH.arrendador,
             arrendatario: contratoOficinaPH.arrendatario,
+            coarrendatario: contratoOficinaPH.coarrendatario,
             condiciones: contratoOficinaPH.condiciones,
         });
 
@@ -431,6 +453,7 @@ test.describe('Comercial — Oficina con PH', () => {
             ...contratoOficinaPH.inmueble,
             arrendador: contratoOficinaPH.arrendador,
             arrendatario: contratoOficinaPH.arrendatario,
+            coarrendatario: contratoOficinaPH.coarrendatario,
             condiciones: contratoOficinaPH.condiciones,
         });
         await form.assertContractContains(/PROPIEDAD HORIZONTAL/i);
@@ -443,6 +466,7 @@ test.describe('Comercial — Oficina con PH', () => {
             ...contratoOficinaPH.inmueble,
             arrendador: contratoOficinaPH.arrendador,
             arrendatario: contratoOficinaPH.arrendatario,
+            coarrendatario: contratoOficinaPH.coarrendatario,
             condiciones: contratoOficinaPH.condiciones,
         });
         await form.assertContractNotContains(/ACTIVIDAD COMERCIAL AUTORIZADA/i);
@@ -461,6 +485,7 @@ test.describe('Plan Gratuito — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertPlanBadge('free');
@@ -473,6 +498,7 @@ test.describe('Plan Gratuito — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertUpgradeBannerVisible();
@@ -487,6 +513,7 @@ test.describe('Plan Gratuito — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
 
@@ -511,6 +538,7 @@ test.describe('Plan Empresarial — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertPlanBadge('empresarial');
@@ -523,6 +551,7 @@ test.describe('Plan Empresarial — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
         await form.assertUpgradeBannerHidden();
@@ -537,6 +566,7 @@ test.describe('Plan Empresarial — UI en Step 5', () => {
             ...contratoVivienda.inmueble,
             arrendador: contratoVivienda.arrendador,
             arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
             condiciones: contratoVivienda.condiciones,
         });
 
@@ -556,6 +586,7 @@ test.describe('Plan Empresarial — UI en Step 5', () => {
             ...contratoApartamentoPH.inmueble,
             arrendador: contratoApartamentoPH.arrendador,
             arrendatario: contratoApartamentoPH.arrendatario,
+            coarrendatario: contratoApartamentoPH.coarrendatario,
             condiciones: contratoApartamentoPH.condiciones,
         });
         await form.assertPlanBadge('empresarial');
@@ -693,5 +724,155 @@ test.describe('Validación de formulario', () => {
 
         // El nombre del arrendador debe conservarse
         await expect(page.locator('#arrendador-nombre')).toHaveValue('Juan Carlos Gómez Martínez');
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 12: Coarrendatario
+// Cubre: toggle activación, datos en contrato, cláusula Vigésima Primera,
+//        validación de campos requeridos, bloque de firma, desactivar toggle
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Coarrendatario', () => {
+    test('el toggle activa y muestra el formulario de coarrendatario', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillInmueble(contratoVivienda.inmueble);
+        await form.fillArrendador(contratoVivienda.arrendador);
+
+        // El formulario de coarrendatario no debe existir antes de activar el toggle
+        await expect(page.locator('#coarrendatario-nombre')).not.toBeVisible();
+
+        await page.getByRole('button', { name: /Agregar coarrendatario/i }).click();
+        await expect(page.locator('#coarrendatario-nombre')).toBeVisible();
+    });
+
+    test('desactivar el toggle oculta el formulario de coarrendatario', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillInmueble(contratoVivienda.inmueble);
+        await form.fillArrendador(contratoVivienda.arrendador);
+
+        // Activar y luego desactivar
+        await page.getByRole('button', { name: /Agregar coarrendatario/i }).click();
+        await expect(page.locator('#coarrendatario-nombre')).toBeVisible();
+
+        await page.getByRole('button', { name: /Agregar coarrendatario/i }).click();
+        await expect(page.locator('#coarrendatario-nombre')).not.toBeVisible();
+    });
+
+    test('el contrato incluye el nombre del coarrendatario', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoVivienda.inmueble,
+            arrendador: contratoVivienda.arrendador,
+            arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
+            condiciones: contratoVivienda.condiciones,
+        });
+        await form.assertContractContains('Carlos Arturo Ruiz Gómez');
+    });
+
+    test('el contrato incluye la cláusula Vigésima Primera de coarrendatarios', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoVivienda.inmueble,
+            arrendador: contratoVivienda.arrendador,
+            arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
+            condiciones: contratoVivienda.condiciones,
+        });
+        await form.assertContractContains(/Vigésima Primera/i);
+        await form.assertContractContains(/Coarrendatarios/i);
+    });
+
+    test('el contrato incluye el bloque de firma del coarrendatario', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoVivienda.inmueble,
+            arrendador: contratoVivienda.arrendador,
+            arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
+            condiciones: contratoVivienda.condiciones,
+        });
+        await form.assertContractContains(/EL COARRENDATARIO/i);
+    });
+
+    test('sin coarrendatario el contrato NO incluye el bloque de firma', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoVivienda.inmueble,
+            arrendador: contratoVivienda.arrendador,
+            arrendatario: contratoVivienda.arrendatario,
+            // sin coarrendatario
+            condiciones: contratoVivienda.condiciones,
+        });
+        await form.assertContractNotContains(/EL COARRENDATARIO/i);
+    });
+
+    test('el contrato con coarrendatario y PH incluye ambas cláusulas', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoApartamentoPH.inmueble,
+            arrendador: contratoApartamentoPH.arrendador,
+            arrendatario: contratoApartamentoPH.arrendatario,
+            coarrendatario: contratoApartamentoPH.coarrendatario,
+            condiciones: contratoApartamentoPH.condiciones,
+        });
+        await form.assertContractContains(/PROPIEDAD HORIZONTAL/i);
+        await form.assertContractContains(/EL COARRENDATARIO/i);
+        await form.assertContractContains('Carlos Arturo Ruiz Gómez');
+    });
+
+    test('Step 3: no avanza si el coarrendatario está activado pero sin nombre', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        await form.goto();
+        await form.fillInmueble(contratoVivienda.inmueble);
+        await form.fillArrendador(contratoVivienda.arrendador);
+
+        // Rellenar arrendatario manualmente
+        await page.fill('#arrendatario-nombre', 'María Fernanda López Castro');
+        await page.locator('#arrendatario-tipo-doc').click();
+        await page.getByRole('option', { name: 'Cédula de Ciudadanía' }).first().click();
+        await page.fill('#arrendatario-num-doc', '9876543210');
+        await page.fill('#arrendatario-tel', '310 987 6543');
+
+        // Activar toggle pero NO llenar el nombre del coarrendatario
+        await page.getByRole('button', { name: /Agregar coarrendatario/i }).click();
+        await page.locator('#coarrendatario-tipo-doc').click();
+        await page.getByRole('option', { name: 'Cédula de Ciudadanía' }).first().click();
+        await page.fill('#coarrendatario-num-doc', '1098765432');
+        await page.fill('#coarrendatario-tel', '320 555 1234');
+
+        await page.getByRole('button', { name: 'Continuar' }).click();
+
+        // Debe seguir en Step 3
+        await expect(page.getByRole('heading', { name: /Condiciones del contrato/i })).not.toBeVisible();
+        await expect(page.getByText(/requerido/i).first()).toBeVisible();
+    });
+
+    test('descarga un PDF válido con coarrendatario', async ({ page }) => {
+        const form = new ArrendamientoFormPage(page);
+        const dir = artifactsDir('coarrendatario');
+
+        await form.goto();
+        await form.fillAllSteps({
+            ...contratoVivienda.inmueble,
+            arrendador: contratoVivienda.arrendador,
+            arrendatario: contratoVivienda.arrendatario,
+            coarrendatario: contratoVivienda.coarrendatario,
+            condiciones: contratoVivienda.condiciones,
+        });
+
+        const pdfPath = path.join(dir, 'contrato-con-coarrendatario.pdf');
+        const { sizeBytes } = await form.downloadPDF(pdfPath);
+
+        assertValidPDF(pdfPath);
+        expect(sizeBytes).toBeGreaterThan(5_000);
     });
 });

@@ -24,6 +24,14 @@ interface PersonaData {
     email: string;
 }
 
+interface CoarrendatarioData {
+    nombre: string;
+    tipoDoc: string;
+    numDoc: string;
+    telefono: string;
+    email: string;
+}
+
 interface CondicionesData {
     fechaInicio: string;
     duracion: string;
@@ -139,7 +147,7 @@ export class ArrendamientoFormPage {
 
     // ── Step 3: Arrendatario ──────────────────────────────────────────────────
 
-    async fillArrendatario(data: PersonaData) {
+    async fillArrendatario(data: PersonaData, coarrendatario?: CoarrendatarioData) {
         await this.page.evaluate(() => window.scrollTo(0, 0));
         await this.page.fill('#arrendatario-nombre', data.nombre);
 
@@ -154,8 +162,32 @@ export class ArrendamientoFormPage {
         await this.page.fill('#arrendatario-tel', data.telefono);
         if (data.email) await this.page.fill('#arrendatario-email', data.email);
 
+        if (coarrendatario) {
+            await this.fillCoarrendatario(coarrendatario);
+        }
+
         await this.page.getByRole('button', { name: 'Continuar' }).click();
         await this.page.waitForSelector('h2:has-text("Condiciones del contrato")');
+    }
+
+    // ── Step 3: Coarrendatario (toggle + campos) ──────────────────────────────
+
+    async fillCoarrendatario(data: CoarrendatarioData) {
+        // Activar el toggle de coarrendatario
+        await this.page.getByRole('button', { name: /Agregar coarrendatario/i }).click();
+        await this.page.waitForSelector('#coarrendatario-nombre');
+
+        await this.page.fill('#coarrendatario-nombre', data.nombre);
+
+        await this.page.locator('#coarrendatario-tipo-doc').click();
+        await this.page
+            .getByRole('option', { name: docLabel(data.tipoDoc) })
+            .first()
+            .click();
+
+        await this.page.fill('#coarrendatario-num-doc', data.numDoc);
+        await this.page.fill('#coarrendatario-tel', data.telefono);
+        if (data.email) await this.page.fill('#coarrendatario-email', data.email);
     }
 
     // ── Step 4: Condiciones ───────────────────────────────────────────────────
@@ -185,12 +217,13 @@ export class ArrendamientoFormPage {
         data: Parameters<typeof this.fillInmueble>[0] & {
             arrendador: PersonaData;
             arrendatario: PersonaData;
+            coarrendatario?: CoarrendatarioData;
             condiciones: CondicionesData;
         }
     ) {
         await this.fillInmueble(data);
         await this.fillArrendador(data.arrendador);
-        await this.fillArrendatario(data.arrendatario);
+        await this.fillArrendatario(data.arrendatario, data.coarrendatario);
         await this.fillCondiciones(data.condiciones, data.tipo);
     }
 
