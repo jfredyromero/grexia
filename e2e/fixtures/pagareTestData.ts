@@ -48,6 +48,7 @@ export const pagareSimple = {
         fechaVencimiento: '2027-02-22',
         departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
+        tasaNominal: '1.2',
         mora: '',
     },
 } as const;
@@ -66,6 +67,7 @@ export const pagareEnCuotas = {
         periodoCuotas: 'mensual' as const,
         departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
+        tasaNominal: '1.0',
         mora: '',
     },
 } as const;
@@ -84,6 +86,7 @@ export const pagareEnCuotasBimestral = {
         periodoCuotas: 'bimestral' as const,
         departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
+        tasaNominal: '0.8',
         mora: '',
     },
 } as const;
@@ -102,6 +105,7 @@ export const pagareEnCuotasTrimestral = {
         periodoCuotas: 'trimestral' as const,
         departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
+        tasaNominal: '0.9',
         mora: '',
     },
 } as const;
@@ -118,6 +122,7 @@ export const pagareNIT = {
         fechaVencimiento: '2027-03-15',
         departamento: 'Bogotá',
         ciudad: 'Bogotá D.C.',
+        tasaNominal: '1.5',
         mora: '1.5',
     },
 } as const;

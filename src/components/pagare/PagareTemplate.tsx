@@ -1,481 +1,409 @@
 import type { PagareFormData, PlanTier } from './types';
-import { formatCOP, formatDate, numberToWordsCOP } from './pagareUtils';
+import { formatCOP, formatDate, numberToWordsCOP, periodoLabel } from './pagareUtils';
 
 interface PagareTemplateProps {
     formData: PagareFormData;
-    plan: PlanTier;
+    plan?: PlanTier;
     logoUrl?: string;
 }
 
-const PERIODO_LABELS: Record<string, string> = {
-    mensual: 'mensuales',
-    bimestral: 'bimestrales',
-    trimestral: 'trimestrales',
-};
+function docTypeLabel(tipo: string): string {
+    if (tipo === 'CC') return 'cédula de ciudadanía No.';
+    if (tipo === 'CE') return 'cédula de extranjería No.';
+    if (tipo === 'NIT') return 'NIT No.';
+    if (tipo === 'Pasaporte') return 'pasaporte No.';
+    return 'documento No.';
+}
 
-export default function PagareTemplate({ formData, plan, logoUrl }: PagareTemplateProps) {
+export default function PagareTemplate({ formData, plan = 'free', logoUrl }: PagareTemplateProps) {
     const { acreedor, deudor, obligacion } = formData;
-    const isFree = plan === 'free';
 
     const valorNum = parseInt(obligacion.valorPrincipal.replace(/\D/g, ''), 10) || 0;
-    const valorCOP = valorNum > 0 ? formatCOP(obligacion.valorPrincipal) : '$ ___________________';
-    const valorLetras = valorNum > 0 ? numberToWordsCOP(valorNum).toUpperCase() : '___________________';
+    const valorFormatted = obligacion.valorPrincipal ? formatCOP(obligacion.valorPrincipal) : '$ ___________________';
+    const valorWords = valorNum > 0 ? numberToWordsCOP(valorNum).toUpperCase() : '___________________';
 
-    const moraTxt = obligacion.tasaInteresMora
+    const fechaSuscripcionStr = obligacion.fechaSuscripcion
+        ? formatDate(obligacion.fechaSuscripcion)
+        : '___________________';
+    const fechaVencimientoStr = obligacion.fechaVencimiento
+        ? formatDate(obligacion.fechaVencimiento)
+        : '___________________';
+
+    const ciudadStr = obligacion.ciudadSuscripcion || '___________________';
+    const ciudadDeudorStr = deudor.ciudadResidencia || '___________________';
+
+    const ACREEDOR_DOC = `${docTypeLabel(acreedor.tipoDocumento)} ${acreedor.numeroDocumento || '_______________'}`;
+    const DEUDOR_DOC = `${docTypeLabel(deudor.tipoDocumento)} ${deudor.numeroDocumento || '_______________'}`;
+
+    const isFree = plan === 'free';
+    const isPaid = plan === 'empresarial';
+
+    const tasaMora = obligacion.tasaInteresMora
         ? `${obligacion.tasaInteresMora}% mensual`
-        : 'la tasa máxima legal vigente certificada por la Superintendencia Financiera de Colombia';
+        : 'tasa máxima legal vigente certificada por la Superintendencia Financiera de Colombia';
 
-    const rowStyle: React.CSSProperties = {
-        display: 'flex',
-        gap: '4px',
-        marginBottom: '3px',
-        fontSize: '10px',
-    };
-    const lblStyle: React.CSSProperties = { color: '#64748b', minWidth: '72px', flexShrink: 0 };
-    const valStyle: React.CSSProperties = { fontWeight: 700, color: '#1e293b' };
+    // Payment schedule description
+    let pagoDesc: string;
+    if (!obligacion.modalidadPago) {
+        pagoDesc = 'por definir';
+    } else if (obligacion.modalidadPago === 'unico') {
+        pagoDesc = `Pago único con vencimiento el ${fechaVencimientoStr}`;
+    } else {
+        const pl = periodoLabel(obligacion.periodoCuotas, obligacion.numeroCuotas);
+        pagoDesc = `${obligacion.numeroCuotas || '___'} cuotas ${pl}`;
+    }
 
     return (
-        <div
-            className="relative bg-white"
-            style={{
-                fontFamily: "'Times New Roman', Times, serif",
-                fontSize: '11px',
-                lineHeight: '1.55',
-                color: '#1e293b',
-            }}
-        >
-            {/* Diagonal watermark */}
+        <div className="relative bg-white font-serif text-[10px] text-slate-800 leading-relaxed">
+            {/* ── Watermark ── */}
             {isFree && (
                 <div
                     aria-hidden="true"
-                    style={{
-                        position: 'absolute',
-                        top: '44%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%) rotate(-42deg)',
-                        fontSize: '76px',
-                        fontWeight: 900,
-                        color: 'rgba(17, 47, 79, 0.10)',
-                        whiteSpace: 'nowrap',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        zIndex: 0,
-                        fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
-                        letterSpacing: '8px',
-                    }}
+                    className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden z-10"
+                    style={{ transform: 'rotate(-42deg)' }}
                 >
-                    LEXIA
+                    <span
+                        className="text-[180px] font-black tracking-widest opacity-[0.06] text-[#112F4F]"
+                        style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
+                    >
+                        LEXIA
+                    </span>
                 </div>
             )}
 
-            <div style={{ position: 'relative', zIndex: 1, padding: '40px 48px' }}>
-                {/* ── HEADER ── */}
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '14px',
-                    }}
-                >
-                    {isFree ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* ── Page wrapper ── */}
+            <div className="max-w-[794px] mx-auto px-14 py-10">
+                {/* ── Header ── */}
+                <div className="flex items-center justify-between mb-2">
+                    {/* Logo */}
+                    <div className="flex items-center gap-2">
+                        {isPaid && logoUrl ? (
                             <img
-                                src="/logo.svg"
-                                alt="Lexia"
-                                style={{ height: '38px', width: '38px', objectFit: 'contain', flexShrink: 0 }}
+                                src={logoUrl}
+                                alt="Logo"
+                                className="h-8 max-w-[130px] object-contain"
                             />
-                            <div
-                                style={{
-                                    width: '1px',
-                                    height: '30px',
-                                    backgroundColor: '#e2e8f0',
-                                    flexShrink: 0,
-                                }}
-                            />
-                            <span
-                                style={{
-                                    fontSize: '22px',
-                                    fontWeight: 900,
-                                    letterSpacing: '0.05em',
-                                    color: '#112F4F',
-                                    fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
-                                    textTransform: 'uppercase',
-                                }}
-                            >
-                                LEXIA
+                        ) : !isPaid ? (
+                            <>
+                                <img
+                                    src="/logo.svg"
+                                    alt="Lexia"
+                                    className="h-7"
+                                />
+                                <span className="text-lg font-black tracking-[2.5px] text-[#112F4F]">LEXIA</span>
+                            </>
+                        ) : null}
+                    </div>
+                    {/* Title */}
+                    <div className="text-right">
+                        <h1 className="text-xl font-black tracking-[2px] text-[#112F4F] leading-tight">PAGARÉ</h1>
+                        <p className="text-[9px] text-slate-500 mt-0.5">Título Valor · Código de Comercio</p>
+                    </div>
+                </div>
+                <div className="border-b-[1.5px] border-[#112F4F] mb-4" />
+
+                {/* ── Info Box: Valor + Ciudad/Fecha ── */}
+                <div className="flex border-[1.5px] border-[#1b3070] rounded mb-3">
+                    <div className="flex-[3] p-3 border-r border-dashed border-[#1b3070]">
+                        <p className="text-[7px] font-bold uppercase tracking-[0.6px] text-slate-700 mb-1">
+                            Valor del Pagaré
+                        </p>
+                        <p className="text-[20px] font-black text-slate-900 leading-none mb-1">{valorFormatted}</p>
+                        <p className="text-[8px] text-slate-700 uppercase tracking-[0.3px] border-t border-dashed border-slate-300 pt-1 mt-1">
+                            SON: {valorWords} M/L
+                        </p>
+                    </div>
+                    <div className="flex-[2] p-3">
+                        <p className="text-[7px] font-bold uppercase tracking-[0.6px] text-slate-700 mb-1">
+                            Ciudad y Fecha de Suscripción
+                        </p>
+                        <p className="text-[10px] font-black text-slate-900 mb-1">
+                            {ciudadStr}, {fechaSuscripcionStr}
+                        </p>
+                    </div>
+                </div>
+
+                {/* ── Parties Box: Acreedor | Deudor ── */}
+                <div className="flex bg-[#EBF4FF] border border-[#1b3070] rounded mb-3">
+                    <div className="flex-1 p-3 border-r border-dashed border-[#1b3070]">
+                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-[#1b3070] border-b border-[#1b3070] pb-1 mb-2">
+                            Acreedor(a)
+                        </p>
+                        <p className="font-black text-[9.5px] text-slate-900 mb-1">
+                            {acreedor.nombreCompleto || '___________________'}
+                        </p>
+                        <p className="text-[9px] text-slate-800 leading-relaxed">
+                            <span className="font-bold">{acreedor.tipoDocumento || 'Doc.'}: </span>
+                            {acreedor.numeroDocumento || '___________________'}
+                        </p>
+                        <p className="text-[9px] text-slate-800 leading-relaxed">
+                            <span className="font-bold">Teléfono: </span>
+                            {acreedor.telefono || '___________________'}
+                        </p>
+                        {acreedor.email && (
+                            <p className="text-[9px] text-slate-800 leading-relaxed">
+                                <span className="font-bold">Correo: </span>
+                                {acreedor.email}
+                            </p>
+                        )}
+                    </div>
+                    <div className="flex-1 p-3">
+                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-[#1b3070] border-b border-[#1b3070] pb-1 mb-2">
+                            Deudor(a)
+                        </p>
+                        <p className="font-black text-[9.5px] text-slate-900 mb-1">
+                            {deudor.nombreCompleto || '___________________'}
+                        </p>
+                        <p className="text-[9px] text-slate-800 leading-relaxed">
+                            <span className="font-bold">{deudor.tipoDocumento || 'Doc.'}: </span>
+                            {deudor.numeroDocumento || '___________________'}
+                        </p>
+                        <p className="text-[9px] text-slate-800 leading-relaxed">
+                            <span className="font-bold">Ciudad: </span>
+                            {ciudadDeudorStr}
+                        </p>
+                        <p className="text-[9px] text-slate-800 leading-relaxed">
+                            <span className="font-bold">Teléfono: </span>
+                            {deudor.telefono || '___________________'}
+                        </p>
+                        {deudor.email && (
+                            <p className="text-[9px] text-slate-800 leading-relaxed">
+                                <span className="font-bold">Correo: </span>
+                                {deudor.email}
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                {/* ── Intro / Declaration ── */}
+                <p className="text-[10px] text-slate-800 leading-[1.65] text-justify mb-3">
+                    Yo, <strong>{deudor.nombreCompleto || '___________________'}</strong>, mayor de edad,
+                    identificado(a) con {DEUDOR_DOC}, domiciliado(a) en {ciudadDeudorStr}, declaro que me comprometo a
+                    pagar incondicionalmente a la orden de{' '}
+                    <strong>{acreedor.nombreCompleto || '___________________'}</strong>, identificado(a) con{' '}
+                    {ACREEDOR_DOC}, o a quien represente sus derechos, en la ciudad de <strong>{ciudadStr}</strong> y en
+                    las condiciones señaladas en este título valor, la suma de <strong>{valorFormatted}</strong> (
+                    {valorWords} M/L), de conformidad con las siguientes estipulaciones:
+                </p>
+
+                {/* ── Conditions Box ── */}
+                <div className="border border-dashed border-slate-500 rounded p-3 mb-4">
+                    <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-slate-700 mb-2">
+                        Condiciones de Pago
+                    </p>
+                    <div className="flex gap-1 text-[9.5px] text-slate-800 leading-[1.55] mb-1">
+                        <span className="font-black">Modalidad:</span>
+                        <span>{pagoDesc}</span>
+                    </div>
+                    {obligacion.modalidadPago === 'cuotas' && (
+                        <div className="flex gap-1 text-[9.5px] text-slate-800 leading-[1.55] mb-1">
+                            <span className="font-black">Cuotas:</span>
+                            <span>
+                                {obligacion.numeroCuotas || '___'}{' '}
+                                {periodoLabel(obligacion.periodoCuotas, obligacion.numeroCuotas)}
                             </span>
                         </div>
-                    ) : logoUrl ? (
-                        <img
-                            src={logoUrl}
-                            alt="Logo"
-                            style={{ height: '48px', objectFit: 'contain' }}
-                        />
-                    ) : (
-                        <div style={{ height: '48px' }} />
                     )}
-                    <div style={{ textAlign: 'right' }}>
-                        <div
-                            style={{
-                                fontSize: '30px',
-                                fontWeight: 900,
-                                color: '#112F4F',
-                                letterSpacing: '4px',
-                                lineHeight: 1,
-                            }}
-                        >
-                            PAGARÉ
-                        </div>
-                        <div style={{ fontSize: '9px', color: '#64748b', marginTop: '4px' }}>
-                            Título Valor · Código de Comercio de Colombia
-                        </div>
+                    <div className="flex gap-1 text-[9.5px] text-slate-800 leading-[1.55] mb-1">
+                        <span className="font-black">Intereses de mora:</span>
+                        <span>{tasaMora}</span>
+                    </div>
+                    <div className="flex gap-1 text-[9.5px] text-slate-800 leading-[1.55]">
+                        <span className="font-black">Ciudad de pago:</span>
+                        <span>{ciudadStr}</span>
                     </div>
                 </div>
 
-                <hr style={{ border: 'none', borderTop: '2.5px solid #112F4F', marginBottom: '14px' }} />
+                {/* ── Clauses ── */}
+                <p className="text-[8px] font-bold uppercase tracking-[0.8px] text-slate-700 border-b border-slate-300 pb-1 mb-3">
+                    Cláusulas
+                </p>
 
-                {/* ── AMOUNT BOX ── */}
-                <div
-                    style={{
-                        border: '1.5px solid #1b3070',
-                        borderRadius: '5px',
-                        padding: '12px 16px',
-                        backgroundColor: '#eef2ff',
-                        marginBottom: '14px',
-                    }}
-                >
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            justifyContent: 'space-between',
-                            gap: '16px',
-                            marginBottom: '10px',
-                        }}
-                    >
-                        <div>
-                            <div
-                                style={{
-                                    fontSize: '8px',
-                                    fontWeight: 700,
-                                    color: '#1b3070',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '1px',
-                                    marginBottom: '4px',
-                                }}
-                            >
-                                Valor del Pagaré
-                            </div>
-                            <div
-                                style={{
-                                    fontSize: '22px',
-                                    fontWeight: 900,
-                                    color: '#1b3070',
-                                    letterSpacing: '-0.5px',
-                                }}
-                            >
-                                {valorCOP}
-                            </div>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                            <div
-                                style={{
-                                    fontSize: '8px',
-                                    fontWeight: 700,
-                                    color: '#1b3070',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '1px',
-                                    marginBottom: '4px',
-                                }}
-                            >
-                                Ciudad y Fecha
-                            </div>
-                            <div style={{ fontWeight: 700, fontSize: '11px' }}>
-                                {obligacion.ciudadSuscripcion || '___________________'}
-                                {obligacion.fechaSuscripcion
-                                    ? `, ${formatDate(obligacion.fechaSuscripcion)}`
-                                    : ', ___________________'}
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        style={{
-                            paddingTop: '8px',
-                            borderTop: '1px dashed #a5b4fc',
-                            fontSize: '10px',
-                        }}
-                    >
-                        <span style={{ color: '#64748b', fontWeight: 700 }}>SON:&nbsp;</span>
-                        <span style={{ fontStyle: 'italic' }}>{valorLetras} PESOS MONEDA CORRIENTE</span>
+                {/* PRIMERA */}
+                <div className="mb-3">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>PRIMERA.</strong> <strong>– OBJETO:</strong> Que por virtud del presente título valor
+                        pagaré incondicionalmente a la orden de:{' '}
+                        <strong>{acreedor.nombreCompleto || '________________________________'}</strong>, identificado{' '}
+                        {ACREEDOR_DOC} o a quien represente sus derechos, en la ciudad y dirección indicados, y en las
+                        fechas de amortización por cuotas señaladas en la cláusula tercera de este pagaré, la suma de{' '}
+                        <strong>
+                            {valorWords} ({valorFormatted})
+                        </strong>
+                        , más los intereses señalados en la cláusula segunda de este documento.
+                    </p>
+                </div>
+
+                {/* SEGUNDA */}
+                <div className="mb-3">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>SEGUNDA.</strong> <strong>– INTERESES:</strong> Que sobre la suma debida se reconocerán
+                        intereses corrientes a una tasa nominal mensual del{' '}
+                        {obligacion.tasaInteresNominal ? (
+                            <>
+                                <strong>{obligacion.tasaInteresNominal}%</strong>
+                            </>
+                        ) : (
+                            '____________________________________'
+                        )}
+                        . Sin embargo, en caso de mora en el cumplimiento de las cuotas señaladas en la cláusula tercera
+                        de este pagaré, cancelaré intereses de mora a un tasa nominal mensual del{' '}
+                        {obligacion.tasaInteresMora ? (
+                            <>
+                                <strong>{obligacion.tasaInteresMora}%</strong> mensual
+                            </>
+                        ) : (
+                            '____________________'
+                        )}{' '}
+                        sobre el saldo de capital que llegue a estar en mora.
+                    </p>
+                    <div className="mt-2 pl-4 border-l-[1.5px] border-slate-300">
+                        <p className="text-[9.5px] text-slate-700 leading-[1.6] text-justify">
+                            <span className="text-[8px] font-bold uppercase text-slate-500 tracking-[0.3px] block mb-0.5">
+                                Intereses moratorios
+                            </span>
+                            Los intereses moratorios se causarán sobre las sumas vencidas y no pagadas, desde el día
+                            siguiente al del vencimiento de la obligación o de cada cuota, según el caso, hasta el día
+                            del pago efectivo.
+                        </p>
                     </div>
                 </div>
 
-                {/* ── PARTIES ── */}
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr',
-                        gap: '12px',
-                        marginBottom: '14px',
-                    }}
-                >
+                {/* TERCERA */}
+                <div className="mb-3">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>TERCERA.</strong> <strong>–PLAZO:</strong>{' '}
+                        {obligacion.modalidadPago === 'unico' ? (
+                            <>
+                                Que pagaré el capital indicado en la cláusula primera de este pagaré en un único pago
+                                con vencimiento el <strong>{fechaVencimientoStr}</strong>.
+                            </>
+                        ) : obligacion.modalidadPago === 'cuotas' ? (
+                            <>
+                                Que pagaré el capital indicado en la cláusula primera de este pagaré mediante{' '}
+                                <strong>{obligacion.numeroCuotas || '____________'}</strong> cuotas iguales,{' '}
+                                {periodoLabel(obligacion.periodoCuotas, obligacion.numeroCuotas)} y sucesivas cada una
+                                de ellas. La primera de estas cuotas se cancelará el día _____________________ y de allí
+                                en adelante en forma {periodoLabel(obligacion.periodoCuotas, '1')} el último día de cada
+                                período.
+                            </>
+                        ) : (
+                            <>
+                                Que pagaré el capital indicado en la cláusula primera de este pagaré mediante
+                                ____________ cuotas iguales, mensuales y sucesivas cada una de ellas por un monto de
+                                __________________________. La primera de estas cuotas se cancelará el día
+                                _____________________y de allí en adelante en forma mensual el último día de cada mes.
+                            </>
+                        )}
+                    </p>
+                    <div className="mt-2 pl-4 border-l-[1.5px] border-slate-300">
+                        <p className="text-[9.5px] text-slate-700 leading-[1.6] text-justify">
+                            <span className="text-[8px] font-bold uppercase text-slate-500 tracking-[0.3px] block mb-0.5">
+                                Transferible por endoso
+                            </span>
+                            El presente pagaré es transferible por endoso y el tenedor podrá hacer exigible la
+                            obligación total o parcialmente según los términos pactados.
+                        </p>
+                    </div>
+                </div>
+
+                {/* CUARTA */}
+                <div className="mb-3">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>CUARTA.</strong> <strong>–CLAUSULA ACELERATORIA:</strong> El tenedor del presente pagaré
+                        podrá declarar vencidos la totalidad de los plazos de esta obligación o de las cuotas que
+                        constituyan el saldo de lo debido y exigir su pago inmediato ya sea judicial o
+                        extrajudicialmente, cuando el deudor entre en mora o incumpla una cualquiera de las obligaciones
+                        derivadas del presente documento.
+                    </p>
+                    <div className="mt-2 pl-4 border-l-[1.5px] border-slate-300">
+                        <p className="text-[9.5px] text-slate-700 leading-[1.6] text-justify">
+                            <span className="text-[8px] font-bold uppercase text-slate-500 tracking-[0.3px] block mb-0.5">
+                                Mérito ejecutivo
+                            </span>
+                            El presente pagaré presta mérito ejecutivo y podrá ser cobrado judicialmente sin necesidad
+                            de requerimiento previo al deudor, de conformidad con las normas del Código de Comercio y el
+                            Código General del Proceso.
+                        </p>
+                    </div>
+                </div>
+
+                {/* QUINTA */}
+                <div className="mb-3">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>QUINTA</strong> <strong>– IMPUESTO DE TIMBRE:</strong> Los gastos originados por
+                        concepto de impuesto de timbre correrán a cargo de EL DEUDOR.
+                    </p>
+                </div>
+
+                {/* ADICIONAL: Domicilio contractual */}
+                <div className="mb-4">
+                    <p className="text-[10px] text-slate-800 leading-[1.65] text-justify">
+                        <strong>SEXTA</strong> <strong>– DOMICILIO CONTRACTUAL:</strong> Para todos los efectos legales
+                        derivados del presente pagaré, las partes acuerdan como domicilio contractual la ciudad de{' '}
+                        <strong>{ciudadStr}</strong>, sin perjuicio de la competencia de otras jurisdicciones que la ley
+                        señale de manera imperativa.
+                    </p>
+                </div>
+
+                {/* ── Closing statement ── */}
+                <p className="text-[10px] text-slate-800 leading-[1.65] text-justify mb-10">
+                    En Constancia de lo anterior, se suscribe este documento en la ciudad de{' '}
+                    <strong>{ciudadStr}</strong> el <strong>{fechaSuscripcionStr}</strong>.
+                </p>
+
+                {/* ── Signature blocks ── */}
+                <div className="grid grid-cols-2 gap-8 mt-10">
                     {/* Deudor */}
-                    <div
-                        style={{
-                            border: '1px solid #e2e8f0',
-                            borderRadius: '4px',
-                            padding: '10px 12px',
-                            backgroundColor: '#f8fafc',
-                        }}
-                    >
-                        <div
-                            style={{
-                                fontSize: '8.5px',
-                                fontWeight: 900,
-                                color: '#1b3070',
-                                textTransform: 'uppercase',
-                                letterSpacing: '1.5px',
-                                marginBottom: '7px',
-                                paddingBottom: '5px',
-                                borderBottom: '1px solid #e2e8f0',
-                            }}
-                        >
-                            Deudor(a)
-                        </div>
-                        <div style={rowStyle}>
-                            <span style={lblStyle}>Nombre:</span>
-                            <span style={valStyle}>{deudor.nombreCompleto || '___________________'}</span>
-                        </div>
-                        <div style={rowStyle}>
-                            <span style={lblStyle}>{deudor.tipoDocumento || 'Doc.'}:</span>
-                            <span style={valStyle}>{deudor.numeroDocumento || '___________________'}</span>
-                        </div>
-                        <div style={rowStyle}>
-                            <span style={lblStyle}>Ciudad:</span>
-                            <span style={valStyle}>{deudor.ciudadResidencia || '___________________'}</span>
-                        </div>
-                        {deudor.telefono && (
-                            <div style={rowStyle}>
-                                <span style={lblStyle}>Teléfono:</span>
-                                <span style={valStyle}>{deudor.telefono}</span>
+                    <div>
+                        <div className="border-t-[1.5px] border-slate-400 pt-2 flex gap-3 items-start">
+                            <div className="flex-1">
+                                <p className="font-black text-[10px] text-slate-900 mb-0.5">
+                                    {deudor.nombreCompleto || '___________________'}
+                                </p>
+                                <p className="text-[9px] text-slate-700">
+                                    DEUDOR · {deudor.tipoDocumento || 'Doc.'}{' '}
+                                    {deudor.numeroDocumento || '___________________'}
+                                </p>
+                                {deudor.email && <p className="text-[9px] text-slate-700">{deudor.email}</p>}
                             </div>
-                        )}
-                        {deudor.email && (
-                            <div style={rowStyle}>
-                                <span style={lblStyle}>Correo:</span>
-                                <span style={valStyle}>{deudor.email}</span>
+                            <div className="border border-slate-400 rounded w-14 h-16 flex items-end justify-center pb-1 shrink-0">
+                                <span className="text-[7px] text-slate-400 uppercase tracking-[0.5px]">Huella</span>
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Acreedor */}
-                    <div
-                        style={{
-                            border: '1px solid #e2e8f0',
-                            borderRadius: '4px',
-                            padding: '10px 12px',
-                            backgroundColor: '#f8fafc',
-                        }}
-                    >
-                        <div
-                            style={{
-                                fontSize: '8.5px',
-                                fontWeight: 900,
-                                color: '#1b3070',
-                                textTransform: 'uppercase',
-                                letterSpacing: '1.5px',
-                                marginBottom: '7px',
-                                paddingBottom: '5px',
-                                borderBottom: '1px solid #e2e8f0',
-                            }}
-                        >
-                            Acreedor(a)
-                        </div>
-                        <div style={rowStyle}>
-                            <span style={lblStyle}>Nombre:</span>
-                            <span style={valStyle}>{acreedor.nombreCompleto || '___________________'}</span>
-                        </div>
-                        <div style={rowStyle}>
-                            <span style={lblStyle}>{acreedor.tipoDocumento || 'Doc.'}:</span>
-                            <span style={valStyle}>{acreedor.numeroDocumento || '___________________'}</span>
-                        </div>
-                        {acreedor.telefono && (
-                            <div style={rowStyle}>
-                                <span style={lblStyle}>Teléfono:</span>
-                                <span style={valStyle}>{acreedor.telefono}</span>
-                            </div>
-                        )}
-                        {acreedor.email && (
-                            <div style={rowStyle}>
-                                <span style={lblStyle}>Correo:</span>
-                                <span style={valStyle}>{acreedor.email}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* ── OBLIGATION TEXT ── */}
-                <p style={{ marginBottom: '12px', textAlign: 'justify' }}>
-                    Yo, <strong>{deudor.nombreCompleto || '___________________'}</strong>, identificado(a) con{' '}
-                    {deudor.tipoDocumento || '___'} No.{' '}
-                    <strong>{deudor.numeroDocumento || '___________________'}</strong>, residente en{' '}
-                    <strong>{deudor.ciudadResidencia || '___________________'}</strong>, me comprometo a pagar
-                    incondicionalmente y a la orden de{' '}
-                    <strong>{acreedor.nombreCompleto || '___________________'}</strong>, identificado(a) con{' '}
-                    {acreedor.tipoDocumento || '___'} No.{' '}
-                    <strong>{acreedor.numeroDocumento || '___________________'}</strong>, la suma de{' '}
-                    <strong>{valorCOP}</strong> (<em>{valorLetras} PESOS M/L</em>).
-                </p>
-
-                {/* ── PAYMENT CONDITIONS ── */}
-                <div
-                    style={{
-                        border: '1px dashed #94a3b8',
-                        borderRadius: '4px',
-                        padding: '10px 14px',
-                        marginBottom: '14px',
-                        backgroundColor: '#fafafa',
-                    }}
-                >
-                    <div
-                        style={{
-                            fontSize: '8.5px',
-                            fontWeight: 700,
-                            color: '#1b3070',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            marginBottom: '6px',
-                        }}
-                    >
-                        Condiciones de Pago
-                    </div>
-                    {obligacion.modalidadPago === 'unico' && (
-                        <p style={{ marginBottom: '6px' }}>
-                            Pago único: a más tardar el{' '}
-                            <strong>
-                                {obligacion.fechaVencimiento
-                                    ? formatDate(obligacion.fechaVencimiento)
-                                    : '___________________'}
-                            </strong>
-                            .
-                        </p>
-                    )}
-                    {obligacion.modalidadPago === 'cuotas' && obligacion.numeroCuotas && obligacion.periodoCuotas && (
-                        <p style={{ marginBottom: '6px' }}>
-                            En <strong>{obligacion.numeroCuotas}</strong> cuotas{' '}
-                            <strong>{PERIODO_LABELS[obligacion.periodoCuotas] || obligacion.periodoCuotas}</strong>{' '}
-                            iguales y consecutivas, a partir del mes siguiente a la fecha de suscripción.
-                        </p>
-                    )}
-                    {!obligacion.modalidadPago && (
-                        <p style={{ color: '#94a3b8', marginBottom: '6px' }}>Condiciones de pago por definir.</p>
-                    )}
-                    <div style={{ fontSize: '10px', marginTop: '4px' }}>
-                        <span style={{ color: '#64748b' }}>Intereses de mora: </span>
-                        <strong>{moraTxt}</strong>
-                    </div>
-                </div>
-
-                {/* ── CLAUSES ── */}
-                <div style={{ marginBottom: '16px' }}>
-                    <div
-                        style={{
-                            fontSize: '8.5px',
-                            fontWeight: 700,
-                            color: '#1b3070',
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            marginBottom: '8px',
-                        }}
-                    >
-                        Cláusulas
-                    </div>
-                    <p style={{ marginBottom: '6px', textAlign: 'justify' }}>
-                        <strong>PRIMERA.</strong> El presente pagaré presta mérito ejecutivo y es exigible conforme a
-                        los artículos 621 y siguientes del Código de Comercio de Colombia. El deudor renuncia
-                        expresamente al proceso ordinario y se somete al proceso ejecutivo para su cobro.
-                    </p>
-                    <p style={{ marginBottom: '6px', textAlign: 'justify' }}>
-                        <strong>SEGUNDA.</strong> En caso de mora en el pago, el deudor reconocerá intereses moratorios
-                        a la tasa de <strong>{moraTxt}</strong>, sin perjuicio del cobro de honorarios de cobranza y
-                        costas judiciales a que haya lugar.
-                    </p>
-                    <p style={{ marginBottom: '6px', textAlign: 'justify' }}>
-                        <strong>TERCERA.</strong> El presente pagaré es transferible por endoso, conforme a las normas
-                        que regulan los títulos valores en Colombia, sin que sea necesario el consentimiento del deudor
-                        para su negociación.
-                    </p>
-                    <p style={{ textAlign: 'justify' }}>
-                        <strong>CUARTA.</strong> Para todos los efectos legales derivados del presente título valor, las
-                        partes señalan como domicilio contractual la ciudad de{' '}
-                        <strong>{obligacion.ciudadSuscripcion || '___________________'}</strong> y se someten a la
-                        jurisdicción de sus jueces competentes.
-                    </p>
-                </div>
-
-                <hr
-                    style={{
-                        border: 'none',
-                        borderTop: '1px solid #e2e8f0',
-                        marginBottom: '24px',
-                    }}
-                />
-
-                {/* ── SIGNATURES ── */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px' }}>
                     <div>
-                        <div
-                            style={{
-                                height: '56px',
-                                borderBottom: '1px solid #334155',
-                                marginBottom: '8px',
-                            }}
-                        />
-                        <p style={{ fontWeight: 700 }}>{deudor.nombreCompleto || '___________________'}</p>
-                        <p style={{ color: '#64748b', fontSize: '10px', marginTop: '2px' }}>
-                            DEUDOR · {deudor.tipoDocumento || '___'} {deudor.numeroDocumento || '___'}
-                        </p>
-                        {deudor.email && <p style={{ color: '#64748b', fontSize: '10px' }}>{deudor.email}</p>}
-                    </div>
-                    <div>
-                        <div
-                            style={{
-                                height: '56px',
-                                borderBottom: '1px solid #334155',
-                                marginBottom: '8px',
-                            }}
-                        />
-                        <p style={{ fontWeight: 700 }}>{acreedor.nombreCompleto || '___________________'}</p>
-                        <p style={{ color: '#64748b', fontSize: '10px', marginTop: '2px' }}>
-                            ACREEDOR · {acreedor.tipoDocumento || '___'} {acreedor.numeroDocumento || '___'}
-                        </p>
-                        {acreedor.email && <p style={{ color: '#64748b', fontSize: '10px' }}>{acreedor.email}</p>}
+                        <div className="border-t-[1.5px] border-slate-400 pt-2 flex gap-3 items-start">
+                            <div className="flex-1">
+                                <p className="font-black text-[10px] text-slate-900 mb-0.5">
+                                    {acreedor.nombreCompleto || '___________________'}
+                                </p>
+                                <p className="text-[9px] text-slate-700">
+                                    ACREEDOR · {acreedor.tipoDocumento || 'Doc.'}{' '}
+                                    {acreedor.numeroDocumento || '___________________'}
+                                </p>
+                                {acreedor.email && <p className="text-[9px] text-slate-700">{acreedor.email}</p>}
+                            </div>
+                            <div className="border border-slate-400 rounded w-14 h-16 flex items-end justify-center pb-1 shrink-0">
+                                <span className="text-[7px] text-slate-400 uppercase tracking-[0.5px]">Huella</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* ── FOOTER (all plans) ── */}
-                <div
-                    style={{
-                        marginTop: '24px',
-                        paddingTop: '12px',
-                        borderTop: '1px solid #e2e8f0',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        gap: '12px',
-                    }}
-                >
-                    <span style={{ fontSize: '8px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
-                        Generado con <strong style={{ color: '#112F4F' }}>Lexia</strong>
-                    </span>
-                    <span style={{ fontSize: '8px', color: '#64748b', textAlign: 'center', flex: 1 }}>
-                        ¿Tienes preguntas sobre este documento?{' '}
-                        <strong style={{ color: '#112F4F' }}>
-                            Agenda una sesión con uno de nuestros asesores legales
-                        </strong>{' '}
-                        en <strong style={{ color: '#112F4F' }}>lexia.co</strong>
-                    </span>
+                {/* ── Footer ── */}
+                <div className="mt-10 border-t border-slate-200 pt-2 flex justify-between items-center">
+                    <p className="text-[7px] text-slate-400">
+                        Generado con <span className="text-[#112F4F] font-bold">lexia.co</span>
+                    </p>
+                    <p className="text-[7px] text-slate-500 text-right">
+                        ¿Dudas sobre este documento?{' '}
+                        <span className="text-[#112F4F] font-bold">Agenda una asesoría legal</span>
+                        {' en '}
+                        <span className="text-[#112F4F] font-bold">lexia.co</span>
+                    </p>
                 </div>
             </div>
         </div>

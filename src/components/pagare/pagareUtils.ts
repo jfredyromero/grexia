@@ -8,3 +8,10 @@ export const PERIODO_LABELS: Record<PeriodoCuotas, string> = {
     bimestral: 'bimestral',
     trimestral: 'trimestral',
 };
+
+export function periodoLabel(periodo: string, n: string | number): string {
+    const num = typeof n === 'string' ? parseInt(n, 10) || 1 : n;
+    const base = PERIODO_LABELS[periodo as PeriodoCuotas] ?? periodo;
+    if (num === 1) return base;
+    return base + 'es';
+}

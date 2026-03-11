@@ -30,6 +30,7 @@ export interface ObligacionData {
     periodoCuotas: PeriodoCuotas | '';
     ciudadSuscripcion: string;
     departamentoSuscripcion?: string;
+    tasaInteresNominal: string;
     tasaInteresMora: string;
 }
 
@@ -63,6 +64,7 @@ export const INITIAL_PAGARE_DATA: PagareFormData = {
         numeroCuotas: '',
         periodoCuotas: '',
         ciudadSuscripcion: '',
+        tasaInteresNominal: '',
         tasaInteresMora: '',
     },
 };

@@ -301,7 +301,37 @@ test.describe('Tasa de mora', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SUITE 7: Plan Gratuito — UI en Step 4 (preview)
+// SUITE 7: Tasa de interés nominal
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Tasa de interés nominal', () => {
+    test('muestra la tasa nominal personalizada en la cláusula SEGUNDA', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: { ...pagareSimple.obligacion, tasaNominal: '1.2' },
+        });
+        await form.assertClauseVisible('SEGUNDA');
+        await form.assertPreviewContains(/1\.2%/);
+    });
+
+    test('muestra blank cuando no se ingresa tasa nominal', async ({ page }) => {
+        const form = new PagareFormPage(page);
+        await form.goto();
+        await form.fillAllSteps({
+            acreedor: pagareSimple.acreedor,
+            deudor: pagareSimple.deudor,
+            obligacion: { ...pagareSimple.obligacion, tasaNominal: '' },
+        });
+        await form.assertClauseVisible('SEGUNDA');
+        await form.assertPreviewNotContains(/intereses corrientes a una tasa nominal mensual del\s+\d/);
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 8: Plan Gratuito — UI en Step 4 (preview)
 // ─────────────────────────────────────────────────────────────────────────────
 
 test.describe('Plan Gratuito — UI en Step 4', () => {
@@ -347,7 +377,7 @@ test.describe('Plan Gratuito — UI en Step 4', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SUITE 8: Plan Empresarial — UI en Step 4 (preview)
+// SUITE 9: Plan Empresarial — UI en Step 4 (preview)
 // El plan se inyecta en localStorage antes de cargar la página
 // ─────────────────────────────────────────────────────────────────────────────
 

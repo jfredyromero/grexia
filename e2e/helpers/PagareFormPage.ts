@@ -32,6 +32,7 @@ interface ObligacionData {
     periodoCuotas?: string;
     departamento: string;
     ciudad: string;
+    tasaNominal?: string;
     mora?: string;
 }
 
@@ -164,6 +165,10 @@ export class PagareFormPage {
 
         // Cascade departamento → ciudad de suscripción (Combobox)
         await this.fillLocationCombobox('obligacion-ciudad', data.departamento, data.ciudad);
+
+        if (data.tasaNominal) {
+            await this.page.fill('#obligacion-tasa-nominal', data.tasaNominal);
+        }
 
         if (data.mora) {
             await this.page.fill('#obligacion-mora', data.mora);

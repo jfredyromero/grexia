@@ -171,6 +171,22 @@ export default function StepObligacion({ data, onChange, onNext, onBack, forceVa
             />
 
             <InputField
+                id="obligacion-tasa-nominal"
+                label={
+                    <>
+                        Tasa de interés mensual <span className="text-slate-400 font-normal">(opcional, %)</span>
+                    </>
+                }
+                type="text"
+                inputMode="decimal"
+                value={data.tasaInteresNominal}
+                onChange={set('tasaInteresNominal')}
+                placeholder="Ej: 1.5"
+                suffix="%"
+                description="Intereses corrientes sobre el capital. Si se deja vacío, quedará en blanco para diligenciar manualmente."
+            />
+
+            <InputField
                 id="obligacion-mora"
                 label={
                     <>
