@@ -310,7 +310,7 @@ describe('LocalComercialTemplate — bloque de firmas', () => {
     it('incluye recuadros de huella', () => {
         const { container } = render(<LocalComercialTemplate formData={base} />);
         const huellas = container.querySelectorAll('span');
-        const huellaTexts = Array.from(huellas).filter(el => el.textContent?.trim() === 'Huella');
+        const huellaTexts = Array.from(huellas).filter((el) => el.textContent?.trim() === 'Huella');
         expect(huellaTexts.length).toBeGreaterThanOrEqual(2);
     });
 

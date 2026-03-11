@@ -133,7 +133,11 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                     Cédula {arrendatarioDoc} <B>{arrendatario.numeroDocumento || '___________________'}</B>, quien para
                     efectos de este contrato obra en nombre propio y que se denominará el <B>ARRENDATARIO</B>,
                     manifestaron que han decidido celebrar un contrato de arrendamiento de local comercial, en adelante
-                    el <B>{'"'}Contrato{'"'}</B>, el cual se rige por las siguientes cláusulas:
+                    el{' '}
+                    <B>
+                        {'"'}Contrato{'"'}
+                    </B>
+                    , el cual se rige por las siguientes cláusulas:
                 </Text>
 
                 {/* ── Payment conditions (dashed box) ── */}
@@ -171,8 +175,11 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                 >
                     Por medio del presente Contrato, el Arrendador entrega a título de arrendamiento bien inmueble el
                     cual será exclusivamente destinado para el desarrollo del objeto social, negocio o actividad
-                    comercial del Arrendatario (en adelante, denominado el <B>{'"'}INMUEBLE{'"'}</B>), identificado así:{' '}
-                    <B>{inmuebleDesc}</B>
+                    comercial del Arrendatario (en adelante, denominado el{' '}
+                    <B>
+                        {'"'}INMUEBLE{'"'}
+                    </B>
+                    ), identificado así: <B>{inmuebleDesc}</B>
                     {inmueble.areaMq ? `, con área aproximada de ${inmueble.areaMq} m²` : ''}
                     {inmueble.estrato ? `, estrato ${inmueble.estrato}` : ''}.
                 </Clause>
@@ -239,7 +246,7 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                 <View style={s.clauseWrap}>
                     <Text style={s.clauseText}>
                         <Text style={s.clauseTitleInline}>Séptima. - Reparaciones: </Text>
-                        Los daños que se ocasionen al Inmueble por el Arrendatario,  por responsabilidad suya o de sus
+                        Los daños que se ocasionen al Inmueble por el Arrendatario, por responsabilidad suya o de sus
                         dependientes, serán reparados y cubiertos sus costos de reparación en su totalidad por el
                         Arrendatario. En todo caso, el Arrendatario se obliga a restituir el Inmueble en el mismo estado
                         en que lo ha recibido, salvo el deterioro natural por el uso legitimo. Las reparaciones
@@ -267,7 +274,7 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                         concepto haya tenido que pagar el Arrendador, pago que deberá hacerse de manera inmediata por el
                         Arrendatario contra la presentación de las facturas correspondientes por parte del Arrendador.
                         No obstante lo anterior, el Arrendador podrá abstenerse de pagar los servicios a cargo del
-                        Arrendatario, sin que por ello el Arrendatario pueda alegar  responsabilidad del Arrendador.
+                        Arrendatario, sin que por ello el Arrendatario pueda alegar responsabilidad del Arrendador.
                     </Text>
                     <Para label="Parágrafo 1">
                         El Arrendatario declara que ha recibido en perfecto estado de funcionamiento y de conservación
@@ -358,7 +365,7 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                         elija:{'\n'}
                         (I) Declarar terminado este Contrato y reclamar la devolución del Inmueble judicial y/o
                         extrajudicialmente. (II) Exigir y perseguir a través de cualquier medio, judicial o
-                        extrajudicialmente, al  Arrendatario por el monto de los perjuicios resultantes del
+                        extrajudicialmente, al Arrendatario por el monto de los perjuicios resultantes del
                         incumplimiento, así como de la multa por incumplimiento pactada en este Contrato.
                     </Text>
                 </View>
@@ -448,7 +455,7 @@ export default function LocalComercialPHPDF({ formData, plan, logoUrl }: LocalCo
                     title="Recibos de pago de servicios públicos"
                 >
                     El Arrendador en cualquier tiempo durante la vigencia de este Contrato, podrá exigir del
-                    Arrendatario la presentación de las facturas de los  servicios públicos del Inmueble a fin de
+                    Arrendatario la presentación de las facturas de los servicios públicos del Inmueble a fin de
                     verificar la cancelación de los mismos. En el evento que el Arrendador llegare a comprobar que
                     alguna de las facturas no ha sido pagadas por el Arrendatario encontrándose vencido el plazo para el
                     pago previsto en la factura respectiva, el Arrendador podrá terminar de manera inmediata este

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Text, View, Image, StyleSheet, Svg, Path } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Svg, Path } from '@react-pdf/renderer';
 import type { PlanTier } from '../types';
 
 // ── Color palette ─────────────────────────────────────────────────────────────

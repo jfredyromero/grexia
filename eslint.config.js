@@ -7,7 +7,21 @@ import globals from 'globals';
 
 export default tseslint.config(
     {
-        ignores: ['dist/', 'node_modules/', '.astro/'],
+        ignores: [
+            'dist/',
+            '.astro/',
+            '.vscode/',
+            'node_modules/',
+            '.env',
+            '.env.production',
+            '.idea/',
+            'e2e/test-results/',
+            'e2e/report/',
+            'e2e/artifacts/',
+            'coverage/',
+            '.agents/',
+            '.claude/',
+        ],
     },
     eslint.configs.recommended,
     ...tseslint.configs.recommended,

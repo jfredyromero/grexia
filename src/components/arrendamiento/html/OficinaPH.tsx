@@ -108,9 +108,7 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                         <h1 className="text-[22px] font-black uppercase tracking-[0.06em] text-[#112F4F] leading-none">
                             CONTRATO DE ARRENDAMIENTO
                         </h1>
-                        <p className="text-[9px] text-slate-500 mt-1">
-                            Contrato de Oficina - Propiedad Horizontal
-                        </p>
+                        <p className="text-[9px] text-slate-500 mt-1">Contrato de Oficina - Propiedad Horizontal</p>
                     </div>
                 </div>
                 <hr className="border-0 border-t-2 border-[#1b3070] mb-5" />
@@ -140,7 +138,10 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                             SON: {numberToWordsCOP(canonNum)} M/L
                         </p>
                     </div>
-                    <div className="p-3" style={{ flex: '0 0 42%' }}>
+                    <div
+                        className="p-3"
+                        style={{ flex: '0 0 42%' }}
+                    >
                         <p
                             className="text-[9px] font-bold uppercase tracking-wide text-slate-600 mb-1"
                             style={{ fontFamily: 'sans-serif' }}
@@ -172,16 +173,16 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                             {arrendador.nombreCompleto || '___________________'}
                         </p>
                         <p className="text-[10px] text-slate-700">
-                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>{arrendadorDocLabel}:{' '}</span>
+                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>{arrendadorDocLabel}: </span>
                             {arrendador.numeroDocumento || '___________________'}
                         </p>
                         <p className="text-[10px] text-slate-700">
-                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Teléfono:{' '}</span>
+                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Teléfono: </span>
                             {arrendador.telefono || '___________________'}
                         </p>
                         {arrendador.email && (
                             <p className="text-[10px] text-slate-700">
-                                <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Correo:{' '}</span>
+                                <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Correo: </span>
                                 {arrendador.email}
                             </p>
                         )}
@@ -197,20 +198,20 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                             {arrendatario.nombreCompleto || '___________________'}
                         </p>
                         <p className="text-[10px] text-slate-700">
-                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>{arrendatarioDocLabel}:{' '}</span>
+                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>{arrendatarioDocLabel}: </span>
                             {arrendatario.numeroDocumento || '___________________'}
                         </p>
                         <p className="text-[10px] text-slate-700">
-                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Dirección Inmueble:{' '}</span>
+                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Dirección Inmueble: </span>
                             {inmueble.direccion || '___________________'}
                         </p>
                         <p className="text-[10px] text-slate-700">
-                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Teléfono:{' '}</span>
+                            <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Teléfono: </span>
                             {arrendatario.telefono || '___________________'}
                         </p>
                         {arrendatario.email && (
                             <p className="text-[10px] text-slate-700">
-                                <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Correo:{' '}</span>
+                                <span style={{ fontFamily: 'sans-serif', fontWeight: 600 }}>Correo: </span>
                                 {arrendatario.email}
                             </p>
                         )}
@@ -219,16 +220,14 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
 
                 {/* ── Introduction paragraph ── */}
                 <p className="mb-5 text-justify">
-                    <strong>{arrendador.nombreCompleto || '_______________'}</strong>, mayor de edad,
-                    identificado(a) con {ARR_DOC}, quien obra en nombre propio, de manera libre expresa y
-                    voluntaria, y que para efectos de este contrato se denominará el{' '}
-                    <strong>ARRENDADOR</strong>; y por la otra parte,{' '}
-                    <strong>{arrendatario.nombreCompleto || '_______________'}</strong>, mayor de edad,
-                    identificado(a) con {ATA_DOC}, quien para efectos de este contrato obra en nombre propio, de
-                    manera libre expresa y voluntaria, y se denominará el{' '}
-                    <strong>&quot;ARRENDATARIO&quot;</strong>, manifestaron que han decidido celebrar un contrato
-                    de arrendamiento de oficina(s), en adelante el <strong>&quot;CONTRATO&quot;</strong>, el cual
-                    se rige por las siguientes cláusulas:
+                    <strong>{arrendador.nombreCompleto || '_______________'}</strong>, mayor de edad, identificado(a)
+                    con {ARR_DOC}, quien obra en nombre propio, de manera libre expresa y voluntaria, y que para efectos
+                    de este contrato se denominará el <strong>ARRENDADOR</strong>; y por la otra parte,{' '}
+                    <strong>{arrendatario.nombreCompleto || '_______________'}</strong>, mayor de edad, identificado(a)
+                    con {ATA_DOC}, quien para efectos de este contrato obra en nombre propio, de manera libre expresa y
+                    voluntaria, y se denominará el <strong>&quot;ARRENDATARIO&quot;</strong>, manifestaron que han
+                    decidido celebrar un contrato de arrendamiento de oficina(s), en adelante el{' '}
+                    <strong>&quot;CONTRATO&quot;</strong>, el cual se rige por las siguientes cláusulas:
                 </p>
 
                 {/* ── Payment conditions (dashed box) ── */}
@@ -243,13 +242,17 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                         Condiciones de Pago y Garantías
                     </p>
                     <p className="text-[11px] text-slate-800 leading-snug mb-1">
-                        <strong>Forma de pago:</strong> Mensual, por adelantado, dentro de los primeros {diaPago} días de cada mes.
+                        <strong>Forma de pago:</strong> Mensual, por adelantado, dentro de los primeros {diaPago} días
+                        de cada mes.
                     </p>
                     <p className="text-[11px] text-slate-800 leading-snug mb-1">
-                        <strong>Lugar:</strong> En las oficinas o residencia del Arrendador, o lugar pactado por las partes.
+                        <strong>Lugar:</strong> En las oficinas o residencia del Arrendador, o lugar pactado por las
+                        partes.
                     </p>
                     <p className="text-[11px] text-slate-800 leading-snug mb-1">
-                        <strong>Depósito:</strong> Equivalente a {depositoMeses === 1 ? 'un (1) mes' : `${depositoMeses} meses`} de canon ({formatCOP(condiciones.depositoCOP)}).
+                        <strong>Depósito:</strong> Equivalente a{' '}
+                        {depositoMeses === 1 ? 'un (1) mes' : `${depositoMeses} meses`} de canon (
+                        {formatCOP(condiciones.depositoCOP)}).
                     </p>
                     <p className="text-[11px] text-slate-800 leading-snug">
                         <strong>Vigencia:</strong> {duracionLabel}, a partir del {fechaStr}.
@@ -268,30 +271,28 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     {/* 1 */}
                     <div>
                         <p>
-                            <strong>Primera. &ndash; Objeto: </strong>Por medio del presente Contrato, el
-                            Arrendador entrega a título de arrendamiento bien inmueble el cual será exclusivamente
-                            destinado para el desarrollo del objeto social, negocio o actividad comercial del
-                            Arrendatario (en adelante, denominado el <strong>&quot;INMUEBLE&quot;</strong>),
-                            identificado así:{' '}
+                            <strong>Primera. &ndash; Objeto: </strong>Por medio del presente Contrato, el Arrendador
+                            entrega a título de arrendamiento bien inmueble el cual será exclusivamente destinado para
+                            el desarrollo del objeto social, negocio o actividad comercial del Arrendatario (en
+                            adelante, denominado el <strong>&quot;INMUEBLE&quot;</strong>), identificado así:{' '}
                             <strong>{inmueble.direccion || '_______________'}</strong>, ciudad de{' '}
                             <strong>{ciudadStr}</strong>, departamento de{' '}
                             <strong>{inmueble.departamento || '_______________'}</strong>
-                            {inmueble.areaMq ? `, con área aproximada de ${inmueble.areaMq} m²` : ''}{inmueble.estrato ? `, estrato ${inmueble.estrato}` : ''}.
+                            {inmueble.areaMq ? `, con área aproximada de ${inmueble.areaMq} m²` : ''}
+                            {inmueble.estrato ? `, estrato ${inmueble.estrato}` : ''}.
                         </p>
                     </div>
 
                     {/* 2 */}
                     <div>
                         <p>
-                            <strong>Segunda. &ndash; Régimen de Propiedad Horizontal: </strong>El Inmueble
-                            descrito y alinderado en la Cláusula Primera del presente Contrato, forma parte de{' '}
-                            <span className="underline decoration-dotted">_______________</span> el cual se
-                            encuentra ubicado en el área urbana de la ciudad de{' '}
-                            <strong>{ciudadStr}</strong>, sometido al Régimen de Propiedad Horizontal, según
-                            consta en{' '}
-                            <span className="underline decoration-dotted">_______________</span>, debidamente
-                            registrada en la oficina de Instrumentos Públicos de la ciudad de{' '}
-                            <strong>{ciudadStr}</strong> el{' '}
+                            <strong>Segunda. &ndash; Régimen de Propiedad Horizontal: </strong>El Inmueble descrito y
+                            alinderado en la Cláusula Primera del presente Contrato, forma parte de{' '}
+                            <span className="underline decoration-dotted">_______________</span> el cual se encuentra
+                            ubicado en el área urbana de la ciudad de <strong>{ciudadStr}</strong>, sometido al Régimen
+                            de Propiedad Horizontal, según consta en{' '}
+                            <span className="underline decoration-dotted">_______________</span>, debidamente registrada
+                            en la oficina de Instrumentos Públicos de la ciudad de <strong>{ciudadStr}</strong> el{' '}
                             <span className="underline decoration-dotted">_______________</span>, bajo el folio de
                             matrícula inmobiliaria número{' '}
                             <span className="underline decoration-dotted">_______________</span>.
@@ -301,21 +302,19 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     {/* 3 */}
                     <div>
                         <p>
-                            <strong>Tercera. &ndash; Canon de Arrendamiento: </strong>El canon de arrendamiento
-                            será mensual determinado en la suma de{' '}
+                            <strong>Tercera. &ndash; Canon de Arrendamiento: </strong>El canon de arrendamiento será
+                            mensual determinado en la suma de{' '}
                             <strong>
                                 {numberToWordsCOP(canonNum)} ({formatCOP(condiciones.canonMensual)})
                             </strong>{' '}
-                            que el Arrendatario pagará anticipadamente al Arrendador (o a su orden), en las
-                            oficinas, residencia del Arrendador, y/o lugar pactado, que puede variar según
-                            concenso de las partes, dentro de los primeros{' '}
-                            <strong>{diaPago}</strong> días de cada mes.
+                            que el Arrendatario pagará anticipadamente al Arrendador (o a su orden), en las oficinas,
+                            residencia del Arrendador, y/o lugar pactado, que puede variar según concenso de las partes,
+                            dentro de los primeros <strong>{diaPago}</strong> días de cada mes.
                         </p>
                         <p className="mt-2">
                             El arrendatario también puede pagar el canon de arrendamiento en la cuenta bancaria,
                             aplicación móvil, plataforma financiera{' '}
-                            <span className="underline decoration-dotted">_______________</span> de
-                            identificación{' '}
+                            <span className="underline decoration-dotted">_______________</span> de identificación{' '}
                             <span className="underline decoration-dotted">_______________</span>.
                         </p>
                     </div>
@@ -323,11 +322,11 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     {/* 4 */}
                     <div>
                         <p>
-                            <strong>Cuarta. &ndash; Reajuste del Canon de Arrendamiento: </strong>Cada doce (12)
-                            meses de ejecución del Contrato, el valor del canon de arrendamiento será reajustado
-                            en una proporción convenida entre las partes, sin exceder en todo caso el límite
-                            máximo de reajuste fijado por la ley, superintendencia y entidades que regulen el
-                            funcionamiento y ejecución del contrato.
+                            <strong>Cuarta. &ndash; Reajuste del Canon de Arrendamiento: </strong>Cada doce (12) meses
+                            de ejecución del Contrato, el valor del canon de arrendamiento será reajustado en una
+                            proporción convenida entre las partes, sin exceder en todo caso el límite máximo de reajuste
+                            fijado por la ley, superintendencia y entidades que regulen el funcionamiento y ejecución
+                            del contrato.
                         </p>
                     </div>
 
@@ -335,108 +334,103 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     <div>
                         <p>
                             <strong>Quinta. &ndash; Vigencia: </strong>El arrendamiento tendrá una duración de{' '}
-                            <strong>{duracionLabel}</strong> contados a partir del{' '}
-                            <strong>{fechaStr}</strong>. No obstante lo anterior, el término del arrendamiento se
-                            prorrogará automáticamente por periodos consecutivos de un (1) año, si ninguna de las
-                            partes con antelación de 3 meses al vencimiento del periodo inicial o de cualquiera de
-                            sus prorrogas informa a la otra parte su decisión de terminar este contrato. Lo
-                            anterior sin perjuicio del derecho a la renovación consagrado en el Artículo 518 del
-                            Código de Comercio.
+                            <strong>{duracionLabel}</strong> contados a partir del <strong>{fechaStr}</strong>. No
+                            obstante lo anterior, el término del arrendamiento se prorrogará automáticamente por
+                            periodos consecutivos de un (1) año, si ninguna de las partes con antelación de 3 meses al
+                            vencimiento del periodo inicial o de cualquiera de sus prorrogas informa a la otra parte su
+                            decisión de terminar este contrato. Lo anterior sin perjuicio del derecho a la renovación
+                            consagrado en el Artículo 518 del Código de Comercio.
                         </p>
                     </div>
 
                     {/* 6 */}
                     <div>
                         <p>
-                            <strong>Sexta. &ndash; Entrega: </strong>El Arrendatario en la fecha de suscripción
-                            de este documento declara (I) recibir el inmueble de manos del Arrendador en perfecto
-                            estado, de conformidad con el inventario elaborado por las partes y que forma parte
-                            integrante de este contrato (de existir), y (II) que conoce en su integridad el texto
-                            del Reglamento de Propiedad Horizontal aplicable al Inmueble y que lo respetará y lo
-                            hará respetar en su integridad, documento que se entiende incorporado a este Contrato.
+                            <strong>Sexta. &ndash; Entrega: </strong>El Arrendatario en la fecha de suscripción de este
+                            documento declara (I) recibir el inmueble de manos del Arrendador en perfecto estado, de
+                            conformidad con el inventario elaborado por las partes y que forma parte integrante de este
+                            contrato (de existir), y (II) que conoce en su integridad el texto del Reglamento de
+                            Propiedad Horizontal aplicable al Inmueble y que lo respetará y lo hará respetar en su
+                            integridad, documento que se entiende incorporado a este Contrato.
                         </p>
                     </div>
 
                     {/* 7 */}
                     <div>
                         <p>
-                            <strong>Séptima. &ndash; Reparaciones: </strong>Los daños que se ocasionen al
-                            Inmueble por el Arrendatario, por responsabilidad suya o de sus dependientes, serán
-                            reparados y cubiertos sus costos de reparación en su totalidad por el Arrendatario.
-                            En todo caso, el Arrendatario se obliga a restituir el Inmueble en el mismo estado en
-                            que lo ha recibido, salvo el deterioro natural por el uso legitimo. Las reparaciones
-                            locativas al Inmueble estarán a cargo del Arrendatario y las estructurales a cargo del
-                            Arrendador.
+                            <strong>Séptima. &ndash; Reparaciones: </strong>Los daños que se ocasionen al Inmueble por
+                            el Arrendatario, por responsabilidad suya o de sus dependientes, serán reparados y cubiertos
+                            sus costos de reparación en su totalidad por el Arrendatario. En todo caso, el Arrendatario
+                            se obliga a restituir el Inmueble en el mismo estado en que lo ha recibido, salvo el
+                            deterioro natural por el uso legitimo. Las reparaciones locativas al Inmueble estarán a
+                            cargo del Arrendatario y las estructurales a cargo del Arrendador.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo 1: </strong>El Arrendatario se abstendrá de hacer mejoras de
-                            cualquier clase al Inmueble sin permiso previo y escrito del Arrendador. Las mejoras
-                            al Inmueble serán del propietario del Inmueble y no habrá lugar al reconocimiento de
-                            costo, precio o indemnización alguna al Arrendatario por las mejoras realizadas. Las
-                            mejoras no podrán retirarse salvo que el Arrendador lo exija por escrito, a lo que el
-                            Arrendatario accederá inmediatamente y a su costa, dejando el Inmueble en el mismo
-                            buen estado en que lo recibió del Arrendador.
+                            <strong>Parágrafo 1: </strong>El Arrendatario se abstendrá de hacer mejoras de cualquier
+                            clase al Inmueble sin permiso previo y escrito del Arrendador. Las mejoras al Inmueble serán
+                            del propietario del Inmueble y no habrá lugar al reconocimiento de costo, precio o
+                            indemnización alguna al Arrendatario por las mejoras realizadas. Las mejoras no podrán
+                            retirarse salvo que el Arrendador lo exija por escrito, a lo que el Arrendatario accederá
+                            inmediatamente y a su costa, dejando el Inmueble en el mismo buen estado en que lo recibió
+                            del Arrendador.
                         </p>
                     </div>
 
                     {/* 8 */}
                     <div>
                         <p>
-                            <strong>Octava. &ndash; Servicios Públicos: </strong>El Arrendatario pagará oportuna
-                            y totalmente los servicios públicos del Inmueble desde la fecha en que comience el
-                            arrendamiento hasta la restitución del Inmueble. Si el Arrendatario no paga los
-                            servicios públicos a su cargo, el Arrendador podrá hacerlo para evitar que los
-                            servicios públicos sean suspendidos. El incumplimiento del Arrendatario en el pago
-                            oportuno de los servicios públicos del Inmueble se tendrá como incumplimiento del
-                            Contrato y el Arrendatario deberá cancelar de manera incondicional e irrevocable al
-                            Arrendador las sumas que por este concepto haya tenido que pagar el Arrendador, pago
-                            que deberá hacerse de manera inmediata por el Arrendatario contra la presentación de
-                            las facturas correspondientes por parte del Arrendador. No obstante lo anterior, el
-                            Arrendador podrá abstenerse de pagar los servicios a cargo del Arrendatario, sin que
-                            por ello el Arrendatario pueda alegar responsabilidad del Arrendador.
+                            <strong>Octava. &ndash; Servicios Públicos: </strong>El Arrendatario pagará oportuna y
+                            totalmente los servicios públicos del Inmueble desde la fecha en que comience el
+                            arrendamiento hasta la restitución del Inmueble. Si el Arrendatario no paga los servicios
+                            públicos a su cargo, el Arrendador podrá hacerlo para evitar que los servicios públicos sean
+                            suspendidos. El incumplimiento del Arrendatario en el pago oportuno de los servicios
+                            públicos del Inmueble se tendrá como incumplimiento del Contrato y el Arrendatario deberá
+                            cancelar de manera incondicional e irrevocable al Arrendador las sumas que por este concepto
+                            haya tenido que pagar el Arrendador, pago que deberá hacerse de manera inmediata por el
+                            Arrendatario contra la presentación de las facturas correspondientes por parte del
+                            Arrendador. No obstante lo anterior, el Arrendador podrá abstenerse de pagar los servicios a
+                            cargo del Arrendatario, sin que por ello el Arrendatario pueda alegar responsabilidad del
+                            Arrendador.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo 1: </strong>El Arrendatario declara que ha recibido en perfecto
-                            estado de funcionamiento y de conservación las instalaciones para uso de los servicios
-                            públicos del Inmueble, que se abstendrá de modificarlas sin permiso previo y escrito
-                            del Arrendador y que responderá por daños y/o violaciones de los reglamentos de las
-                            correspondientes empresas de servicios públicos.
+                            <strong>Parágrafo 1: </strong>El Arrendatario declara que ha recibido en perfecto estado de
+                            funcionamiento y de conservación las instalaciones para uso de los servicios públicos del
+                            Inmueble, que se abstendrá de modificarlas sin permiso previo y escrito del Arrendador y que
+                            responderá por daños y/o violaciones de los reglamentos de las correspondientes empresas de
+                            servicios públicos.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo 2: </strong>El Arrendatario reconoce que el Arrendador en ningún
-                            caso y bajo ninguna circunstancia es responsable por la interrupción o deficiencia en
-                            la prestación de cualquiera de los servicios públicos del Inmueble. En caso de la
-                            prestación deficiente o suspensión de cualquiera de los servicios públicos del
-                            Inmueble, el Arrendatario reclamará de manera directa a las empresas prestadoras del
-                            servicio y no al Arrendador.
+                            <strong>Parágrafo 2: </strong>El Arrendatario reconoce que el Arrendador en ningún caso y
+                            bajo ninguna circunstancia es responsable por la interrupción o deficiencia en la prestación
+                            de cualquiera de los servicios públicos del Inmueble. En caso de la prestación deficiente o
+                            suspensión de cualquiera de los servicios públicos del Inmueble, el Arrendatario reclamará
+                            de manera directa a las empresas prestadoras del servicio y no al Arrendador.
                         </p>
                     </div>
 
                     {/* 9 */}
                     <div>
                         <p>
-                            <strong>Novena. &ndash; Destinación: </strong>El Arrendatario, durante la vigencia
-                            del Contrato, destinará el Inmueble única y exclusivamente para el desarrollo de su
-                            negocio, objeto social o actividad comercial, la cual consiste en:{' '}
-                            <strong>{actividadComercial}</strong>. En ningún caso el Arrendatario podrá
-                            subarrendar o ceder en todo o en parte este arrendamiento, de conformidad con lo
-                            establecido para el efecto en el Artículo 523 del Código de Comercio. En el evento
-                            que esto suceda, el Arrendador podrá dar por terminado válidamente el Contrato en
-                            forma inmediata, sin lugar a indemnización alguna en favor del Arrendatario y podrá
-                            exigir la devolución del Inmueble sin necesidad de ningún tipo de requerimiento previo
-                            por parte del Arrendador.
+                            <strong>Novena. &ndash; Destinación: </strong>El Arrendatario, durante la vigencia del
+                            Contrato, destinará el Inmueble única y exclusivamente para el desarrollo de su negocio,
+                            objeto social o actividad comercial, la cual consiste en:{' '}
+                            <strong>{actividadComercial}</strong>. En ningún caso el Arrendatario podrá subarrendar o
+                            ceder en todo o en parte este arrendamiento, de conformidad con lo establecido para el
+                            efecto en el Artículo 523 del Código de Comercio. En el evento que esto suceda, el
+                            Arrendador podrá dar por terminado válidamente el Contrato en forma inmediata, sin lugar a
+                            indemnización alguna en favor del Arrendatario y podrá exigir la devolución del Inmueble sin
+                            necesidad de ningún tipo de requerimiento previo por parte del Arrendador.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo: </strong>El Arrendador declara expresa y terminantemente prohibida
-                            la destinación del inmueble a los fines contemplados en el literal b) del parágrafo
-                            del Artículo 34 de la Ley 30 de 1986 y en consecuencia el Arrendatario se obliga a
-                            no usar el Inmueble para el ocultamiento de personas, depósito de armas o explosivos
-                            y dinero de grupos terroristas. No destinará el inmueble para la elaboración,
-                            almacenamiento o venta de sustancias alucinógenas tales como marihuana, hachís,
-                            cocaína, meta y similares. El Arrendatario faculta al Arrendador para que,
-                            directamente o a través de sus funcionarios debidamente autorizados por escrito,
-                            visiten el Inmueble para verificar el cumplimiento de las obligaciones del
-                            Arrendatario.
+                            <strong>Parágrafo: </strong>El Arrendador declara expresa y terminantemente prohibida la
+                            destinación del inmueble a los fines contemplados en el literal b) del parágrafo del
+                            Artículo 34 de la Ley 30 de 1986 y en consecuencia el Arrendatario se obliga a no usar el
+                            Inmueble para el ocultamiento de personas, depósito de armas o explosivos y dinero de grupos
+                            terroristas. No destinará el inmueble para la elaboración, almacenamiento o venta de
+                            sustancias alucinógenas tales como marihuana, hachís, cocaína, meta y similares. El
+                            Arrendatario faculta al Arrendador para que, directamente o a través de sus funcionarios
+                            debidamente autorizados por escrito, visiten el Inmueble para verificar el cumplimiento de
+                            las obligaciones del Arrendatario.
                         </p>
                     </div>
 
@@ -444,149 +438,143 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     <div>
                         <p>
                             <strong>Décima. &ndash; Restitución: </strong>Vencido el periodo inicial o la última
-                            prórroga del Contrato, el Arrendatario (I) restituirá el Inmueble al Arrendador en
-                            las mismas buenas condiciones en que lo recibió del Arrendador, salvo el deterioro
-                            natural causado por el uso legítimo, (II) entregará al Arrendador los ejemplares
-                            originales de las facturas de cobro por concepto de servicios públicos del Inmueble
-                            correspondientes a los últimos tres (3) meses, debidamente canceladas por el
-                            Arrendatario, bajo el entendido que hará entrega de dichas facturas en el domicilio
-                            del Arrendador, con una antelación de dos (2) días hábiles a la fecha fijada para la
-                            restitución material del Inmueble al Arrendador.
+                            prórroga del Contrato, el Arrendatario (I) restituirá el Inmueble al Arrendador en las
+                            mismas buenas condiciones en que lo recibió del Arrendador, salvo el deterioro natural
+                            causado por el uso legítimo, (II) entregará al Arrendador los ejemplares originales de las
+                            facturas de cobro por concepto de servicios públicos del Inmueble correspondientes a los
+                            últimos tres (3) meses, debidamente canceladas por el Arrendatario, bajo el entendido que
+                            hará entrega de dichas facturas en el domicilio del Arrendador, con una antelación de dos
+                            (2) días hábiles a la fecha fijada para la restitución material del Inmueble al Arrendador.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo 1: </strong>No obstante lo anterior, el Arrendador podrá negarse a
-                            recibir el Inmueble, cuando a su juicio existan obligaciones pendientes a cargo del
-                            Arrendatario que no hayan sido satisfechas en forma debida, caso en el cual se seguirá
-                            causando el canon de arrendamiento hasta que el Arrendatario cumpla con lo que le
-                            corresponde.
+                            <strong>Parágrafo 1: </strong>No obstante lo anterior, el Arrendador podrá negarse a recibir
+                            el Inmueble, cuando a su juicio existan obligaciones pendientes a cargo del Arrendatario que
+                            no hayan sido satisfechas en forma debida, caso en el cual se seguirá causando el canon de
+                            arrendamiento hasta que el Arrendatario cumpla con lo que le corresponde.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo 2: </strong>La responsabilidad del Arrendatario subsistirá aún
-                            después de restituido el Inmueble, mientras el Arrendador no haya entregado el paz y
-                            salvo correspondiente por escrito al Arrendatario.
+                            <strong>Parágrafo 2: </strong>La responsabilidad del Arrendatario subsistirá aún después de
+                            restituido el Inmueble, mientras el Arrendador no haya entregado el paz y salvo
+                            correspondiente por escrito al Arrendatario.
                         </p>
                     </div>
 
                     {/* 11 */}
                     <div>
                         <p>
-                            <strong>Décima Primera. &ndash; Renuncia: </strong>El Arrendatario declara que
-                            renuncia en beneficio del Arrendador o de su cesionario, a todo requerimiento para
-                            constituirlo en mora en el cumplimiento de las obligaciones a su cargo derivadas de
-                            este Contrato.
+                            <strong>Décima Primera. &ndash; Renuncia: </strong>El Arrendatario declara que renuncia en
+                            beneficio del Arrendador o de su cesionario, a todo requerimiento para constituirlo en mora
+                            en el cumplimiento de las obligaciones a su cargo derivadas de este Contrato.
                         </p>
                     </div>
 
                     {/* 12 */}
                     <div>
                         <p>
-                            <strong>Décima Segunda. &ndash; Cesión: </strong>El Arrendatario faculta al
-                            Arrendador a ceder total o parcialmente este Contrato y declara al cedente del
-                            Contrato, es decir al Arrendador, libre de cualquier responsabilidad como consecuencia
-                            de la cesión que haga de este Contrato.
+                            <strong>Décima Segunda. &ndash; Cesión: </strong>El Arrendatario faculta al Arrendador a
+                            ceder total o parcialmente este Contrato y declara al cedente del Contrato, es decir al
+                            Arrendador, libre de cualquier responsabilidad como consecuencia de la cesión que haga de
+                            este Contrato.
                         </p>
                     </div>
 
                     {/* 13 */}
                     <div>
                         <p>
-                            <strong>Décima Tercera. &ndash; Incumplimiento: </strong>El incumplimiento del
-                            Arrendatario a cualquiera de sus obligaciones legales o contractuales, faculta al
-                            Arrendador para ejercer las siguientes acciones, simultáneamente o en el orden que él
-                            elija: (I) Declarar terminado este Contrato y reclamar la devolución del Inmueble
-                            judicial, policial y/o extrajudicialmente. (II) Exigir y perseguir a través de
-                            cualquier medio, judicial o extrajudicialmente, al Arrendatario por el monto de los
-                            perjuicios resultantes del incumplimiento, así como de la multa por incumplimiento
-                            pactada en este Contrato.
+                            <strong>Décima Tercera. &ndash; Incumplimiento: </strong>El incumplimiento del Arrendatario
+                            a cualquiera de sus obligaciones legales o contractuales, faculta al Arrendador para ejercer
+                            las siguientes acciones, simultáneamente o en el orden que él elija: (I) Declarar terminado
+                            este Contrato y reclamar la devolución del Inmueble judicial, policial y/o
+                            extrajudicialmente. (II) Exigir y perseguir a través de cualquier medio, judicial o
+                            extrajudicialmente, al Arrendatario por el monto de los perjuicios resultantes del
+                            incumplimiento, así como de la multa por incumplimiento pactada en este Contrato.
                         </p>
                     </div>
 
                     {/* 14 */}
                     <div>
                         <p>
-                            <strong>Décima Cuarta. &ndash; Validez: </strong>El presente Contrato anula todo
-                            convenio anterior relativo al arrendamiento del mismo Inmueble y solamente podrá ser
-                            modificado por escrito suscrito por la partes.
+                            <strong>Décima Cuarta. &ndash; Validez: </strong>El presente Contrato anula todo convenio
+                            anterior relativo al arrendamiento del mismo Inmueble y solamente podrá ser modificado por
+                            escrito suscrito por la partes.
                         </p>
                     </div>
 
                     {/* 15 */}
                     <div>
                         <p>
-                            <strong>Décima Quinta. &ndash; </strong>El Arrendatario autoriza al Arrendador (de
-                            ser necesario) a buscar y obtener informacion sobre sus posibles salarios, tiulos y
-                            propiedades en entiedades tanto privadas como publicas; como lo pueden ser: bancos,
-                            instituciones de credito, la Oficina de Registro de Instrumentos Publicos, entre
-                            otros.
+                            <strong>Décima Quinta. &ndash; </strong>El Arrendatario autoriza al Arrendador (de ser
+                            necesario) a buscar y obtener informacion sobre sus posibles salarios, tiulos y propiedades
+                            en entiedades tanto privadas como publicas; como lo pueden ser: bancos, instituciones de
+                            credito, la Oficina de Registro de Instrumentos Publicos, entre otros.
                         </p>
                     </div>
 
                     {/* 16 */}
                     <div>
                         <p>
-                            <strong>Décima Sexta. &ndash; Merito Ejecutivo: </strong>El Arrendatario declara de
-                            manera expresa que reconoce y acepta que este Contrato presta mérito ejecutivo para
-                            exigir del Arrendatario y a favor del Arrendador el pago de (I) los cánones de
-                            arrendamiento causados y no pagados por el Arrendatario, (II) las multas y sanciones
-                            que se causen por el incumplimiento del Arrendatario de cualquiera de las obligaciones
-                            a su cargo en virtud de la ley o de este Contrato, (III) las sumas causadas y no
-                            pagadas por el Arrendatario por concepto de servicios públicos del Inmueble, cuotas de
-                            administración y cualquier otra suma de dinero que por cualquier concepto deba ser
-                            pagada por el Arrendatario; para lo cual bastará la sola afirmación de incumplimiento
-                            del Arrendatario hecha por el Arrendador; afirmación que solo podrá ser desvirtuada
-                            por el Arrendatario con la presentación de los respectivos recibos de pago.
+                            <strong>Décima Sexta. &ndash; Merito Ejecutivo: </strong>El Arrendatario declara de manera
+                            expresa que reconoce y acepta que este Contrato presta mérito ejecutivo para exigir del
+                            Arrendatario y a favor del Arrendador el pago de (I) los cánones de arrendamiento causados y
+                            no pagados por el Arrendatario, (II) las multas y sanciones que se causen por el
+                            incumplimiento del Arrendatario de cualquiera de las obligaciones a su cargo en virtud de la
+                            ley o de este Contrato, (III) las sumas causadas y no pagadas por el Arrendatario por
+                            concepto de servicios públicos del Inmueble, cuotas de administración y cualquier otra suma
+                            de dinero que por cualquier concepto deba ser pagada por el Arrendatario; para lo cual
+                            bastará la sola afirmación de incumplimiento del Arrendatario hecha por el Arrendador;
+                            afirmación que solo podrá ser desvirtuada por el Arrendatario con la presentación de los
+                            respectivos recibos de pago.
                         </p>
                         <p className="mt-2">
-                            <strong>Parágrafo: </strong>Las Partes acuerdan que cualquier copia de este Contrato
-                            tendrá mismo valor que el original para efectos judiciales y extrajudiciales.
+                            <strong>Parágrafo: </strong>Las Partes acuerdan que cualquier copia de este Contrato tendrá
+                            mismo valor que el original para efectos judiciales y extrajudiciales.
                         </p>
                     </div>
 
                     {/* 17 */}
                     <div>
                         <p>
-                            <strong>Décima Séptima. &ndash; Costos: </strong>Cualquier costo que se cause con
-                            ocasión de la celebración o prorroga de este Contrato, incluyendo el impuesto de
-                            timbre, será sumido en su integridad por el Arrendatario.
+                            <strong>Décima Séptima. &ndash; Costos: </strong>Cualquier costo que se cause con ocasión de
+                            la celebración o prorroga de este Contrato, incluyendo el impuesto de timbre, será sumido en
+                            su integridad por el Arrendatario.
                         </p>
                     </div>
 
                     {/* 18 */}
                     <div>
                         <p>
-                            <strong>Décima Octava. &ndash; Cláusula Penal: </strong>En el evento de un
-                            incumplimiento cualquiera de las partes a las obligaciones a su cargo contenidas en la
-                            ley o en este contrato, la parte incumplida deberá pagar a la otra parte una suma
-                            equivalente a <strong>3 cánones</strong> de arrendamiento vigentes en la fecha del
-                            incumplimiento, a título de pena. En el evento que los perjuicios ocasionados por la
-                            parte incumplida, excedan el valor de la suma aquí prevista como pena, la parte
-                            incumplida deberá pagar a la otra parte la diferencia entre el valor total de los
-                            perjuicios y el valor de la pena prevista en esta Cláusula.
+                            <strong>Décima Octava. &ndash; Cláusula Penal: </strong>En el evento de un incumplimiento
+                            cualquiera de las partes a las obligaciones a su cargo contenidas en la ley o en este
+                            contrato, la parte incumplida deberá pagar a la otra parte una suma equivalente a{' '}
+                            <strong>3 cánones</strong> de arrendamiento vigentes en la fecha del incumplimiento, a
+                            título de pena. En el evento que los perjuicios ocasionados por la parte incumplida, excedan
+                            el valor de la suma aquí prevista como pena, la parte incumplida deberá pagar a la otra
+                            parte la diferencia entre el valor total de los perjuicios y el valor de la pena prevista en
+                            esta Cláusula.
                         </p>
                     </div>
 
                     {/* 19 */}
                     <div>
                         <p>
-                            <strong>Décima Novena. &ndash; Autorización: </strong>El Arrendatario autoriza
-                            expresamente e irrevocablemente al Arrendador y/o al cesionario de este contrato a
-                            consultar información del Arrendatario que obre en las bases de datos de información
-                            del comportamiento financiero y crediticio o centrales de riesgo que existan en el
-                            país, así como a reportar a dichas bases de datos cualquier incumplimiento del
-                            Arrendatario a este Contrato.
+                            <strong>Décima Novena. &ndash; Autorización: </strong>El Arrendatario autoriza expresamente
+                            e irrevocablemente al Arrendador y/o al cesionario de este contrato a consultar información
+                            del Arrendatario que obre en las bases de datos de información del comportamiento financiero
+                            y crediticio o centrales de riesgo que existan en el país, así como a reportar a dichas
+                            bases de datos cualquier incumplimiento del Arrendatario a este Contrato.
                         </p>
                     </div>
 
                     {/* 20 */}
                     <div>
                         <p>
-                            <strong>Vigésima. &ndash; Abandono: </strong>El Arrendatario autoriza de manera
-                            expresa e irrevocable al Arrendador para ingresar al Inmueble y recuperar su
-                            tenencia, con el solo requisito de la presencia de dos (2) testigos, en procura de
-                            evitar el deterioro o desmantelamiento del Inmueble, en el evento que por cualquier
-                            causa o circunstancia el Inmueble permanezca abandonado o deshabitado por el término
-                            de dos (2) meses o más y/o que la exposición al riesgo sea tal que amenace la
-                            integridad física del bien o la seguridad del vecindario.
+                            <strong>Vigésima. &ndash; Abandono: </strong>El Arrendatario autoriza de manera expresa e
+                            irrevocable al Arrendador para ingresar al Inmueble y recuperar su tenencia, con el solo
+                            requisito de la presencia de dos (2) testigos, en procura de evitar el deterioro o
+                            desmantelamiento del Inmueble, en el evento que por cualquier causa o circunstancia el
+                            Inmueble permanezca abandonado o deshabitado por el término de dos (2) meses o más y/o que
+                            la exposición al riesgo sea tal que amenace la integridad física del bien o la seguridad del
+                            vecindario.
                         </p>
                     </div>
 
@@ -594,13 +582,12 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                     <div>
                         <p>
                             <strong>Vigésima Primera. &ndash; Recibos de pago de servicios públicos: </strong>
-                            El Arrendador en cualquier tiempo durante la vigencia de este Contrato, podrá exigir
-                            del Arrendatario la presentación de las facturas de los servicios públicos del
-                            Inmueble a fin de verificar la cancelación de los mismos. En el evento que el
-                            Arrendador llegare a comprobar que alguna de las facturas no ha sido pagadas por el
-                            Arrendatario encontrándose vencido el plazo para el pago previsto en la factura
-                            respectiva, el Arrendador podrá terminar de manera inmediata este contrato y exigir
-                            del Arrendatario el pago de las sumas a que hubiere lugar.
+                            El Arrendador en cualquier tiempo durante la vigencia de este Contrato, podrá exigir del
+                            Arrendatario la presentación de las facturas de los servicios públicos del Inmueble a fin de
+                            verificar la cancelación de los mismos. En el evento que el Arrendador llegare a comprobar
+                            que alguna de las facturas no ha sido pagadas por el Arrendatario encontrándose vencido el
+                            plazo para el pago previsto en la factura respectiva, el Arrendador podrá terminar de manera
+                            inmediata este contrato y exigir del Arrendatario el pago de las sumas a que hubiere lugar.
                         </p>
                     </div>
 
@@ -611,25 +598,24 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
                                 <strong>Vigésima Segunda. &ndash; Coarrendatarios: </strong>
                                 Para garantizar al Arrendador el cumplimiento de las obligaciones a cargo del
                                 Arrendatario, el Arrendatario tiene como coarrendatario a{' '}
-                                <strong>{coarrendatario.nombreCompleto || '_______________'}</strong>, mayor de
-                                edad, identificado(a) con {CO_DOC}, quien para efectos de este Contrato obra en
-                                nombre propio, quienes declaran que se obligan de manera solidaria con el
-                                Arrendatario y frente al Arrendador durante el término de duración de este
-                                Contrato y hasta que el Inmueble sea devuelto al Arrendador a su entera
-                                satisfacción.
+                                <strong>{coarrendatario.nombreCompleto || '_______________'}</strong>, mayor de edad,
+                                identificado(a) con {CO_DOC}, quien para efectos de este Contrato obra en nombre propio,
+                                quienes declaran que se obligan de manera solidaria con el Arrendatario y frente al
+                                Arrendador durante el término de duración de este Contrato y hasta que el Inmueble sea
+                                devuelto al Arrendador a su entera satisfacción.
                             </p>
                         ) : (
                             <p>
                                 <strong>Vigésima Segunda. &ndash; Coarrendatarios: </strong>
                                 Para garantizar al Arrendador el cumplimiento de las obligaciones a cargo del
                                 Arrendatario, el Arrendatario tiene como coarrendatario a{' '}
-                                <span className="underline decoration-dotted">_______________</span>, mayor de
-                                edad, identificado(a) con cédula de ciudadanía No.{' '}
-                                <span className="underline decoration-dotted">_______________</span>, quien para
-                                efectos de este Contrato obra en nombre propio, quienes declaran que se obligan
-                                de manera solidaria con el Arrendatario y frente al Arrendador durante el
-                                término de duración de este Contrato y hasta que el Inmueble sea devuelto al
-                                Arrendador a su entera satisfacción.
+                                <span className="underline decoration-dotted">_______________</span>, mayor de edad,
+                                identificado(a) con cédula de ciudadanía No.{' '}
+                                <span className="underline decoration-dotted">_______________</span>, quien para efectos
+                                de este Contrato obra en nombre propio, quienes declaran que se obligan de manera
+                                solidaria con el Arrendatario y frente al Arrendador durante el término de duración de
+                                este Contrato y hasta que el Inmueble sea devuelto al Arrendador a su entera
+                                satisfacción.
                             </p>
                         )}
                     </div>
@@ -637,9 +623,9 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
 
                 {/* ── Closing statement ── */}
                 <p className="mt-6 mb-6 text-justify">
-                    Para constancia, el presente Contrato es suscrito en la ciudad de{' '}
-                    <strong>{ciudadStr}</strong>, el día <strong>{fechaStr}</strong>, en dos (2) ejemplares de
-                    igual valor, cada uno de ellos con destino a cada una de las Partes.
+                    Para constancia, el presente Contrato es suscrito en la ciudad de <strong>{ciudadStr}</strong>, el
+                    día <strong>{fechaStr}</strong>, en dos (2) ejemplares de igual valor, cada uno de ellos con destino
+                    a cada una de las Partes.
                 </p>
 
                 {/* ── Signatures ── */}
@@ -767,11 +753,16 @@ export default function OficinaPHTemplate({ formData, plan = 'free', logoUrl }: 
 
                 {/* ── Footer ── */}
                 <div className="mt-10 pt-3 border-t border-slate-200 flex items-center justify-between">
-                    <p className="text-[9px] text-slate-400" style={{ fontFamily: 'sans-serif' }}>
-                        Generado por{' '}
-                        <strong className="text-[#112F4F]">Lexia.co</strong>
+                    <p
+                        className="text-[9px] text-slate-400"
+                        style={{ fontFamily: 'sans-serif' }}
+                    >
+                        Generado por <strong className="text-[#112F4F]">Lexia.co</strong>
                     </p>
-                    <p className="text-[9px] text-slate-500 text-right" style={{ fontFamily: 'sans-serif' }}>
+                    <p
+                        className="text-[9px] text-slate-500 text-right"
+                        style={{ fontFamily: 'sans-serif' }}
+                    >
                         ¿Dudas sobre este documento?{' '}
                         <strong className="text-[#112F4F]">Agenda una asesoría legal</strong>
                         {' en '}

@@ -154,8 +154,15 @@ export default function ViviendasPDF({ formData, plan, logoUrl }: ViviendasPDFPr
                     <B>{arrendatario.nombreCompleto || '___________________'}</B>, mayor de edad, identificado(a) con la
                     Cédula {arrendatarioDoc} <B>{arrendatario.numeroDocumento || '___________________'}</B> quien para
                     efectos de este contrato obra en nombre propio, de manera libre expresa y voluntaria, y se
-                    denominará el <B>{'"'}ARRENDATARIO{'"'}</B>, manifiestan en el presente documento que han decidido celebrar
-                    un contrato de arrendamiento de bien inmueble destinado a vivienda, en adelante el <B>{'"'}CONTRATO{'"'}</B>
+                    denominará el{' '}
+                    <B>
+                        {'"'}ARRENDATARIO{'"'}
+                    </B>
+                    , manifiestan en el presente documento que han decidido celebrar un contrato de arrendamiento de
+                    bien inmueble destinado a vivienda, en adelante el{' '}
+                    <B>
+                        {'"'}CONTRATO{'"'}
+                    </B>
                     , el cual se rige por las siguientes cláusulas:
                 </Text>
 
@@ -197,7 +204,10 @@ export default function ViviendasPDF({ formData, plan, logoUrl }: ViviendasPDFPr
                     {inmueble.areaMq ? `, con área aproximada de ${inmueble.areaMq} m²` : ''}
                     {inmueble.estrato ? `, estrato ${inmueble.estrato}` : ''}, destinado exclusivamente para el uso de
                     vivienda del Arrendatario y la de su nucleo familiar, en adelante identificado como el{' '}
-                    <B>{'"'}INMUEBLE{'"'}</B>.
+                    <B>
+                        {'"'}INMUEBLE{'"'}
+                    </B>
+                    .
                 </Clause>
 
                 <View style={s.clauseWrap}>

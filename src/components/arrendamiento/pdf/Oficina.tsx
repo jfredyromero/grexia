@@ -131,9 +131,15 @@ export default function OficinaPDF({ formData, plan, logoUrl }: OficinaPDFProps)
                     denominará el <B>ARRENDADOR</B>; y por la otra parte,{' '}
                     <B>{arrendatario.nombreCompleto || '___________________'}</B>, mayor de edad, identificado(a) con la
                     Cédula {arrendatarioDoc} <B>{arrendatario.numeroDocumento || '___________________'}</B> quien para
-                    efectos de este contrato obra en nombre propio y se denominará el <B>{'"'}ARRENDATARIO{'"'}</B>,
-                    manifestaron que han decidido celebrar un contrato de arrendamiento de oficina, en adelante el{' '}
-                    <B>{'"'}CONTRATO{'"'}</B>, el cual se rige por las siguientes cláusulas:
+                    efectos de este contrato obra en nombre propio y se denominará el{' '}
+                    <B>
+                        {'"'}ARRENDATARIO{'"'}
+                    </B>
+                    , manifestaron que han decidido celebrar un contrato de arrendamiento de oficina, en adelante el{' '}
+                    <B>
+                        {'"'}CONTRATO{'"'}
+                    </B>
+                    , el cual se rige por las siguientes cláusulas:
                 </Text>
 
                 {/* ── Payment conditions (dashed box) ── */}
@@ -171,8 +177,11 @@ export default function OficinaPDF({ formData, plan, logoUrl }: OficinaPDFProps)
                 >
                     Por medio del presente Contrato, el Arrendador entrega a título de arrendamiento bien inmueble el
                     cual será exclusivamente destinado para el desarrollo del objeto social, negocio o actividad
-                    comercial del Arrendatario (en adelante, denominado el <B>{'"'}INMUEBLE{'"'}</B>), identificado así:{' '}
-                    <B>{inmuebleDesc}</B>
+                    comercial del Arrendatario (en adelante, denominado el{' '}
+                    <B>
+                        {'"'}INMUEBLE{'"'}
+                    </B>
+                    ), identificado así: <B>{inmuebleDesc}</B>
                     {inmueble.areaMq ? `, con área aproximada de ${inmueble.areaMq} m²` : ''}
                     {inmueble.estrato ? `, estrato ${inmueble.estrato}` : ''}.
                 </Clause>

@@ -201,8 +201,7 @@ export default function StepArrendatario({
                                         ...coarrendatario,
                                         tipoDocumento: val as TipoDocArrendatario,
                                     });
-                                    if (coErrors.tipoDocumento)
-                                        setCoErrors((prev) => ({ ...prev, tipoDocumento: '' }));
+                                    if (coErrors.tipoDocumento) setCoErrors((prev) => ({ ...prev, tipoDocumento: '' }));
                                 }}
                                 options={DOC_OPTIONS}
                                 error={coErrors.tipoDocumento}
@@ -236,8 +235,7 @@ export default function StepArrendatario({
                             id="coarrendatario-email"
                             label={
                                 <>
-                                    Correo electrónico{' '}
-                                    <span className="text-slate-400 font-normal">(opcional)</span>
+                                    Correo electrónico <span className="text-slate-400 font-normal">(opcional)</span>
                                 </>
                             }
                             type="email"

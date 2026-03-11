@@ -1,4 +1,11 @@
-import type { ArrendadorData, ArrendatarioData, CoarrendatarioData, InmuebleData, CondicionesData, TipoInmueble } from './types';
+import type {
+    ArrendadorData,
+    ArrendatarioData,
+    CoarrendatarioData,
+    InmuebleData,
+    CondicionesData,
+    TipoInmueble,
+} from './types';
 
 export type ValidationErrors = Record<string, string>;
 
