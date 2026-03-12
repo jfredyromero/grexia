@@ -1,10 +1,8 @@
-import type { ArrendamientoFormData, PlanTier } from '../types';
+import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
 
 interface ViviendasProps {
     formData: ArrendamientoFormData;
-    plan?: PlanTier;
-    logoUrl?: string;
 }
 
 function docTypeLabel(tipo: string): string {
@@ -15,15 +13,13 @@ function docTypeLabel(tipo: string): string {
     return 'documento No.';
 }
 
-export default function ViviendasTemplate({ formData, plan = 'free', logoUrl }: ViviendasProps) {
+export default function ViviendasTemplate({ formData }: ViviendasProps) {
     const { inmueble, arrendador, arrendatario, coarrendatario, condiciones } = formData;
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
     const depositoNum = parseInt(condiciones.depositoCOP.replace(/\D/g, ''), 10) || 0;
     const depositoMeses = canonNum > 0 ? Math.round(depositoNum / canonNum) : 1;
     const fechaStr = formatDate(condiciones.fechaInicio);
     const ciudadStr = inmueble.ciudad || '___________________';
-    const isFree = plan === 'free';
-    const isPaid = plan === 'empresarial';
 
     const ARR_DOC = `${docTypeLabel(arrendador.tipoDocumento)} ${arrendador.numeroDocumento || '_______________'}`;
     const ATA_DOC = `${docTypeLabel(arrendatario.tipoDocumento)} ${arrendatario.numeroDocumento || '_______________'}`;
@@ -49,28 +45,26 @@ export default function ViviendasTemplate({ formData, plan = 'free', logoUrl }: 
             id="contract-content"
             className="relative bg-white rounded-lg font-serif text-sm text-slate-800 leading-relaxed"
         >
-            {isFree && (
-                <div
-                    aria-hidden="true"
-                    style={{
-                        position: 'absolute',
-                        top: '44%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%) rotate(-42deg)',
-                        fontSize: '76px',
-                        fontWeight: 900,
-                        color: 'rgba(17, 47, 79, 0.10)',
-                        whiteSpace: 'nowrap',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        zIndex: 0,
-                        fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
-                        letterSpacing: '8px',
-                    }}
-                >
-                    LEXIA
-                </div>
-            )}
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'absolute',
+                    top: '44%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%) rotate(-42deg)',
+                    fontSize: '76px',
+                    fontWeight: 900,
+                    color: 'rgba(17, 47, 79, 0.10)',
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    zIndex: 0,
+                    fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
+                    letterSpacing: '8px',
+                }}
+            >
+                GREXIA
+            </div>
 
             <div
                 className="p-8 lg:p-10"
@@ -78,30 +72,20 @@ export default function ViviendasTemplate({ formData, plan = 'free', logoUrl }: 
             >
                 {/* ── Header ── */}
                 <div className="flex items-center justify-between mb-3">
-                    {!isPaid ? (
-                        <div className="flex items-center gap-[10px]">
-                            <img
-                                src="/logo.svg"
-                                alt="Lexia"
-                                className="h-[38px] w-[38px] shrink-0 object-contain"
-                            />
-                            <div className="h-[30px] w-px bg-slate-200 shrink-0" />
-                            <span
-                                className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
-                                style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
-                            >
-                                LEXIA
-                            </span>
-                        </div>
-                    ) : logoUrl ? (
+                    <div className="flex items-center gap-[10px]">
                         <img
-                            src={logoUrl}
-                            alt="Logo"
-                            className="h-12 max-w-[130px] object-contain"
+                            src="/logo.svg"
+                            alt="Grexia"
+                            className="h-[38px] w-[38px] shrink-0 object-contain"
                         />
-                    ) : (
-                        <div className="h-[38px]" />
-                    )}
+                        <div className="h-[30px] w-px bg-slate-200 shrink-0" />
+                        <span
+                            className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
+                            style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
+                        >
+                            GREXIA
+                        </span>
+                    </div>
                     <div className="text-right">
                         <h1 className="text-[22px] font-black uppercase tracking-[0.06em] text-[#112F4F] leading-none">
                             CONTRATO DE ARRENDAMIENTO
@@ -717,10 +701,10 @@ export default function ViviendasTemplate({ formData, plan = 'free', logoUrl }: 
                 {/* ── Footer ── */}
                 <div className="mt-10 pt-3 border-t border-slate-200 flex items-center justify-between gap-3">
                     <span className="text-[8px] text-slate-400 whitespace-nowrap">
-                        Generado por <strong className="text-[#112F4F]">Lexia.co</strong>
+                        Generado por <strong className="text-[#112F4F]">Grexia.co</strong>
                     </span>
                     <span className="text-[8px] text-slate-500 text-right flex-1">
-                        ¿Preguntas? Agenda una asesoría legal en <strong className="text-[#112F4F]">lexia.co</strong>
+                        ¿Preguntas? Agenda una asesoría legal en <strong className="text-[#112F4F]">grexia.co</strong>
                     </span>
                 </div>
             </div>

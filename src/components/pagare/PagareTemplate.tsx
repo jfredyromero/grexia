@@ -1,10 +1,8 @@
-import type { PagareFormData, PlanTier } from './types';
+import type { PagareFormData } from './types';
 import { formatCOP, formatDate, numberToWordsCOP, periodoLabel } from './pagareUtils';
 
 interface PagareTemplateProps {
     formData: PagareFormData;
-    plan?: PlanTier;
-    logoUrl?: string;
 }
 
 function docTypeLabel(tipo: string): string {
@@ -15,7 +13,7 @@ function docTypeLabel(tipo: string): string {
     return 'documento No.';
 }
 
-export default function PagareTemplate({ formData, plan = 'free', logoUrl }: PagareTemplateProps) {
+export default function PagareTemplate({ formData }: PagareTemplateProps) {
     const { acreedor, deudor, obligacion } = formData;
 
     const valorNum = parseInt(obligacion.valorPrincipal.replace(/\D/g, ''), 10) || 0;
@@ -35,9 +33,6 @@ export default function PagareTemplate({ formData, plan = 'free', logoUrl }: Pag
     const ACREEDOR_DOC = `${docTypeLabel(acreedor.tipoDocumento)} ${acreedor.numeroDocumento || '_______________'}`;
     const DEUDOR_DOC = `${docTypeLabel(deudor.tipoDocumento)} ${deudor.numeroDocumento || '_______________'}`;
 
-    const isFree = plan === 'free';
-    const isPaid = plan === 'empresarial';
-
     const tasaMora = obligacion.tasaInteresMora
         ? `${obligacion.tasaInteresMora}% mensual`
         : 'tasa máxima legal vigente certificada por la Superintendencia Financiera de Colombia';
@@ -56,20 +51,18 @@ export default function PagareTemplate({ formData, plan = 'free', logoUrl }: Pag
     return (
         <div className="relative bg-white font-serif text-[10px] text-slate-800 leading-relaxed">
             {/* ── Watermark ── */}
-            {isFree && (
-                <div
-                    aria-hidden="true"
-                    className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden z-10"
-                    style={{ transform: 'rotate(-42deg)' }}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden z-10"
+                style={{ transform: 'rotate(-42deg)' }}
+            >
+                <span
+                    className="text-[180px] font-black tracking-widest opacity-[0.06] text-[#112F4F]"
+                    style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
                 >
-                    <span
-                        className="text-[180px] font-black tracking-widest opacity-[0.06] text-[#112F4F]"
-                        style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
-                    >
-                        LEXIA
-                    </span>
-                </div>
-            )}
+                    GREXIA
+                </span>
+            </div>
 
             {/* ── Page wrapper ── */}
             <div className="max-w-[794px] mx-auto px-14 py-10">
@@ -77,22 +70,12 @@ export default function PagareTemplate({ formData, plan = 'free', logoUrl }: Pag
                 <div className="flex items-center justify-between mb-2">
                     {/* Logo */}
                     <div className="flex items-center gap-2">
-                        {isPaid && logoUrl ? (
-                            <img
-                                src={logoUrl}
-                                alt="Logo"
-                                className="h-8 max-w-[130px] object-contain"
-                            />
-                        ) : !isPaid ? (
-                            <>
-                                <img
-                                    src="/logo.svg"
-                                    alt="Lexia"
-                                    className="h-7"
-                                />
-                                <span className="text-lg font-black tracking-[2.5px] text-[#112F4F]">LEXIA</span>
-                            </>
-                        ) : null}
+                        <img
+                            src="/logo.svg"
+                            alt="Grexia"
+                            className="h-7"
+                        />
+                        <span className="text-lg font-black tracking-[2.5px] text-[#112F4F]">GREXIA</span>
                     </div>
                     {/* Title */}
                     <div className="text-right">
@@ -396,13 +379,13 @@ export default function PagareTemplate({ formData, plan = 'free', logoUrl }: Pag
                 {/* ── Footer ── */}
                 <div className="mt-10 border-t border-slate-200 pt-2 flex justify-between items-center">
                     <p className="text-[7px] text-slate-400">
-                        Generado con <span className="text-[#112F4F] font-bold">lexia.co</span>
+                        Generado con <span className="text-[#112F4F] font-bold">grexia.co</span>
                     </p>
                     <p className="text-[7px] text-slate-500 text-right">
                         ¿Dudas sobre este documento?{' '}
                         <span className="text-[#112F4F] font-bold">Agenda una asesoría legal</span>
                         {' en '}
-                        <span className="text-[#112F4F] font-bold">lexia.co</span>
+                        <span className="text-[#112F4F] font-bold">grexia.co</span>
                     </p>
                 </div>
             </div>

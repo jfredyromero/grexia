@@ -6,7 +6,7 @@ const CALENDAR_URL = 'https://calendar.google.com/calendar/appointments/YOUR_PLA
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="¡Sesión confirmada! · Lexia">
+<Layout title="¡Sesión confirmada! · Grexia">
     <Navbar variant="home" />
 
     <main class="grow w-full bg-background-light flex items-center justify-center">
@@ -91,7 +91,7 @@ const base = import.meta.env.BASE_URL;
 </Layout>
 
 <script>
-    const name = localStorage.getItem('lexia_checkout_name');
+    const name = localStorage.getItem('grexia_checkout_name');
     if (name) {
         const greeting = document.getElementById('greeting')!;
         const greetingName = document.getElementById('greeting-name')!;

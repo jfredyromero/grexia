@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { $pagareFormData, $pagareStep, $pagareMaxStep } from '../pagare';
 import { INITIAL_PAGARE_DATA, PAGARE_STEPS } from '../../components/pagare/types';
 
-const FORM_KEY = 'lexia_pag_form_v1';
-const STEP_KEY = 'lexia_pag_step_v1';
+const FORM_KEY = 'grexia_pag_form_v1';
+const STEP_KEY = 'grexia_pag_step_v1';
 
 describe('$pagareFormData', () => {
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe('$pagareFormData', () => {
         expect($pagareFormData.get()).toEqual(INITIAL_PAGARE_DATA);
     });
 
-    it('persiste en localStorage con key lexia_pag_form_v1', () => {
+    it('persiste en localStorage con key grexia_pag_form_v1', () => {
         const updated = {
             ...INITIAL_PAGARE_DATA,
             acreedor: { ...INITIAL_PAGARE_DATA.acreedor, nombreCompleto: 'Juan Pérez' },
@@ -73,7 +73,7 @@ describe('$pagareStep', () => {
         expect($pagareStep.get()).toBe(1);
     });
 
-    it('persiste en localStorage con key lexia_pag_step_v1', () => {
+    it('persiste en localStorage con key grexia_pag_step_v1', () => {
         $pagareStep.set(2);
         expect(localStorage.getItem(STEP_KEY)).toBe('2');
     });
@@ -125,9 +125,9 @@ describe('$pagareMaxStep', () => {
         expect($pagareMaxStep.get()).toBe(1);
     });
 
-    it('persiste en localStorage con key lexia_pag_max_v1', () => {
+    it('persiste en localStorage con key grexia_pag_max_v1', () => {
         $pagareMaxStep.set(3);
-        expect(localStorage.getItem('lexia_pag_max_v1')).toBe('3');
+        expect(localStorage.getItem('grexia_pag_max_v1')).toBe('3');
     });
 
     it('puede avanzar hasta el máximo de steps', () => {

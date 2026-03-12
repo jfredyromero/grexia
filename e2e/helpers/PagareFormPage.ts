@@ -65,12 +65,12 @@ export class PagareFormPage {
     /**
      * Navega al formulario con el plan indicado.
      * El plan se inyecta en localStorage antes de cargar la página
-     * (nanostores persistentAtom clave: 'lexia_plan').
+     * (nanostores persistentAtom clave: 'grexia_plan').
      */
     async goto(plan: PlanTier = 'free') {
         if (plan === 'empresarial') {
             await this.page.addInitScript(() => {
-                localStorage.setItem('lexia_plan', 'empresarial');
+                localStorage.setItem('grexia_plan', 'empresarial');
             });
         }
         await this.page.goto('/herramientas/pagare/generar');

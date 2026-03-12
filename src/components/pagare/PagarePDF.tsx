@@ -1,5 +1,5 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
-import type { PagareFormData, PlanTier } from './types';
+import type { PagareFormData } from './types';
 import { formatCOP, formatDate, numberToWordsCOP, periodoLabel } from './pagareUtils';
 import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, SigBlock } from '../arrendamiento/pdf/shared';
 
@@ -7,8 +7,6 @@ import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, SigBlock }
 
 interface PagarePDFProps {
     formData: PagareFormData;
-    plan: PlanTier;
-    logoUrl?: string;
 }
 
 function docTypeLabel(tipo: string): string {
@@ -19,7 +17,7 @@ function docTypeLabel(tipo: string): string {
     return 'documento';
 }
 
-export default function PagarePDF({ formData, plan, logoUrl }: PagarePDFProps) {
+export default function PagarePDF({ formData }: PagarePDFProps) {
     const { acreedor, deudor, obligacion } = formData;
 
     const valorNum = parseInt(obligacion.valorPrincipal.replace(/\D/g, ''), 10) || 0;
@@ -59,11 +57,9 @@ export default function PagarePDF({ formData, plan, logoUrl }: PagarePDFProps) {
                 size="A4"
                 style={s.page}
             >
-                <PDFWatermark plan={plan} />
+                <PDFWatermark />
                 <PDFFooter />
                 <PDFHeader
-                    plan={plan}
-                    logoUrl={logoUrl}
                     title="PAGARÉ"
                     subtitle="Título Valor · Código de Comercio de Colombia"
                 />

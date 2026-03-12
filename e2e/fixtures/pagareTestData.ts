@@ -5,15 +5,15 @@ const acreedorPersonaNatural = {
     tipoDoc: 'CC',
     numDoc: '1234567890',
     telefono: '300 123 4567',
-    email: 'juan.gomez@lexiatest.co',
+    email: 'juan.gomez@grexiatest.co',
 } as const;
 
 const acreedorEmpresa = {
-    nombre: 'Inversiones Lexia S.A.S.',
+    nombre: 'Inversiones Grexia S.A.S.',
     tipoDoc: 'NIT',
     numDoc: '900123456-1',
     telefono: '601 234 5678',
-    email: 'juridico@inversiones-lexia.co',
+    email: 'juridico@inversiones-grexia.co',
 } as const;
 
 const deudorBogota = {
@@ -31,7 +31,7 @@ const deudorExtranjero = {
     tipoDoc: 'CE',
     numDoc: 'E-456789',
     telefono: '315 555 1234',
-    email: 'roberto.silva@lexiatest.co',
+    email: 'roberto.silva@grexiatest.co',
     departamento: 'Bogotá',
     ciudad: 'Bogotá D.C.',
 } as const;

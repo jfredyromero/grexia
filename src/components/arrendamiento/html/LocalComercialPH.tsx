@@ -1,10 +1,8 @@
-import type { ArrendamientoFormData, PlanTier } from '../types';
+import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
 
 interface LocalComercialPHProps {
     formData: ArrendamientoFormData;
-    plan?: PlanTier;
-    logoUrl?: string;
 }
 
 function docTypeLabel(tipo: string): string {
@@ -15,15 +13,13 @@ function docTypeLabel(tipo: string): string {
     return 'documento No.';
 }
 
-export default function LocalComercialPHTemplate({ formData, plan = 'free', logoUrl }: LocalComercialPHProps) {
+export default function LocalComercialPHTemplate({ formData }: LocalComercialPHProps) {
     const { inmueble, arrendador, arrendatario, coarrendatario, condiciones } = formData;
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
     const depositoNum = parseInt(condiciones.depositoCOP.replace(/\D/g, ''), 10) || 0;
     const depositoMeses = canonNum > 0 ? Math.round(depositoNum / canonNum) : 1;
     const fechaStr = formatDate(condiciones.fechaInicio);
     const ciudadStr = inmueble.ciudad || '___________________';
-    const isFree = plan === 'free';
-    const isPaid = plan === 'empresarial';
 
     const ARR_DOC = `${docTypeLabel(arrendador.tipoDocumento)} ${arrendador.numeroDocumento || '_______________'}`;
     const ATA_DOC = `${docTypeLabel(arrendatario.tipoDocumento)} ${arrendatario.numeroDocumento || '_______________'}`;
@@ -47,28 +43,26 @@ export default function LocalComercialPHTemplate({ formData, plan = 'free', logo
             id="contract-content"
             className="relative bg-white rounded-lg font-serif text-sm text-slate-800 leading-relaxed"
         >
-            {isFree && (
-                <div
-                    aria-hidden="true"
-                    style={{
-                        position: 'absolute',
-                        top: '44%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%) rotate(-42deg)',
-                        fontSize: '76px',
-                        fontWeight: 900,
-                        color: 'rgba(17, 47, 79, 0.10)',
-                        whiteSpace: 'nowrap',
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        zIndex: 0,
-                        fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
-                        letterSpacing: '8px',
-                    }}
-                >
-                    LEXIA
-                </div>
-            )}
+            <div
+                aria-hidden="true"
+                style={{
+                    position: 'absolute',
+                    top: '44%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%) rotate(-42deg)',
+                    fontSize: '76px',
+                    fontWeight: 900,
+                    color: 'rgba(17, 47, 79, 0.10)',
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    zIndex: 0,
+                    fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
+                    letterSpacing: '8px',
+                }}
+            >
+                GREXIA
+            </div>
 
             <div
                 className="p-8 lg:p-10"
@@ -76,30 +70,20 @@ export default function LocalComercialPHTemplate({ formData, plan = 'free', logo
             >
                 {/* ── Header ── */}
                 <div className="flex items-center justify-between mb-3">
-                    {!isPaid ? (
-                        <div className="flex items-center gap-[10px]">
-                            <img
-                                src="/logo.svg"
-                                alt="Lexia"
-                                className="h-[38px] w-[38px] shrink-0 object-contain"
-                            />
-                            <div className="h-[30px] w-px bg-slate-200 shrink-0" />
-                            <span
-                                className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
-                                style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
-                            >
-                                LEXIA
-                            </span>
-                        </div>
-                    ) : logoUrl ? (
+                    <div className="flex items-center gap-[10px]">
                         <img
-                            src={logoUrl}
-                            alt="Logo"
-                            className="h-12 max-w-[130px] object-contain"
+                            src="/logo.svg"
+                            alt="Grexia"
+                            className="h-[38px] w-[38px] shrink-0 object-contain"
                         />
-                    ) : (
-                        <div className="h-[38px]" />
-                    )}
+                        <div className="h-[30px] w-px bg-slate-200 shrink-0" />
+                        <span
+                            className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
+                            style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
+                        >
+                            GREXIA
+                        </span>
+                    </div>
                     <div className="text-right">
                         <h1 className="text-[22px] font-black uppercase tracking-[0.06em] text-[#112F4F] leading-none">
                             CONTRATO DE ARRENDAMIENTO
@@ -735,7 +719,7 @@ export default function LocalComercialPHTemplate({ formData, plan = 'free', logo
                         className="text-[9px] text-slate-400"
                         style={{ fontFamily: 'sans-serif' }}
                     >
-                        Generado por <strong className="text-[#112F4F]">Lexia.co</strong>
+                        Generado por <strong className="text-[#112F4F]">Grexia.co</strong>
                     </p>
                     <p
                         className="text-[9px] text-slate-500 text-right"
@@ -744,7 +728,7 @@ export default function LocalComercialPHTemplate({ formData, plan = 'free', logo
                         ¿Dudas sobre este documento?{' '}
                         <strong className="text-[#112F4F]">Agenda una asesoría legal</strong>
                         {' en '}
-                        <strong className="text-[#112F4F]">lexia.co</strong>
+                        <strong className="text-[#112F4F]">grexia.co</strong>
                     </p>
                 </div>
             </div>

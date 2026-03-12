@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import type { ArrendamientoFormData, PlanTier } from '../types';
+import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
 import { C, PDFHeader, PDFFooter, PDFWatermark, pdfStyles, B, Para, Clause, SigBlock } from './shared';
 
@@ -30,11 +30,9 @@ const s = { ...pdfStyles, ...localStyles };
 
 interface ViviendasPDFProps {
     formData: ArrendamientoFormData;
-    plan: PlanTier;
-    logoUrl?: string;
 }
 
-export default function ViviendasPDF({ formData, plan, logoUrl }: ViviendasPDFProps) {
+export default function ViviendasPDF({ formData }: ViviendasPDFProps) {
     const { inmueble, arrendador, arrendatario, coarrendatario, condiciones } = formData;
 
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
@@ -77,11 +75,9 @@ export default function ViviendasPDF({ formData, plan, logoUrl }: ViviendasPDFPr
                 size="A4"
                 style={s.page}
             >
-                <PDFWatermark plan={plan} />
+                <PDFWatermark />
                 <PDFFooter />
                 <PDFHeader
-                    plan={plan}
-                    logoUrl={logoUrl}
                     title="ARRENDAMIENTO"
                     subtitle="Contrato de Vivienda Urbana"
                 />

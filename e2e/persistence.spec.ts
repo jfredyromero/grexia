@@ -8,9 +8,9 @@ import { pagareSimple } from './fixtures/pagareTestData';
 // SUITE 1: Arrendamiento — Persistencia en localStorage
 //
 // Claves observadas:
-//   lexia_arr_form_v1  — datos del formulario (JSON)
-//   lexia_arr_step_v1  — step actual (número)
-//   lexia_arr_max_v1   — step más alto alcanzado (número)
+//   grexia_arr_form_v1  — datos del formulario (JSON)
+//   grexia_arr_step_v1  — step actual (número)
+//   grexia_arr_max_v1   — step más alto alcanzado (número)
 //
 // Escenarios:
 //   1. Recarga restaura el step guardado
@@ -26,7 +26,7 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
         const form = new ArrendamientoFormPage(page);
         await form.goto();
 
-        // Llenar Step 1 → nanostores escribe lexia_arr_step_v1='2'
+        // Llenar Step 1 → nanostores escribe grexia_arr_step_v1='2'
         await form.fillInmueble(contratoVivienda.inmueble);
 
         // Recargar la página — nanostores debe leer el step del localStorage
@@ -65,7 +65,7 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
         await form.fillInmueble(contratoVivienda.inmueble);
         await form.fillArrendador(contratoVivienda.arrendador);
 
-        // Recargar — nanostores restaura lexia_arr_step_v1='3'
+        // Recargar — nanostores restaura grexia_arr_step_v1='3'
         await page.reload();
         await page.waitForSelector('h2:has-text("El arrendatario")', { timeout: 15_000 });
 
@@ -121,7 +121,7 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
                     tipoDocumento: 'CC',
                     numeroDocumento: '1234567890',
                     telefono: '300 123 4567',
-                    email: 'juan.gomez@lexiatest.co',
+                    email: 'juan.gomez@grexiatest.co',
                 },
                 arrendatario: {
                     nombreCompleto: '',
@@ -139,9 +139,9 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
                     actividadComercial: '',
                 },
             };
-            localStorage.setItem('lexia_arr_form_v1', JSON.stringify(formData));
-            localStorage.setItem('lexia_arr_step_v1', '3');
-            localStorage.setItem('lexia_arr_max_v1', '3');
+            localStorage.setItem('grexia_arr_form_v1', JSON.stringify(formData));
+            localStorage.setItem('grexia_arr_step_v1', '3');
+            localStorage.setItem('grexia_arr_max_v1', '3');
         });
 
         await page.goto('/herramientas/arrendamiento/generar');
@@ -162,9 +162,9 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
 
     test('localStorage corrompido — fallback al estado inicial en Step 1', async ({ page }) => {
         await page.addInitScript(() => {
-            localStorage.setItem('lexia_arr_form_v1', '{{json inválido}}');
-            localStorage.setItem('lexia_arr_step_v1', 'not-a-number');
-            localStorage.setItem('lexia_arr_max_v1', '9999');
+            localStorage.setItem('grexia_arr_form_v1', '{{json inválido}}');
+            localStorage.setItem('grexia_arr_step_v1', 'not-a-number');
+            localStorage.setItem('grexia_arr_max_v1', '9999');
         });
 
         await page.goto('/herramientas/arrendamiento/generar');
@@ -183,9 +183,9 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
 // SUITE 2: Pagaré — Persistencia en localStorage
 //
 // Claves observadas:
-//   lexia_pag_form_v1  — datos del formulario (JSON)
-//   lexia_pag_step_v1  — step actual (número)
-//   lexia_pag_max_v1   — step más alto alcanzado (número)
+//   grexia_pag_form_v1  — datos del formulario (JSON)
+//   grexia_pag_step_v1  — step actual (número)
+//   grexia_pag_max_v1   — step más alto alcanzado (número)
 //
 // Escenarios:
 //   1. Recarga restaura el step guardado
@@ -201,7 +201,7 @@ test.describe('Pagaré — persistencia en localStorage', () => {
         const form = new PagareFormPage(page);
         await form.goto();
 
-        // Llenar Step 1 → nanostores escribe lexia_pag_step_v1='2'
+        // Llenar Step 1 → nanostores escribe grexia_pag_step_v1='2'
         await form.fillAcreedor(pagareSimple.acreedor);
 
         await page.reload();
@@ -237,7 +237,7 @@ test.describe('Pagaré — persistencia en localStorage', () => {
         await form.fillAcreedor(pagareSimple.acreedor);
         await form.fillDeudor(pagareSimple.deudor);
 
-        // Recargar — nanostores restaura lexia_pag_step_v1='3'
+        // Recargar — nanostores restaura grexia_pag_step_v1='3'
         await page.reload();
         await page.waitForSelector('h2:has-text("La obligación")', { timeout: 15_000 });
 
@@ -282,7 +282,7 @@ test.describe('Pagaré — persistencia en localStorage', () => {
                     tipoDocumento: 'CC',
                     numeroDocumento: '1234567890',
                     telefono: '300 123 4567',
-                    email: 'juan.gomez@lexiatest.co',
+                    email: 'juan.gomez@grexiatest.co',
                 },
                 deudor: {
                     nombreCompleto: '',
@@ -303,9 +303,9 @@ test.describe('Pagaré — persistencia en localStorage', () => {
                     tasaInteresMora: '',
                 },
             };
-            localStorage.setItem('lexia_pag_form_v1', JSON.stringify(formData));
-            localStorage.setItem('lexia_pag_step_v1', '2');
-            localStorage.setItem('lexia_pag_max_v1', '2');
+            localStorage.setItem('grexia_pag_form_v1', JSON.stringify(formData));
+            localStorage.setItem('grexia_pag_step_v1', '2');
+            localStorage.setItem('grexia_pag_max_v1', '2');
         });
 
         await page.goto('/herramientas/pagare/generar');
@@ -326,9 +326,9 @@ test.describe('Pagaré — persistencia en localStorage', () => {
 
     test('localStorage corrompido — fallback al estado inicial en Step 1', async ({ page }) => {
         await page.addInitScript(() => {
-            localStorage.setItem('lexia_pag_form_v1', '{{json inválido}}');
-            localStorage.setItem('lexia_pag_step_v1', 'NaN');
-            localStorage.setItem('lexia_pag_max_v1', '-99');
+            localStorage.setItem('grexia_pag_form_v1', '{{json inválido}}');
+            localStorage.setItem('grexia_pag_step_v1', 'NaN');
+            localStorage.setItem('grexia_pag_max_v1', '-99');
         });
 
         await page.goto('/herramientas/pagare/generar');

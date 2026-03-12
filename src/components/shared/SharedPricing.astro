@@ -13,9 +13,9 @@ const plans = [
         highlighted: false,
         features: [
             { text: 'Generación ilimitada de documentos', included: true },
-            { text: 'Todos los documentos disponibles en Lexia', included: true },
+            { text: 'Todos los documentos disponibles en Grexia', included: true },
             { text: 'Descarga en PDF sin registro', included: true },
-            { text: 'Marca de agua Lexia en el documento', included: true, warning: true },
+            { text: 'Marca de agua Grexia en el documento', included: true, warning: true },
             { text: 'Sin asesoría legal incluida', included: false },
         ],
         cta: 'Empezar gratis',
@@ -211,9 +211,9 @@ const plans = [
         el.addEventListener('click', () => {
             const plan = el.dataset.plan;
             if (plan === 'empresarial') {
-                localStorage.setItem('lexia_plan', plan);
+                localStorage.setItem('grexia_plan', plan);
             } else {
-                localStorage.removeItem('lexia_plan');
+                localStorage.removeItem('grexia_plan');
             }
         });
     });

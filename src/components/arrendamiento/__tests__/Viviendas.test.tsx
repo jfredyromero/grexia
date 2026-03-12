@@ -68,25 +68,9 @@ describe('ViviendasTemplate — encabezado', () => {
         expect(container.textContent).not.toContain('Propiedad Horizontal');
     });
 
-    it('muestra el logo Lexia en plan gratuito', () => {
-        render(
-            <ViviendasTemplate
-                formData={base}
-                plan="free"
-            />
-        );
-        expect(screen.getByAltText('Lexia')).toBeInTheDocument();
-    });
-
-    it('muestra logo personalizado en plan empresarial con logoUrl', () => {
-        render(
-            <ViviendasTemplate
-                formData={base}
-                plan="empresarial"
-                logoUrl="data:image/png;base64,abc"
-            />
-        );
-        expect(screen.getByAltText('Logo')).toHaveAttribute('src', 'data:image/png;base64,abc');
+    it('muestra el logo Grexia siempre', () => {
+        render(<ViviendasTemplate formData={base} />);
+        expect(screen.getByAltText('Grexia')).toBeInTheDocument();
     });
 });
 
@@ -304,41 +288,26 @@ describe('ViviendasTemplate — bloque de firmas', () => {
 // ── Marca de agua ─────────────────────────────────────────────────────────────
 
 describe('ViviendasTemplate — marca de agua', () => {
-    it('plan free: muestra la marca de agua LEXIA (aria-hidden)', () => {
-        const { container } = render(
-            <ViviendasTemplate
-                formData={base}
-                plan="free"
-            />
-        );
+    it('muestra la marca de agua GREXIA siempre (aria-hidden)', () => {
+        const { container } = render(<ViviendasTemplate formData={base} />);
         const watermark = container.querySelector('[aria-hidden="true"]');
         expect(watermark).toBeInTheDocument();
-        expect(watermark?.textContent).toBe('LEXIA');
-    });
-
-    it('plan empresarial: no muestra la marca de agua', () => {
-        const { container } = render(
-            <ViviendasTemplate
-                formData={base}
-                plan="empresarial"
-            />
-        );
-        expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
+        expect(watermark?.textContent).toBe('GREXIA');
     });
 });
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 
 describe('ViviendasTemplate — footer', () => {
-    it('muestra Generado por Lexia.co', () => {
+    it('muestra Generado por Grexia.co', () => {
         const { container } = render(<ViviendasTemplate formData={base} />);
         expect(container.textContent).toContain('Generado por');
-        expect(container.textContent).toContain('Lexia.co');
+        expect(container.textContent).toContain('Grexia.co');
     });
 
     it('muestra enlace a asesoría legal', () => {
         const { container } = render(<ViviendasTemplate formData={base} />);
         expect(container.textContent).toContain('asesoría legal');
-        expect(container.textContent).toContain('lexia.co');
+        expect(container.textContent).toContain('grexia.co');
     });
 });

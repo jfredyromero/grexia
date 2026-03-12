@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import PagareTemplate from '../PagareTemplate';
-import type { PagareFormData, PlanTier } from '../types';
+import type { PagareFormData } from '../types';
 import { formatCOP, numberToWordsCOP } from '../pagareUtils';
 
 // ── Fixtures ──────────────────────────────────────────────────────────────────
@@ -45,15 +45,9 @@ const baseCuotas: PagareFormData = {
     },
 };
 
-function renderTemplate(overrides?: Partial<PagareFormData>, plan: PlanTier = 'free', logoUrl = '') {
+function renderTemplate(overrides?: Partial<PagareFormData>) {
     const formData = overrides ? { ...base, ...overrides } : base;
-    return render(
-        <PagareTemplate
-            formData={formData}
-            plan={plan}
-            logoUrl={logoUrl}
-        />
-    );
+    return render(<PagareTemplate formData={formData} />);
 }
 
 // ── Amount Box ────────────────────────────────────────────────────────────────
@@ -153,12 +147,7 @@ describe('PagareTemplate — caja de condiciones de pago', () => {
     });
 
     it('por cuotas: muestra número de cuotas y período', () => {
-        const { container } = render(
-            <PagareTemplate
-                formData={baseCuotas}
-                plan="free"
-            />
-        );
+        const { container } = render(<PagareTemplate formData={baseCuotas} />);
         expect(container.textContent).toContain('12');
         expect(container.textContent).toContain('mensuales');
     });
@@ -246,83 +235,27 @@ describe('PagareTemplate — bloques de firma', () => {
     });
 });
 
-// ── Plan: FREE ────────────────────────────────────────────────────────────────
+// ── Logo y marca de agua ──────────────────────────────────────────────────────
 
-describe('PagareTemplate — plan gratuito', () => {
-    it('muestra el logo de Lexia (icono SVG + texto LEXIA)', () => {
-        renderTemplate(undefined, 'free');
-        const logo = screen.getByAltText('Lexia');
+describe('PagareTemplate — logo y marca de agua', () => {
+    it('muestra el logo de Grexia siempre', () => {
+        renderTemplate();
+        const logo = screen.getByAltText('Grexia');
         expect(logo).toBeInTheDocument();
         expect(logo).toHaveAttribute('src', '/logo.svg');
-        expect(screen.getAllByText('LEXIA').length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText('GREXIA').length).toBeGreaterThanOrEqual(1);
     });
 
-    it('muestra la marca de agua LEXIA', () => {
-        const { container } = renderTemplate(undefined, 'free');
+    it('muestra la marca de agua GREXIA siempre', () => {
+        const { container } = renderTemplate();
         const watermark = container.querySelector('[aria-hidden="true"]');
         expect(watermark).toBeInTheDocument();
-        expect(watermark?.textContent).toBe('LEXIA');
+        expect(watermark?.textContent).toBe('GREXIA');
     });
 
-    it('muestra el footer con la marca Lexia', () => {
-        const { container } = renderTemplate(undefined, 'free');
+    it('muestra el footer con la marca Grexia', () => {
+        const { container } = renderTemplate();
         expect(container.textContent).toContain('Generado con');
-        expect(container.textContent).toContain('lexia.co');
-    });
-});
-
-// ── Plan: BÁSICO con logo ─────────────────────────────────────────────────────
-
-describe('PagareTemplate — plan básico con logo personalizado', () => {
-    it('muestra la imagen del logo personalizado', () => {
-        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
-        const img = screen.getByRole('img');
-        expect(img).toBeInTheDocument();
-        expect(img).toHaveAttribute('src', 'data:image/png;base64,abc');
-    });
-
-    it('no muestra el texto LEXIA cuando hay logo personalizado', () => {
-        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
-        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
-    });
-
-    it('no muestra la marca de agua', () => {
-        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
-        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
-    });
-
-    it('no muestra el footer de plan gratuito', () => {
-        const { container } = renderTemplate(undefined, 'empresarial', 'data:image/png;base64,abc');
-        expect(container.textContent).not.toContain('plan gratuito');
-    });
-});
-
-// ── Plan: BÁSICO sin logo ─────────────────────────────────────────────────────
-
-describe('PagareTemplate — plan básico sin logo', () => {
-    it('no muestra imagen ni texto LEXIA', () => {
-        renderTemplate(undefined, 'empresarial', '');
-        expect(screen.queryByRole('img')).not.toBeInTheDocument();
-        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
-    });
-
-    it('no muestra la marca de agua ni el footer gratuito', () => {
-        const { container } = renderTemplate(undefined, 'empresarial', '');
-        expect(screen.queryByText('LEXIA')).not.toBeInTheDocument();
-        expect(container.textContent).not.toContain('plan gratuito');
-    });
-});
-
-// ── Plan: PRO ─────────────────────────────────────────────────────────────────
-
-describe('PagareTemplate — plan empresarial', () => {
-    it('muestra logo personalizado en plan empresarial', () => {
-        renderTemplate(undefined, 'empresarial', 'data:image/png;base64,xyz');
-        expect(screen.getByRole('img')).toHaveAttribute('src', 'data:image/png;base64,xyz');
-    });
-
-    it('no muestra footer gratuito en plan empresarial', () => {
-        const { container } = renderTemplate(undefined, 'empresarial', '');
-        expect(container.textContent).not.toContain('plan gratuito');
+        expect(container.textContent).toContain('grexia.co');
     });
 });

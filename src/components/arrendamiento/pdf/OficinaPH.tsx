@@ -1,5 +1,5 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
-import type { ArrendamientoFormData, PlanTier } from '../types';
+import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
 import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, Clause, SigBlock } from './shared';
 
@@ -7,11 +7,9 @@ import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, Clause, Si
 
 interface OficinaPHPDFProps {
     formData: ArrendamientoFormData;
-    plan: PlanTier;
-    logoUrl?: string;
 }
 
-export default function OficinaPHPDF({ formData, plan, logoUrl }: OficinaPHPDFProps) {
+export default function OficinaPHPDF({ formData }: OficinaPHPDFProps) {
     const { inmueble, arrendador, arrendatario, coarrendatario, condiciones } = formData;
 
     const canonNum = parseInt(condiciones.canonMensual.replace(/\D/g, ''), 10) || 0;
@@ -55,11 +53,9 @@ export default function OficinaPHPDF({ formData, plan, logoUrl }: OficinaPHPDFPr
                 size="A4"
                 style={s.page}
             >
-                <PDFWatermark plan={plan} />
+                <PDFWatermark />
                 <PDFFooter />
                 <PDFHeader
-                    plan={plan}
-                    logoUrl={logoUrl}
                     title="ARRENDAMIENTO"
                     subtitle="Contrato de Oficina - Propiedad Horizontal"
                 />

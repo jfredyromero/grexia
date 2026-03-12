@@ -12,7 +12,7 @@ const base = import.meta.env.BASE_URL;
 // must be computed server-side (Astro SSR endpoint) before going to production.
 const WOMPI_PUBLIC_KEY = 'pub_test_REPLACE_WITH_YOUR_KEY';
 const AMOUNT_IN_CENTS = 5990000; // $59.900 COP
-const REDIRECT_URL = 'https://lexia.co/asesoria/confirmacion'; // update for prod
+const REDIRECT_URL = 'https://grexia.co/asesoria/confirmacion'; // update for prod
 
 const SESSION_FEATURES = [
     { icon: 'schedule', text: '60 minutos de sesión virtual' },
@@ -22,7 +22,7 @@ const SESSION_FEATURES = [
 ];
 ---
 
-<Layout title="Checkout · Asesoría Legal · Lexia">
+<Layout title="Checkout · Asesoría Legal · Grexia">
     <Navbar variant="home" />
 
     <main class="grow w-full bg-background-light">
@@ -219,7 +219,7 @@ const SESSION_FEATURES = [
                                 data-public-key={WOMPI_PUBLIC_KEY}
                                 data-currency="COP"
                                 data-amount-in-cents={AMOUNT_IN_CENTS}
-                                data-reference="ASESORIA-LEXIA-001"
+                                data-reference="ASESORIA-GREXIA-001"
                                 data-signature:integrity="TODO_COMPUTE_SERVER_SIDE"
                                 data-redirect-url={REDIRECT_URL}
                                 data-customer-data:email=""
@@ -293,9 +293,9 @@ const SESSION_FEATURES = [
         const notes = inputCaso.value.trim();
 
         // Persist for confirmation page
-        localStorage.setItem('lexia_checkout_name', name);
-        localStorage.setItem('lexia_checkout_email', email);
-        localStorage.setItem('lexia_checkout_notes', notes);
+        localStorage.setItem('grexia_checkout_name', name);
+        localStorage.setItem('grexia_checkout_email', email);
+        localStorage.setItem('grexia_checkout_notes', notes);
 
         // Pre-fill Wompi customer data
         const wompiScript = document.querySelector<HTMLScriptElement>('script[data-customer-data\\:email]');

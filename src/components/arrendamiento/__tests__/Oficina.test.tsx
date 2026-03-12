@@ -64,25 +64,9 @@ describe('OficinaTemplate — encabezado', () => {
         expect(container.textContent).not.toContain('Propiedad Horizontal');
     });
 
-    it('muestra el logo Lexia en plan gratuito', () => {
-        render(
-            <OficinaTemplate
-                formData={base}
-                plan="free"
-            />
-        );
-        expect(screen.getByAltText('Lexia')).toBeInTheDocument();
-    });
-
-    it('muestra logo personalizado en plan empresarial con logoUrl', () => {
-        render(
-            <OficinaTemplate
-                formData={base}
-                plan="empresarial"
-                logoUrl="data:image/png;base64,abc"
-            />
-        );
-        expect(screen.getByAltText('Logo')).toHaveAttribute('src', 'data:image/png;base64,abc');
+    it('muestra el logo Grexia siempre', () => {
+        render(<OficinaTemplate formData={base} />);
+        expect(screen.getByAltText('Grexia')).toBeInTheDocument();
     });
 });
 
@@ -120,7 +104,7 @@ describe('OficinaTemplate — recuadro de partes', () => {
 describe('OficinaTemplate — recuadro info (canon y fecha)', () => {
     it('muestra el canon en palabras en mayúsculas', () => {
         render(<OficinaTemplate formData={base} />);
-        expect(screen.getAllByText(/TRES MILLONES DE PESOS/i).length).toBeGreaterThanOrEqual(1);
+        expect(screen.getAllByText(/TRES MILLONES PESOS/i).length).toBeGreaterThanOrEqual(1);
     });
 
     it('muestra el canon COP formateado', () => {
@@ -330,51 +314,26 @@ describe('OficinaTemplate — bloque de firmas', () => {
 // ── Marca de agua ─────────────────────────────────────────────────────────────
 
 describe('OficinaTemplate — marca de agua', () => {
-    it('plan free: muestra la marca de agua LEXIA (aria-hidden)', () => {
-        const { container } = render(
-            <OficinaTemplate
-                formData={base}
-                plan="free"
-            />
-        );
+    it('muestra la marca de agua GREXIA siempre (aria-hidden)', () => {
+        const { container } = render(<OficinaTemplate formData={base} />);
         const watermark = container.querySelector('[aria-hidden="true"]');
         expect(watermark).toBeInTheDocument();
-        expect(watermark?.textContent).toBe('LEXIA');
-    });
-
-    it('plan empresarial: no muestra la marca de agua', () => {
-        const { container } = render(
-            <OficinaTemplate
-                formData={base}
-                plan="empresarial"
-            />
-        );
-        expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
-    });
-
-    it('plan empresarial: no muestra la marca de agua', () => {
-        const { container } = render(
-            <OficinaTemplate
-                formData={base}
-                plan="empresarial"
-            />
-        );
-        expect(container.querySelector('[aria-hidden="true"]')).not.toBeInTheDocument();
+        expect(watermark?.textContent).toBe('GREXIA');
     });
 });
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 
 describe('OficinaTemplate — footer', () => {
-    it('muestra Generado por Lexia.co', () => {
+    it('muestra Generado por Grexia.co', () => {
         const { container } = render(<OficinaTemplate formData={base} />);
         expect(container.textContent).toContain('Generado por');
-        expect(container.textContent).toContain('Lexia.co');
+        expect(container.textContent).toContain('Grexia.co');
     });
 
     it('muestra enlace a asesoría legal', () => {
         const { container } = render(<OficinaTemplate formData={base} />);
         expect(container.textContent).toContain('asesoría legal');
-        expect(container.textContent).toContain('lexia.co');
+        expect(container.textContent).toContain('grexia.co');
     });
 });

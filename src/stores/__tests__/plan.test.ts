@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { $plan, $logoUrl } from '../plan';
 
-const STORAGE_KEY = 'lexia_plan';
+const STORAGE_KEY = 'grexia_plan';
 
 describe('$plan', () => {
     beforeEach(() => {

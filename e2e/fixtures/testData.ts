@@ -5,7 +5,7 @@ export const coarrendatarioPrincipal = {
     tipoDoc: 'CC',
     numDoc: '1098765432',
     telefono: '320 555 1234',
-    email: 'carlos.ruiz@lexiatest.co',
+    email: 'carlos.ruiz@grexiatest.co',
 } as const;
 
 // ── Personas reutilizables ────────────────────────────────────────────────────
@@ -15,7 +15,7 @@ const arrendadorPrincipal = {
     tipoDoc: 'CC',
     numDoc: '1234567890',
     telefono: '300 123 4567',
-    email: 'juan.gomez@lexiatest.co',
+    email: 'juan.gomez@grexiatest.co',
 } as const;
 
 const arrendatarioPrincipal = {
@@ -31,7 +31,7 @@ const arrendadorBogota = {
     tipoDoc: 'CC',
     numDoc: '80123456',
     telefono: '315 234 5678',
-    email: 'carlos.ramirez@lexiatest.co',
+    email: 'carlos.ramirez@grexiatest.co',
 } as const;
 
 const arrendatarioExtranjero = {
@@ -55,7 +55,7 @@ const arrendatarioMedellin = {
     tipoDoc: 'CC',
     numDoc: '52345678',
     telefono: '311 445 6677',
-    email: 'luisa.mora@lexiatest.co',
+    email: 'luisa.mora@grexiatest.co',
 } as const;
 
 // ── Vivienda: Apartamento sin PH ──────────────────────────────────────────────

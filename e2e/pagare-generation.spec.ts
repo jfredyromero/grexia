@@ -224,7 +224,7 @@ test.describe('Pagaré — acreedor con NIT', () => {
             deudor: pagareNIT.deudor,
             obligacion: pagareNIT.obligacion,
         });
-        await form.assertPreviewContains('Inversiones Lexia S.A.S.');
+        await form.assertPreviewContains('Inversiones Grexia S.A.S.');
         await form.assertPreviewContains('900123456-1');
     });
 

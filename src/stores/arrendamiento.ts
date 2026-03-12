@@ -20,17 +20,17 @@ function safeDecodeStep(maxStep: number) {
     };
 }
 
-export const $arrendamientoFormData = persistentAtom<ArrendamientoFormData>('lexia_arr_form_v1', INITIAL_FORM_DATA, {
+export const $arrendamientoFormData = persistentAtom<ArrendamientoFormData>('grexia_arr_form_v1', INITIAL_FORM_DATA, {
     encode: JSON.stringify,
     decode: safeDecodeForm,
 });
 
-export const $arrendamientoStep = persistentAtom<number>('lexia_arr_step_v1', 1, {
+export const $arrendamientoStep = persistentAtom<number>('grexia_arr_step_v1', 1, {
     encode: String,
     decode: safeDecodeStep(STEPS.length),
 });
 
-export const $arrendamientoMaxStep = persistentAtom<number>('lexia_arr_max_v1', 1, {
+export const $arrendamientoMaxStep = persistentAtom<number>('grexia_arr_max_v1', 1, {
     encode: String,
     decode: safeDecodeStep(STEPS.length),
 });

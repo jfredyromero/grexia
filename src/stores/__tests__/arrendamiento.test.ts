@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { $arrendamientoFormData, $arrendamientoStep, $arrendamientoMaxStep } from '../arrendamiento';
 import { INITIAL_FORM_DATA, STEPS } from '../../components/arrendamiento/types';
 
-const FORM_KEY = 'lexia_arr_form_v1';
-const STEP_KEY = 'lexia_arr_step_v1';
+const FORM_KEY = 'grexia_arr_form_v1';
+const STEP_KEY = 'grexia_arr_step_v1';
 
 describe('$arrendamientoFormData', () => {
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe('$arrendamientoFormData', () => {
         expect($arrendamientoFormData.get()).toEqual(INITIAL_FORM_DATA);
     });
 
-    it('persiste en localStorage con key lexia_arr_form_v1', () => {
+    it('persiste en localStorage con key grexia_arr_form_v1', () => {
         const updated = { ...INITIAL_FORM_DATA, inmueble: { ...INITIAL_FORM_DATA.inmueble, direccion: 'Calle 1' } };
         $arrendamientoFormData.set(updated);
         const stored = localStorage.getItem(FORM_KEY);
@@ -69,7 +69,7 @@ describe('$arrendamientoStep', () => {
         expect($arrendamientoStep.get()).toBe(1);
     });
 
-    it('persiste en localStorage con key lexia_arr_step_v1', () => {
+    it('persiste en localStorage con key grexia_arr_step_v1', () => {
         $arrendamientoStep.set(3);
         expect(localStorage.getItem(STEP_KEY)).toBe('3');
     });
@@ -122,9 +122,9 @@ describe('$arrendamientoMaxStep', () => {
         expect($arrendamientoMaxStep.get()).toBe(1);
     });
 
-    it('persiste en localStorage con key lexia_arr_max_v1', () => {
+    it('persiste en localStorage con key grexia_arr_max_v1', () => {
         $arrendamientoMaxStep.set(4);
-        expect(localStorage.getItem('lexia_arr_max_v1')).toBe('4');
+        expect(localStorage.getItem('grexia_arr_max_v1')).toBe('4');
     });
 
     it('puede avanzar hasta el máximo de steps', () => {

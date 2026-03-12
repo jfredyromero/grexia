@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { Text, View, StyleSheet, Svg, Path } from '@react-pdf/renderer';
-import type { PlanTier } from '../types';
 
 // ── Color palette ─────────────────────────────────────────────────────────────
 
@@ -68,7 +67,7 @@ const ss = StyleSheet.create({
         borderBottomWidth: 1.5,
         borderBottomColor: '#112F4F',
     },
-    lexiaText: {
+    grexiaText: {
         fontSize: 20,
         fontFamily: 'Helvetica-Bold',
         color: '#112F4F',
@@ -95,7 +94,7 @@ const ss = StyleSheet.create({
     },
     watermark: {
         position: 'absolute',
-        top: 300,
+        top: 350,
         left: -120,
         right: 0,
         alignItems: 'center',
@@ -104,7 +103,7 @@ const ss = StyleSheet.create({
         opacity: 0.12,
     },
     watermarkText: {
-        fontSize: 180,
+        fontSize: 160,
         fontFamily: 'Helvetica-Bold',
         color: '#112F4F',
         letterSpacing: 6,
@@ -148,9 +147,9 @@ const ss = StyleSheet.create({
     },
 });
 
-// ── Lexia logo icon (react-pdf SVG) ──────────────────────────────────────────
+// ── Grexia logo icon (react-pdf SVG) ──────────────────────────────────────────
 
-export function LexiaLogoPDF({ size = 24 }: { size?: number }) {
+export function GrexiaLogoPDF({ size = 24 }: { size?: number }) {
     return (
         <Svg
             viewBox="0 0 1024 1024"
@@ -196,8 +195,6 @@ export function LexiaLogoPDF({ size = 24 }: { size?: number }) {
 // ── PDFHeader ─────────────────────────────────────────────────────────────────
 
 interface PDFHeaderProps {
-    plan: PlanTier;
-    logoUrl?: string;
     title: string;
     subtitle: string;
 }
@@ -210,9 +207,9 @@ export function PDFHeader({ title, subtitle }: PDFHeaderProps) {
         >
             <View style={ss.fixedHeaderRow}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                    <LexiaLogoPDF size={26} />
+                    <GrexiaLogoPDF size={26} />
                     <View style={{ width: 1, height: 26, backgroundColor: '#e2e8f0' }} />
-                    <Text style={ss.lexiaText}>LEXIA</Text>
+                    <Text style={ss.grexiaText}>GREXIA</Text>
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
                     <Text style={ss.contractHeaderTitle}>{title}</Text>
@@ -235,12 +232,12 @@ export function PDFFooter() {
             <View style={ss.pageFooterDivider} />
             <View style={ss.pageFooterRow}>
                 <Text style={ss.pageFooterBrand}>
-                    Generado por <Text style={ss.pageFooterBrandBold}>Lexia.co</Text>
+                    Generado por <Text style={ss.pageFooterBrandBold}>Grexia.co</Text>
                 </Text>
                 <Text style={ss.pageFooterCta}>
                     ¿Dudas sobre este documento? <Text style={ss.pageFooterCtaBold}>Agenda una asesoría legal</Text>
                     {' en '}
-                    <Text style={ss.pageFooterCtaBold}>lexia.co</Text>
+                    <Text style={ss.pageFooterCtaBold}>grexia.co</Text>
                 </Text>
             </View>
         </View>
@@ -249,14 +246,13 @@ export function PDFFooter() {
 
 // ── PDFWatermark ──────────────────────────────────────────────────────────────
 
-export function PDFWatermark({ plan }: { plan: PlanTier }) {
-    if (plan !== 'free') return null;
+export function PDFWatermark() {
     return (
         <View
             fixed
             style={ss.watermark}
         >
-            <Text style={ss.watermarkText}>LEXIA</Text>
+            <Text style={ss.watermarkText}>GREXIA</Text>
         </View>
     );
 }
