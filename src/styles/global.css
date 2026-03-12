@@ -17,6 +17,7 @@ html {
     --font-sans: 'Inter', sans-serif;
     --font-display: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
+    --font-serif: 'Times New Roman', Times, serif;
 
     /* Border radius */
     --radius: 1rem;

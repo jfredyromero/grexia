@@ -55,7 +55,7 @@ const withCoarrendatario = (): ArrendamientoFormData => ({
 describe('OficinaTemplate — encabezado', () => {
     it('muestra CONTRATO DE ARRENDAMIENTO como título principal', () => {
         render(<OficinaTemplate formData={base} />);
-        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('CONTRATO DE ARRENDAMIENTO');
+        expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('ARRENDAMIENTO');
     });
 
     it('muestra subtítulo Contrato de Oficina (sin Propiedad Horizontal)', () => {

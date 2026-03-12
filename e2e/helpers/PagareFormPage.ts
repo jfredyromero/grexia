@@ -3,8 +3,6 @@ import { expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
-type PlanTier = 'free' | 'empresarial';
-
 interface AcreedorData {
     nombre: string;
     tipoDoc: string;
@@ -62,17 +60,7 @@ export class PagareFormPage {
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
-    /**
-     * Navega al formulario con el plan indicado.
-     * El plan se inyecta en localStorage antes de cargar la página
-     * (nanostores persistentAtom clave: 'grexia_plan').
-     */
-    async goto(plan: PlanTier = 'free') {
-        if (plan === 'empresarial') {
-            await this.page.addInitScript(() => {
-                localStorage.setItem('grexia_plan', 'empresarial');
-            });
-        }
+    async goto() {
         await this.page.goto('/herramientas/pagare/generar');
         await this.page.waitForSelector('h2:has-text("El acreedor")', { timeout: 10_000 });
     }
@@ -224,24 +212,6 @@ export class PagareFormPage {
 
     async assertClauseVisible(clause: 'PRIMERA' | 'SEGUNDA' | 'TERCERA' | 'CUARTA') {
         await expect(this.page.locator('#pagare-preview')).toContainText(new RegExp(`${clause}\\.`));
-    }
-
-    // ── Plan UI assertions (Step 4 — preview) ────────────────────────────────
-
-    /** Verifica el badge de plan visible en el encabezado del Step 4. */
-    async assertPlanBadge(plan: PlanTier) {
-        const label = plan === 'free' ? 'Plan Gratuito' : 'Plan Empresarial';
-        await expect(this.page.getByText(label).first()).toBeVisible();
-    }
-
-    /** Verifica que el banner de upgrade del plan gratuito es visible. */
-    async assertUpgradeBannerVisible() {
-        await expect(this.page.getByText(/Plan Gratuito:/).first()).toBeVisible();
-    }
-
-    /** Verifica que el banner de upgrade NO es visible (plan empresarial). */
-    async assertUpgradeBannerHidden() {
-        await expect(this.page.getByText(/Plan Gratuito:/).first()).not.toBeVisible();
     }
 }
 

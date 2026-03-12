@@ -530,7 +530,10 @@ export function B({ children }: { children: ReactNode }) {
 
 export function Para({ label, children }: { label: string; children: ReactNode }) {
     return (
-        <View style={pdfStyles.paragrafo}>
+        <View
+            wrap={false}
+            style={pdfStyles.paragrafo}
+        >
             <Text style={pdfStyles.paragrafoLabel}>{label}</Text>
             <Text style={pdfStyles.paragrafoText}>{children}</Text>
         </View>

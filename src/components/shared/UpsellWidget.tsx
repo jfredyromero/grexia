@@ -1,4 +1,4 @@
-const ASESORIA_FEATURES = ['Sesión virtual de 60 min', 'Abogado especialista en tu área', 'Resuelve todas tus dudas'];
+const ASESORIA_FEATURES = ['Sesión virtual de 45 min', 'Abogado especialista en tu área', 'Resuelve todas tus dudas'];
 const base = import.meta.env.BASE_URL;
 
 export default function UpsellWidget() {

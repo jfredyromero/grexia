@@ -4,8 +4,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 type TipoInmueble = 'Apartamento' | 'Casa' | 'Local Comercial' | 'Oficina';
-type PlanTier = 'free' | 'empresarial';
-
 interface InmuebleData {
     tipo: TipoInmueble;
     ph: boolean;
@@ -61,17 +59,7 @@ export class ArrendamientoFormPage {
 
     // ── Navigation ────────────────────────────────────────────────────────────
 
-    /**
-     * Navega al formulario con el plan indicado.
-     * El plan se inyecta en localStorage antes de cargar la página
-     * (nanostores persistentAtom clave: 'grexia_plan').
-     */
-    async goto(plan?: PlanTier) {
-        if (plan === 'empresarial') {
-            await this.page.addInitScript(() => {
-                localStorage.setItem('grexia_plan', 'empresarial');
-            });
-        }
+    async goto() {
         await this.page.goto('/herramientas/arrendamiento/generar');
         // client:only="react" — el componente no se SSR, el botón sólo existe tras el render de React
         await this.page.waitForSelector('button:has-text("Continuar")', { timeout: 10_000 });
@@ -86,7 +74,7 @@ export class ArrendamientoFormPage {
         // Propiedad Horizontal (botones condicionales)
         await this.page.waitForSelector('text=¿Está en propiedad horizontal?');
         if (data.ph) {
-            await this.page.getByRole('button', { name: /Sí, es en PH/ }).click();
+            await this.page.getByRole('button', { name: /Sí, es en propiedad horizontal/ }).click();
         } else {
             await this.page.getByRole('button', { name: /No, es independiente/ }).click();
         }
@@ -261,24 +249,6 @@ export class ArrendamientoFormPage {
 
     async assertContractNotContains(text: string | RegExp) {
         await expect(this.page.locator('#contract-content')).not.toContainText(text);
-    }
-
-    // ── Plan UI assertions (Step 5) ───────────────────────────────────────────
-
-    /** Verifica el badge de plan visible en el encabezado del Step 5. */
-    async assertPlanBadge(plan: PlanTier) {
-        const label = plan === 'free' ? 'Plan Gratuito' : 'Plan Empresarial';
-        await expect(this.page.getByText(label).first()).toBeVisible();
-    }
-
-    /** Verifica que el banner de upgrade del plan gratuito es visible. */
-    async assertUpgradeBannerVisible() {
-        await expect(this.page.getByText(/Plan Gratuito:/).first()).toBeVisible();
-    }
-
-    /** Verifica que el banner de upgrade NO es visible (plan empresarial). */
-    async assertUpgradeBannerHidden() {
-        await expect(this.page.getByText(/Plan Gratuito:/).first()).not.toBeVisible();
     }
 }
 

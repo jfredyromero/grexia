@@ -5,6 +5,8 @@ interface PagareTemplateProps {
     formData: PagareFormData;
 }
 
+const base = import.meta.env.BASE_URL;
+
 function docTypeLabel(tipo: string): string {
     if (tipo === 'CC') return 'cédula de ciudadanía No.';
     if (tipo === 'CE') return 'cédula de extranjería No.';
@@ -53,7 +55,7 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
             {/* ── Watermark ── */}
             <div
                 aria-hidden="true"
-                className="pointer-events-none select-none absolute inset-0 flex items-center justify-center overflow-hidden z-10"
+                className="pointer-events-none select-none absolute inset-0 flex items-center justify-center z-10"
                 style={{ transform: 'rotate(-42deg)' }}
             >
                 <span
@@ -65,17 +67,22 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
             </div>
 
             {/* ── Page wrapper ── */}
-            <div className="max-w-[794px] mx-auto px-14 py-10">
+            <div className="max-w-198.5 mx-auto px-14 py-10">
                 {/* ── Header ── */}
                 <div className="flex items-center justify-between mb-2">
                     {/* Logo */}
                     <div className="flex items-center gap-2">
                         <img
-                            src="/logo.svg"
+                            src={base + 'logo.svg'}
                             alt="Grexia"
                             className="h-7"
                         />
-                        <span className="text-lg font-black tracking-[2.5px] text-[#112F4F]">GREXIA</span>
+                        <span
+                            className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
+                            style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
+                        >
+                            GREXIA
+                        </span>{' '}
                     </div>
                     {/* Title */}
                     <div className="text-right">
@@ -86,8 +93,8 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                 <div className="border-b-[1.5px] border-[#112F4F] mb-4" />
 
                 {/* ── Info Box: Valor + Ciudad/Fecha ── */}
-                <div className="flex border-[1.5px] border-[#1b3070] rounded mb-3">
-                    <div className="flex-[3] p-3 border-r border-dashed border-[#1b3070]">
+                <div className="flex border-[1.5px] border-primary rounded mb-3">
+                    <div className="flex-3 p-3 border-r border-dashed border-primary">
                         <p className="text-[7px] font-bold uppercase tracking-[0.6px] text-slate-700 mb-1">
                             Valor del Pagaré
                         </p>
@@ -96,7 +103,7 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                             SON: {valorWords} M/L
                         </p>
                     </div>
-                    <div className="flex-[2] p-3">
+                    <div className="flex-2 p-3">
                         <p className="text-[7px] font-bold uppercase tracking-[0.6px] text-slate-700 mb-1">
                             Ciudad y Fecha de Suscripción
                         </p>
@@ -107,9 +114,9 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                 </div>
 
                 {/* ── Parties Box: Acreedor | Deudor ── */}
-                <div className="flex bg-[#EBF4FF] border border-[#1b3070] rounded mb-3">
-                    <div className="flex-1 p-3 border-r border-dashed border-[#1b3070]">
-                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-[#1b3070] border-b border-[#1b3070] pb-1 mb-2">
+                <div className="flex bg-[#EBF4FF] border border-primary rounded mb-3">
+                    <div className="flex-1 p-3 border-r border-dashed border-primary">
+                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-primary border-b border-primary pb-1 mb-2">
                             Acreedor(a)
                         </p>
                         <p className="font-black text-[9.5px] text-slate-900 mb-1">
@@ -131,7 +138,7 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                         )}
                     </div>
                     <div className="flex-1 p-3">
-                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-[#1b3070] border-b border-[#1b3070] pb-1 mb-2">
+                        <p className="text-[7.5px] font-bold uppercase tracking-[0.8px] text-primary border-b border-primary pb-1 mb-2">
                             Deudor(a)
                         </p>
                         <p className="font-black text-[9.5px] text-slate-900 mb-1">

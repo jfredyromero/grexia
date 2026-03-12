@@ -15,7 +15,7 @@ const AMOUNT_IN_CENTS = 5990000; // $59.900 COP
 const REDIRECT_URL = 'https://grexia.co/asesoria/confirmacion'; // update for prod
 
 const SESSION_FEATURES = [
-    { icon: 'schedule', text: '60 minutos de sesión virtual' },
+    { icon: 'schedule', text: '45 minutos de sesión virtual' },
     { icon: 'person', text: 'Abogado especialista en tu área' },
     { icon: 'chat', text: 'Diagnóstico y hoja de ruta de tu caso' },
     { icon: 'verified', text: 'Sesión grabada y enviada a tu email' },
@@ -31,7 +31,7 @@ const SESSION_FEATURES = [
             <div class="mb-8">
                 <Breadcrumb items={[{ label: 'Inicio', href: base }, { label: 'Asesoría legal' }]} />
                 <h1 class="text-3xl font-black text-secondary mt-4">Agenda tu asesoría legal</h1>
-                <p class="mt-1.5 text-slate-500">Sesión virtual de 60 minutos · $59.900 COP · Pago único</p>
+                <p class="mt-1.5 text-slate-500">Sesión virtual de 45 minutos · $59.900 COP · Pago único</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
@@ -146,7 +146,7 @@ const SESSION_FEATURES = [
                                     for="caso"
                                     class="text-sm font-semibold text-slate-700"
                                 >
-                                    Cuéntanos brevemente tu caso
+                                    Cuéntanos tu caso con detalle
                                     <span class="text-slate-400 font-normal">(opcional)</span>
                                 </label>
                                 <textarea

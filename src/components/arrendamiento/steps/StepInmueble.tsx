@@ -91,7 +91,7 @@ export default function StepInmueble({ data, onChange, onNext, forceValidate }: 
                     <div className="grid grid-cols-2 gap-2 mt-1">
                         {(
                             [
-                                { val: true, label: 'Sí, es en PH', icon: 'domain' },
+                                { val: true, label: 'Sí, es en propiedad horizontal', icon: 'domain' },
                                 { val: false, label: 'No, es independiente', icon: 'cottage' },
                             ] as const
                         ).map(({ val, label, icon }) => {

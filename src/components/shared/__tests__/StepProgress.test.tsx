@@ -25,7 +25,7 @@ describe('StepProgress — onStepClick (sin maxReachedStep)', () => {
         expect(onStepClick).toHaveBeenCalledWith(1);
     });
 
-    it('step activo NO es un botón', () => {
+    it('step activo es un botón disabled', () => {
         render(
             <StepProgress
                 steps={TEST_STEPS}
@@ -36,10 +36,11 @@ describe('StepProgress — onStepClick (sin maxReachedStep)', () => {
         const activeBtns = screen
             .queryAllByRole('button')
             .filter((el) => el.getAttribute('aria-label')?.includes('Ir al paso 2'));
-        expect(activeBtns).toHaveLength(0);
+        expect(activeBtns.length).toBeGreaterThan(0);
+        activeBtns.forEach((btn) => expect(btn).toBeDisabled());
     });
 
-    it('step futuro no visitado NO es un botón (maxReachedStep defaults to currentStep)', () => {
+    it('step futuro no visitado es un botón disabled (maxReachedStep defaults to currentStep)', () => {
         render(
             <StepProgress
                 steps={TEST_STEPS}
@@ -48,10 +49,11 @@ describe('StepProgress — onStepClick (sin maxReachedStep)', () => {
             />
         );
         const futureBtns = screen.queryAllByRole('button', { name: /Ir al paso (2|3|4)/i });
-        expect(futureBtns).toHaveLength(0);
+        expect(futureBtns.length).toBeGreaterThan(0);
+        futureBtns.forEach((btn) => expect(btn).toBeDisabled());
     });
 
-    it('sin onStepClick no se renderizan botones', () => {
+    it('sin onStepClick todos los botones están disabled', () => {
         render(
             <StepProgress
                 steps={TEST_STEPS}
@@ -59,7 +61,8 @@ describe('StepProgress — onStepClick (sin maxReachedStep)', () => {
             />
         );
         const btns = screen.queryAllByRole('button');
-        expect(btns).toHaveLength(0);
+        expect(btns.length).toBeGreaterThan(0);
+        btns.forEach((btn) => expect(btn).toBeDisabled());
     });
 
     it('step completado tiene cursor-pointer en desktop', () => {
@@ -115,7 +118,7 @@ describe('StepProgress — maxReachedStep', () => {
         expect(onStepClick).toHaveBeenCalledWith(3);
     });
 
-    it('step fuera de maxReachedStep NO es un botón', () => {
+    it('step fuera de maxReachedStep es un botón disabled', () => {
         render(
             <StepProgress
                 steps={TEST_STEPS}
@@ -126,7 +129,8 @@ describe('StepProgress — maxReachedStep', () => {
         );
         // Step 3 y 4 están más allá de maxReachedStep=2
         const lockedBtns = screen.queryAllByRole('button', { name: /Ir al paso (3|4)/i });
-        expect(lockedBtns).toHaveLength(0);
+        expect(lockedBtns.length).toBeGreaterThan(0);
+        lockedBtns.forEach((btn) => expect(btn).toBeDisabled());
     });
 
     it('step futuro no visitado tiene cursor-not-allowed', () => {
@@ -143,7 +147,7 @@ describe('StepProgress — maxReachedStep', () => {
         expect(lockedEls.length).toBeGreaterThan(0);
     });
 
-    it('step activo NO tiene cursor-not-allowed', () => {
+    it('step activo es un botón disabled sin cursor-not-allowed', () => {
         const { container } = render(
             <StepProgress
                 steps={TEST_STEPS}
@@ -155,9 +159,10 @@ describe('StepProgress — maxReachedStep', () => {
         const activeBtns = screen
             .queryAllByRole('button')
             .filter((el) => el.getAttribute('aria-label')?.includes('Ir al paso 2'));
-        // Step activo no debe ser botón ni tener cursor-not-allowed
-        expect(activeBtns).toHaveLength(0);
-        // El wrapper del step activo no tiene cursor-not-allowed
+        // Step activo es un botón disabled
+        expect(activeBtns.length).toBeGreaterThan(0);
+        activeBtns.forEach((btn) => expect(btn).toBeDisabled());
+        // El step activo no tiene cursor-not-allowed (usa cursor-default)
         const lockedEls = Array.from(container.querySelectorAll('.cursor-not-allowed'));
         const activeHasLocked = lockedEls.some((el) => el.textContent?.includes('Segundo'));
         expect(activeHasLocked).toBe(false);

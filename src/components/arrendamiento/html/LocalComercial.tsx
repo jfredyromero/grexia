@@ -5,6 +5,8 @@ interface LocalComercialProps {
     formData: ArrendamientoFormData;
 }
 
+const base = import.meta.env.BASE_URL;
+
 function docTypeLabel(tipo: string): string {
     if (tipo === 'CC') return 'cédula de ciudadanía No.';
     if (tipo === 'CE') return 'cédula de extranjería No.';
@@ -43,25 +45,18 @@ export default function LocalComercialTemplate({ formData }: LocalComercialProps
             id="contract-content"
             className="relative bg-white rounded-lg font-serif text-sm text-slate-800 leading-relaxed"
         >
+            {/* Watermark */}
             <div
                 aria-hidden="true"
-                style={{
-                    position: 'absolute',
-                    top: '44%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%) rotate(-42deg)',
-                    fontSize: '76px',
-                    fontWeight: 900,
-                    color: 'rgba(17, 47, 79, 0.10)',
-                    whiteSpace: 'nowrap',
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                    zIndex: 0,
-                    fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif",
-                    letterSpacing: '8px',
-                }}
+                className="pointer-events-none select-none absolute inset-0 flex items-center justify-center z-10"
+                style={{ transform: 'rotate(-42deg)' }}
             >
-                GREXIA
+                <span
+                    className="text-[180px] font-black tracking-widest opacity-[0.06] text-[#112F4F]"
+                    style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}
+                >
+                    GREXIA
+                </span>
             </div>
 
             <div
@@ -70,13 +65,13 @@ export default function LocalComercialTemplate({ formData }: LocalComercialProps
             >
                 {/* ── Header ── */}
                 <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-[10px]">
+                    <div className="flex items-center gap-2.5">
                         <img
-                            src="/logo.svg"
+                            src={base + 'logo.svg'}
                             alt="Grexia"
-                            className="h-[38px] w-[38px] shrink-0 object-contain"
+                            className="h-9.5 w-9.5 shrink-0 object-contain"
                         />
-                        <div className="h-[30px] w-px bg-slate-200 shrink-0" />
+                        <div className="h-7.5 w-px bg-slate-200 shrink-0" />
                         <span
                             className="text-[22px] font-black uppercase tracking-[0.05em] text-[#112F4F]"
                             style={{ fontFamily: "'Montserrat', 'Proxima Nova', 'Segoe UI', sans-serif" }}
@@ -86,12 +81,12 @@ export default function LocalComercialTemplate({ formData }: LocalComercialProps
                     </div>
                     <div className="text-right">
                         <h1 className="text-[22px] font-black uppercase tracking-[0.06em] text-[#112F4F] leading-none">
-                            CONTRATO DE ARRENDAMIENTO
+                            ARRENDAMIENTO
                         </h1>
                         <p className="text-[9px] text-slate-500 mt-1">Contrato de Local Comercial</p>
                     </div>
                 </div>
-                <hr className="border-0 border-t-2 border-[#1b3070] mb-5" />
+                <hr className="border-0 border-t-2 border-primary mb-5" />
 
                 {/* ── Info box: Canon + Ciudad/Fecha ── */}
                 <div
@@ -144,7 +139,7 @@ export default function LocalComercialTemplate({ formData }: LocalComercialProps
                         style={{ borderRight: '1px dashed #1b3070' }}
                     >
                         <p
-                            className="text-[8px] font-bold uppercase tracking-wide text-[#1b3070] pb-1 mb-2 border-b border-[#1b3070]"
+                            className="text-[8px] font-bold uppercase tracking-wide text-primary pb-1 mb-2 border-b border-primary"
                             style={{ fontFamily: 'sans-serif' }}
                         >
                             Arrendador(a)
@@ -169,7 +164,7 @@ export default function LocalComercialTemplate({ formData }: LocalComercialProps
                     </div>
                     <div className="flex-1 p-3">
                         <p
-                            className="text-[8px] font-bold uppercase tracking-wide text-[#1b3070] pb-1 mb-2 border-b border-[#1b3070]"
+                            className="text-[8px] font-bold uppercase tracking-wide text-primary pb-1 mb-2 border-b border-primary"
                             style={{ fontFamily: 'sans-serif' }}
                         >
                             Arrendatario(a)

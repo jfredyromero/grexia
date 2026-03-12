@@ -58,25 +58,18 @@ export default function StepProgress({ steps, currentStep, maxReachedStep, onSte
                             key={step.number}
                             className="flex flex-1 items-center"
                         >
-                            {isClickable ? (
-                                <button
-                                    type="button"
-                                    onClick={() => onStepClick(step.number)}
-                                    aria-label={`Ir al paso ${step.number}: ${step.label}`}
-                                    className="flex flex-col items-center gap-1.5 shrink-0 cursor-pointer bg-transparent border-none p-0"
-                                >
-                                    {circleContent}
-                                </button>
-                            ) : (
-                                <div
-                                    className={[
-                                        'flex flex-col items-center gap-1.5 shrink-0',
-                                        isLocked ? 'cursor-not-allowed' : '',
-                                    ].join(' ')}
-                                >
-                                    {circleContent}
-                                </div>
-                            )}
+                            <button
+                                type="button"
+                                onClick={isClickable ? () => onStepClick!(step.number) : undefined}
+                                disabled={!isClickable}
+                                aria-label={`Ir al paso ${step.number}: ${step.label}`}
+                                className={[
+                                    'flex flex-col items-center gap-1.5 shrink-0 bg-transparent border-none p-0',
+                                    isClickable ? 'cursor-pointer' : isLocked ? 'cursor-not-allowed' : 'cursor-default',
+                                ].join(' ')}
+                            >
+                                {circleContent}
+                            </button>
 
                             {/* Connector line */}
                             {idx < steps.length - 1 && (
@@ -118,18 +111,18 @@ export default function StepProgress({ steps, currentStep, maxReachedStep, onSte
                             isActive ? 'w-6 bg-secondary' : isCompletedDot ? 'w-3 bg-primary' : 'w-3 bg-slate-200',
                         ].join(' ');
 
-                        return isClickable ? (
+                        return (
                             <button
                                 key={step.number}
                                 type="button"
-                                onClick={() => onStepClick(step.number)}
+                                onClick={isClickable ? () => onStepClick!(step.number) : undefined}
+                                disabled={!isClickable}
                                 aria-label={`Ir al paso ${step.number}: ${step.label}`}
-                                className={`${dotClass} cursor-pointer border-none p-0`}
-                            />
-                        ) : (
-                            <div
-                                key={step.number}
-                                className={`${dotClass}${isLocked ? ' cursor-not-allowed' : ''}`}
+                                className={[
+                                    dotClass,
+                                    'border-none p-0',
+                                    isClickable ? 'cursor-pointer' : isLocked ? 'cursor-not-allowed' : 'cursor-default',
+                                ].join(' ')}
                             />
                         );
                     })}
