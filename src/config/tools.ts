@@ -1,4 +1,4 @@
-export type ToolSlug = 'arrendamiento' | 'pagare';
+export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -128,6 +128,57 @@ export const TOOLS: ToolConfig[] = [
         heroLawyerAvatar:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
         heroChat: 'Hola, ¿necesitas generar un pagaré con validez legal? Puedo orientarte.',
+    },
+    {
+        slug: 'intereses',
+        name: 'Liquidador de Intereses',
+        shortName: 'Intereses',
+        description:
+            'Calcula intereses judiciales corrientes y moratorios con tasas certificadas por la Superintendencia Financiera de Colombia. Gratis, sin registro.',
+        icon: 'calculate',
+        legalBasis: 'Superfinanciera Colombia',
+        href: {
+            landing: 'herramientas/intereses',
+            form: 'herramientas/intereses/generar',
+        },
+        heroHeadline: {
+            prefix: 'Liquida tus',
+            highlight: 'intereses judiciales',
+            suffix: 'en segundos',
+        },
+        heroSubtitle:
+            'Calcula intereses corrientes y moratorios con las tasas oficiales de la Superfinanciera. Sin registro, sin complicaciones. Descarga el reporte en PDF.',
+        trustBadges: [
+            { icon: 'check_circle', label: 'Gratis · Sin registro' },
+            { icon: 'verified', label: 'Tasas Superfinanciera' },
+            { icon: 'download', label: 'Reporte en PDF' },
+        ],
+        howItWorksSteps: [
+            {
+                icon: 'edit_note',
+                title: 'Ingresa la obligación',
+                description:
+                    'Indica el capital, tipo de interés (corriente o moratorio), fecha de inicio de mora y fecha de pago.',
+            },
+            {
+                icon: 'calculate',
+                title: 'Calculamos automáticamente',
+                description:
+                    'El sistema aplica las tasas certificadas por la Superfinanciera para cada período y genera la liquidación detallada.',
+            },
+            {
+                icon: 'picture_as_pdf',
+                title: 'Descarga el reporte',
+                description:
+                    'Obtén el reporte completo con detalle por período, detalle mensual y advertencias legales, listo para presentar en proceso judicial.',
+            },
+        ],
+        heroImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80',
+        heroLawyerName: 'Abogado Rodrigo',
+        heroLawyerSpecialty: 'Litigios civiles · En línea',
+        heroLawyerAvatar:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        heroChat: 'Hola, ¿necesitas liquidar intereses judiciales? Te ayudo a calcularlo correctamente.',
     },
 ];
 
