@@ -3,16 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/shared/Navbar.astro';
 import Breadcrumb from '../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import CheckoutForm from '../../components/asesoria/Checkout';
 
 const base = import.meta.env.BASE_URL;
-
-// ─── Wompi config ─────────────────────────────────────────────────────────────
-// TODO: move WOMPI_PUBLIC_KEY and INTEGRITY_KEY to environment variables.
-// The integrity signature (SHA256 of reference+amount+currency+integrity_key)
-// must be computed server-side (Astro SSR endpoint) before going to production.
-const WOMPI_PUBLIC_KEY = 'pub_test_REPLACE_WITH_YOUR_KEY';
-const AMOUNT_IN_CENTS = 5990000; // $59.900 COP
-const REDIRECT_URL = 'https://grexia.co/asesoria/confirmacion'; // update for prod
 
 const SESSION_FEATURES = [
     { icon: 'schedule', text: '45 minutos de sesión virtual' },
@@ -75,163 +68,16 @@ const SESSION_FEATURES = [
                         <div class="relative border-t border-white/10 pt-4 flex items-center gap-3">
                             <span class="material-symbols-outlined text-slate-400 text-[18px] shrink-0">lock</span>
                             <p class="text-xs text-slate-400 leading-relaxed">
-                                Pago seguro procesado por <strong class="text-slate-300">Wompi · Bancolombia</strong>.
-                                Tu información está protegida.
+                                Pago seguro procesado por <strong class="text-slate-300">ePayco</strong>. Tu información
+                                está protegida.
                             </p>
                         </div>
                     </div>
                 </aside>
 
-                <!-- ── Right: form + payment ───────────────────────────────── -->
-                <div class="lg:col-span-3 flex flex-col gap-4">
-                    <!-- Step 1: contact form -->
-                    <div
-                        id="step-form"
-                        class="rounded-lg bg-white border border-slate-200 shadow-sm p-6 sm:p-8"
-                    >
-                        <h2 class="text-lg font-black text-secondary mb-1">Tus datos</h2>
-                        <p class="text-sm text-slate-500 mb-6">Para que el abogado llegue preparado a tu sesión.</p>
-
-                        <form
-                            id="checkout-form"
-                            novalidate
-                            class="flex flex-col gap-5"
-                        >
-                            <div class="flex flex-col gap-1.5">
-                                <label
-                                    for="nombre"
-                                    class="text-sm font-semibold text-slate-700"
-                                >
-                                    Nombre completo <span class="text-red-500">*</span>
-                                </label>
-                                <input
-                                    id="nombre"
-                                    name="nombre"
-                                    type="text"
-                                    autocomplete="name"
-                                    placeholder="Tu nombre completo"
-                                    class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                                />
-                                <p
-                                    id="error-nombre"
-                                    class="hidden text-xs text-red-500 mt-0.5"
-                                >
-                                </p>
-                            </div>
-
-                            <div class="flex flex-col gap-1.5">
-                                <label
-                                    for="email"
-                                    class="text-sm font-semibold text-slate-700"
-                                >
-                                    Correo electrónico <span class="text-red-500">*</span>
-                                </label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autocomplete="email"
-                                    placeholder="tu@email.com"
-                                    class="h-11 rounded-lg border border-slate-200 px-4 text-sm text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                                />
-                                <p
-                                    id="error-email"
-                                    class="hidden text-xs text-red-500 mt-0.5"
-                                >
-                                </p>
-                            </div>
-
-                            <div class="flex flex-col gap-1.5">
-                                <label
-                                    for="caso"
-                                    class="text-sm font-semibold text-slate-700"
-                                >
-                                    Cuéntanos tu caso con detalle
-                                    <span class="text-slate-400 font-normal">(opcional)</span>
-                                </label>
-                                <textarea
-                                    id="caso"
-                                    name="caso"
-                                    rows="3"
-                                    placeholder="Ej: Necesito revisar un contrato de arrendamiento comercial antes de firmarlo…"
-                                    class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 resize-none transition-colors focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                                ></textarea>
-                            </div>
-
-                            <button
-                                type="submit"
-                                class="flex h-12 items-center justify-center gap-2 rounded-full bg-primary text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:bg-primary-hover hover:-translate-y-px"
-                            >
-                                Continuar al pago
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Step 2: payment (hidden until form submitted) -->
-                    <div
-                        id="step-payment"
-                        class="hidden rounded-lg bg-white border border-slate-200 shadow-sm p-6 sm:p-8"
-                    >
-                        <!-- Summary row -->
-                        <div
-                            id="payment-summary"
-                            class="flex items-center justify-between rounded-lg bg-slate-50 border border-slate-100 px-4 py-3 mb-6"
-                        >
-                            <div class="flex items-center gap-3">
-                                <span class="material-symbols-outlined text-primary text-[20px]">person</span>
-                                <div>
-                                    <p
-                                        id="summary-name"
-                                        class="text-sm font-bold text-secondary"
-                                    >
-                                    </p>
-                                    <p
-                                        id="summary-email"
-                                        class="text-xs text-slate-500"
-                                    >
-                                    </p>
-                                </div>
-                            </div>
-                            <button
-                                id="btn-edit"
-                                class="text-xs font-semibold text-primary hover:underline"
-                            >
-                                Editar
-                            </button>
-                        </div>
-
-                        <h2 class="text-lg font-black text-secondary mb-1">Pago seguro</h2>
-                        <p class="text-sm text-slate-500 mb-6">
-                            Al completar el pago recibirás un email con el enlace para agendar la fecha y hora de tu
-                            sesión.
-                        </p>
-
-                        <!-- Wompi widget -->
-                        <!-- NOTE: Replace data-public-key with your real Wompi public key.
-                             The data-signature:integrity value must be computed server-side:
-                             SHA256(reference + amount_in_cents + currency + integrity_key)
-                             See: https://docs.wompi.co/docs/en/widget -->
-                        <div class="flex flex-col items-stretch gap-3">
-                            <script
-                                src="https://checkout.wompi.co/widget.js"
-                                data-render-mode="button"
-                                data-public-key={WOMPI_PUBLIC_KEY}
-                                data-currency="COP"
-                                data-amount-in-cents={AMOUNT_IN_CENTS}
-                                data-reference="ASESORIA-GREXIA-001"
-                                data-signature:integrity="TODO_COMPUTE_SERVER_SIDE"
-                                data-redirect-url={REDIRECT_URL}
-                                data-customer-data:email=""
-                                data-customer-data:full-name=""
-                            ></script>
-                        </div>
-
-                        <p class="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400">
-                            <span class="material-symbols-outlined text-[15px]">lock</span>
-                            Pago seguro · Wompi es la plataforma de pagos de Bancolombia
-                        </p>
-                    </div>
+                <!-- ── Right: form + payment (React island) ───────────────── -->
+                <div class="lg:col-span-3">
+                    <CheckoutForm client:only="react" />
                 </div>
             </div>
         </div>
@@ -240,82 +86,8 @@ const SESSION_FEATURES = [
     <WhatsAppButton />
 </Layout>
 
-<script>
-    const form = document.getElementById('checkout-form') as HTMLFormElement;
-    const stepForm = document.getElementById('step-form')!;
-    const stepPayment = document.getElementById('step-payment')!;
-    const btnEdit = document.getElementById('btn-edit')!;
-    const summaryName = document.getElementById('summary-name')!;
-    const summaryEmail = document.getElementById('summary-email')!;
-
-    const inputNombre = document.getElementById('nombre') as HTMLInputElement;
-    const inputEmail = document.getElementById('email') as HTMLInputElement;
-    const inputCaso = document.getElementById('caso') as HTMLTextAreaElement;
-
-    const errorNombre = document.getElementById('error-nombre')!;
-    const errorEmail = document.getElementById('error-email')!;
-
-    function showError(el: HTMLElement, msg: string) {
-        el.textContent = msg;
-        el.classList.remove('hidden');
-    }
-
-    function clearError(el: HTMLElement) {
-        el.textContent = '';
-        el.classList.add('hidden');
-    }
-
-    function validate(): boolean {
-        let valid = true;
-        clearError(errorNombre);
-        clearError(errorEmail);
-
-        if (!inputNombre.value.trim()) {
-            showError(errorNombre, 'Ingresa tu nombre completo');
-            valid = false;
-        }
-
-        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRe.test(inputEmail.value.trim())) {
-            showError(errorEmail, 'Ingresa un correo electrónico válido');
-            valid = false;
-        }
-
-        return valid;
-    }
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!validate()) return;
-
-        const name = inputNombre.value.trim();
-        const email = inputEmail.value.trim();
-        const notes = inputCaso.value.trim();
-
-        // Persist for confirmation page
-        localStorage.setItem('grexia_checkout_name', name);
-        localStorage.setItem('grexia_checkout_email', email);
-        localStorage.setItem('grexia_checkout_notes', notes);
-
-        // Pre-fill Wompi customer data
-        const wompiScript = document.querySelector<HTMLScriptElement>('script[data-customer-data\\:email]');
-        if (wompiScript) {
-            wompiScript.setAttribute('data-customer-data:email', email);
-            wompiScript.setAttribute('data-customer-data:full-name', name);
-        }
-
-        // Show summary
-        summaryName.textContent = name;
-        summaryEmail.textContent = email;
-
-        // Switch steps
-        stepForm.classList.add('hidden');
-        stepPayment.classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    btnEdit.addEventListener('click', () => {
-        stepPayment.classList.add('hidden');
-        stepForm.classList.remove('hidden');
-    });
-</script>
+<!-- ePayco SDK — cargado a nivel de página para que esté disponible cuando React hidrate -->
+<script
+    defer
+    src="https://checkout.epayco.co/checkout.js"
+></script>
