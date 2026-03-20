@@ -1,0 +1,47 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/shared/Navbar.astro';
+import Breadcrumb from '../../../components/shared/Breadcrumb.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import TutelaForm from '../../../components/tutela/TutelaForm';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Generador de Tutela de Salud · Grexia">
+    <Navbar
+        variant="tool-form"
+        activeTool="tutela"
+    />
+    <main class="grow w-full bg-background-light">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+            <div class="mb-8">
+                <Breadcrumb
+                    items={[
+                        { label: 'Herramientas', href: base + '#herramientas' },
+                        { label: 'Acción de Tutela', href: base + 'herramientas/tutela' },
+                        { label: 'Generar' },
+                    ]}
+                />
+                <h1 class="text-3xl font-black text-secondary mt-3">Genera tu acción de tutela</h1>
+                <div class="flex flex-wrap gap-3 mt-2">
+                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                        <span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                        Gratis
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                        <span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                        Sin registro
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
+                        <span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                        Válida en Colombia · Art. 86 Constitución Política
+                    </span>
+                </div>
+            </div>
+
+            <TutelaForm client:only="react" />
+        </div>
+    </main>
+    <WhatsAppButton />
+</Layout>

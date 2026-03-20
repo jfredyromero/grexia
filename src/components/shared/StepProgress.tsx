@@ -1,3 +1,5 @@
+import { Fragment } from 'react';
+
 interface Step {
     number: number;
     label: string;
@@ -16,7 +18,7 @@ export default function StepProgress({ steps, currentStep, maxReachedStep, onSte
     return (
         <>
             {/* Desktop: numbered circles with connector lines */}
-            <div className="no-print hidden sm:flex items-center justify-between">
+            <div className="no-print hidden sm:flex items-center">
                 {steps.map((step, idx) => {
                     const isCompleted = step.number < currentStep;
                     const isActive = step.number === currentStep;
@@ -24,40 +26,8 @@ export default function StepProgress({ steps, currentStep, maxReachedStep, onSte
                     const isClickable = isAccessible && !isActive && !!onStepClick;
                     const isLocked = !isAccessible;
 
-                    const circleContent = (
-                        <>
-                            <div
-                                className={[
-                                    'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all',
-                                    isCompleted
-                                        ? 'bg-primary text-white'
-                                        : isActive
-                                          ? 'bg-secondary text-white ring-4 ring-secondary/15'
-                                          : 'bg-white border-2 border-slate-200 text-slate-400',
-                                ].join(' ')}
-                            >
-                                {isCompleted ? (
-                                    <span className="material-symbols-outlined text-[18px]">check</span>
-                                ) : (
-                                    step.number
-                                )}
-                            </div>
-                            <span
-                                className={[
-                                    'text-xs font-semibold whitespace-nowrap',
-                                    isActive ? 'text-secondary' : 'text-slate-400',
-                                ].join(' ')}
-                            >
-                                {step.label}
-                            </span>
-                        </>
-                    );
-
                     return (
-                        <div
-                            key={step.number}
-                            className="flex flex-1 items-center"
-                        >
+                        <Fragment key={step.number}>
                             <button
                                 type="button"
                                 onClick={isClickable ? () => onStepClick!(step.number) : undefined}
@@ -68,19 +38,42 @@ export default function StepProgress({ steps, currentStep, maxReachedStep, onSte
                                     isClickable ? 'cursor-pointer' : isLocked ? 'cursor-not-allowed' : 'cursor-default',
                                 ].join(' ')}
                             >
-                                {circleContent}
+                                <div
+                                    className={[
+                                        'flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all',
+                                        isCompleted
+                                            ? 'bg-primary text-white'
+                                            : isActive
+                                              ? 'bg-secondary text-white ring-4 ring-secondary/15'
+                                              : 'bg-white border-2 border-slate-200 text-slate-400',
+                                    ].join(' ')}
+                                >
+                                    {isCompleted ? (
+                                        <span className="material-symbols-outlined text-[18px]">check</span>
+                                    ) : (
+                                        step.number
+                                    )}
+                                </div>
+                                <span
+                                    className={[
+                                        'text-xs font-semibold whitespace-nowrap',
+                                        isActive ? 'text-secondary' : 'text-slate-400',
+                                    ].join(' ')}
+                                >
+                                    {step.label}
+                                </span>
                             </button>
 
-                            {/* Connector line */}
+                            {/* Connector line — sibling of button, not nested inside */}
                             {idx < steps.length - 1 && (
                                 <div
                                     className={[
-                                        'flex-1 h-0.5 mx-2 mb-5 rounded-full',
+                                        'flex-1 h-0.5 mx-2 mb-5 rounded-full min-w-2',
                                         step.number < currentStep ? 'bg-primary' : 'bg-slate-200',
                                     ].join(' ')}
                                 />
                             )}
-                        </div>
+                        </Fragment>
                     );
                 })}
             </div>

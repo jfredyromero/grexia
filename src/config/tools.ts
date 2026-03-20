@@ -1,4 +1,4 @@
-export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa';
+export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa' | 'tutela';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -230,6 +230,55 @@ export const TOOLS: ToolConfig[] = [
         heroLawyerAvatar:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
         heroChat: 'Hola, ¿necesitas generar una promesa de compraventa? Te guio paso a paso.',
+    },
+    {
+        slug: 'tutela',
+        name: 'Acción de Tutela',
+        shortName: 'Tutela',
+        description: 'Genera tu acción de tutela para proteger tus derechos fundamentales. Gratis, sin registro.',
+        icon: 'gavel',
+        legalBasis: 'Art. 86 Constitución Política',
+        href: {
+            landing: 'herramientas/tutela',
+            form: 'herramientas/tutela/generar',
+        },
+        heroHeadline: {
+            prefix: 'Tu acción de',
+            highlight: 'tutela',
+            suffix: 'lista en minutos',
+        },
+        heroSubtitle:
+            'Protege tus derechos fundamentales con una tutela generada por Grexia. Sin registro, sin complicaciones. Lista para presentar ante un juez.',
+        trustBadges: [
+            { icon: 'check_circle', label: 'Gratis · Sin registro' },
+            { icon: 'verified', label: 'Art. 86 Constitución Política' },
+            { icon: 'download', label: 'Descarga en PDF' },
+        ],
+        howItWorksSteps: [
+            {
+                icon: 'edit_note',
+                title: 'Rellena el formulario',
+                description:
+                    'Selecciona la temática, ingresa tus datos y cuéntanos qué derecho fue vulnerado. Solo toma unos minutos.',
+            },
+            {
+                icon: 'auto_awesome',
+                title: 'Generamos tu tutela',
+                description: 'Grexia redacta la acción de tutela completa con todos los argumentos legales necesarios.',
+            },
+            {
+                icon: 'picture_as_pdf',
+                title: 'Descarga y presenta',
+                description:
+                    'Descarga el PDF y preséntalo ante cualquier juzgado. Tienes 48 horas para la primera respuesta.',
+            },
+        ],
+        heroImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80',
+        heroLawyerName: 'Abogada Sofía',
+        heroLawyerSpecialty: 'Derechos Fundamentales · En línea',
+        heroLawyerAvatar:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroChat: 'Hola, ¿vulneraron alguno de tus derechos fundamentales? Te ayudo a preparar tu tutela.',
     },
 ];
 
