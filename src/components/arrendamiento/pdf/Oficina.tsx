@@ -496,13 +496,15 @@ export default function OficinaPDF({ formData }: OficinaPDFProps) {
                     <View style={s.sigCol}>
                         <SigBlock
                             name={arrendador.nombreCompleto || '___________________'}
-                            role={`ARRENDADOR – ${arrendadorDocLabel} ${arrendador.numeroDocumento || '___________________'}`}
+                            cc={`${arrendadorDocLabel} ${arrendador.numeroDocumento || '___________________'}`}
+                            role="ARRENDADOR"
                         />
                     </View>
                     <View style={s.sigCol}>
                         <SigBlock
                             name={arrendatario.nombreCompleto || '___________________'}
-                            role={`ARRENDATARIO – ${arrendatarioDocLabel} ${arrendatario.numeroDocumento || '___________________'}`}
+                            cc={`${arrendatarioDocLabel} ${arrendatario.numeroDocumento || '___________________'}`}
+                            role="ARRENDATARIO"
                         />
                     </View>
                 </View>
@@ -515,7 +517,8 @@ export default function OficinaPDF({ formData }: OficinaPDFProps) {
                         <View style={[s.sigCol, { flex: 0.5 }]}>
                             <SigBlock
                                 name={coarrendatario!.nombreCompleto || '___________________'}
-                                role={`COARRENDATARIO – ${coarrendatario!.tipoDocumento || 'Doc.'} ${coarrendatario!.numeroDocumento || '___________________'}`}
+                                cc={`${coarrendatario!.tipoDocumento || 'Doc.'} ${coarrendatario!.numeroDocumento || '___________________'}`}
+                                role="COARRENDATARIO"
                             />
                         </View>
                         <View style={[s.sigCol, { flex: 0.5 }]} />

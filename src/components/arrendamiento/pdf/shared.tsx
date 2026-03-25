@@ -503,6 +503,12 @@ export const pdfStyles = StyleSheet.create({
         fontSize: 9,
         color: C.slate700,
     },
+    sigRoleBold: {
+        fontFamily: 'Times-Bold',
+        fontSize: 9,
+        color: C.slate700,
+        marginTop: 1,
+    },
     fingerprintBox: {
         borderWidth: 1,
         borderColor: C.slate400,
@@ -560,12 +566,13 @@ export function Fingerprint() {
     );
 }
 
-export function SigBlock({ name, role }: { name: string; role: string }) {
+export function SigBlock({ name, cc, role }: { name: string; cc: string; role: string }) {
     return (
         <View style={pdfStyles.sigLine}>
             <View style={pdfStyles.sigTextArea}>
                 <Text style={pdfStyles.sigName}>{name}</Text>
-                <Text style={pdfStyles.sigRole}>{role}</Text>
+                <Text style={pdfStyles.sigRole}>{cc}</Text>
+                <Text style={pdfStyles.sigRoleBold}>{role}</Text>
             </View>
             <Fingerprint />
         </View>

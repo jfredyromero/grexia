@@ -267,13 +267,15 @@ export default function PagarePDF({ formData }: PagarePDFProps) {
                     <View style={s.sigCol}>
                         <SigBlock
                             name={deudor.nombreCompleto || '___________________'}
-                            role={`DEUDOR – ${deudor.tipoDocumento || 'Doc.'} ${deudor.numeroDocumento || '___________________'}`}
+                            cc={`${deudor.tipoDocumento || 'Doc.'} ${deudor.numeroDocumento || '___________________'}`}
+                            role="DEUDOR"
                         />
                     </View>
                     <View style={s.sigCol}>
                         <SigBlock
                             name={acreedor.nombreCompleto || '___________________'}
-                            role={`ACREEDOR – ${acreedor.tipoDocumento || 'Doc.'} ${acreedor.numeroDocumento || '___________________'}`}
+                            cc={`${acreedor.tipoDocumento || 'Doc.'} ${acreedor.numeroDocumento || '___________________'}`}
+                            role="ACREEDOR"
                         />
                     </View>
                 </View>

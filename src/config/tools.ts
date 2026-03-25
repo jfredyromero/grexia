@@ -1,4 +1,4 @@
-export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses';
+export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -179,6 +179,57 @@ export const TOOLS: ToolConfig[] = [
         heroLawyerAvatar:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
         heroChat: 'Hola, ¿necesitas liquidar intereses judiciales? Te ayudo a calcularlo correctamente.',
+    },
+    {
+        slug: 'compraventa',
+        name: 'Promesa de Compraventa',
+        shortName: 'Compraventa',
+        description:
+            'Genera tu promesa de compraventa de inmueble con validez legal en Colombia. Gratis, sin registro, conforme al Codigo Civil.',
+        icon: 'real_estate_agent',
+        legalBasis: 'Codigo Civil Art. 1611',
+        href: {
+            landing: 'herramientas/compraventa',
+            form: 'herramientas/compraventa/generar',
+        },
+        heroHeadline: {
+            prefix: 'Tu promesa de',
+            highlight: 'compraventa',
+            suffix: 'lista en minutos',
+        },
+        heroSubtitle:
+            'Genera tu promesa de compraventa de inmueble gratis con validez legal en Colombia (Codigo Civil Art. 1611). Sin registro, sin complicaciones. Descarga en PDF.',
+        trustBadges: [
+            { icon: 'check_circle', label: 'Gratis · Sin registro' },
+            { icon: 'verified', label: 'Codigo Civil Art. 1611' },
+            { icon: 'download', label: 'Descarga en PDF' },
+        ],
+        howItWorksSteps: [
+            {
+                icon: 'edit_note',
+                title: 'Completa los datos',
+                description:
+                    'Ingresa los datos del vendedor, comprador, inmueble, condiciones economicas y escritura. Solo toma unos minutos.',
+            },
+            {
+                icon: 'auto_awesome',
+                title: 'Generamos tu promesa',
+                description:
+                    'El sistema crea automaticamente la promesa de compraventa con 18 clausulas ajustadas al Codigo Civil colombiano.',
+            },
+            {
+                icon: 'picture_as_pdf',
+                title: 'Descarga en PDF',
+                description:
+                    'Revisa tu promesa de compraventa, descargala en PDF y firmala. Lista para usar, sin costo y sin tramites adicionales.',
+            },
+        ],
+        heroImage: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+        heroLawyerName: 'Abogada Laura',
+        heroLawyerSpecialty: 'Derecho Inmobiliario · En linea',
+        heroLawyerAvatar:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroChat: 'Hola, ¿necesitas generar una promesa de compraventa? Te guio paso a paso.',
     },
 ];
 
