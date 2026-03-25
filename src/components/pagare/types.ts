@@ -1,4 +1,3 @@
-export type { PlanTier } from '../../types/plans';
 export type TipoDocPersona = 'CC' | 'CE' | 'NIT' | 'Pasaporte';
 export type ModalidadPago = 'unico' | 'cuotas';
 export type PeriodoCuotas = 'mensual' | 'bimestral' | 'trimestral';
