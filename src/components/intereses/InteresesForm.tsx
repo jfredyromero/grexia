@@ -7,7 +7,6 @@ import { calcularIntereses } from './interesesUtils';
 import type { ResultadoLiquidacion, TasaEntry } from './interesesUtils';
 import { $interesesFormData, $interesesStep, $interesesMaxStep } from '../../stores/intereses';
 import StepProgress from '../shared/StepProgress';
-import UpsellWidget from '../shared/UpsellWidget';
 import StepObligacion from './steps/StepObligacion';
 import StepPreview from './steps/StepPreview';
 
@@ -77,8 +76,6 @@ export default function InteresesForm() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    const isLastStep = currentStep === INTERESES_STEPS.length;
-
     const stepContent: Record<number, React.ReactNode> = {
         1: (
             <StepObligacion
@@ -103,34 +100,16 @@ export default function InteresesForm() {
     };
 
     return (
-        <div
-            className={['grid grid-cols-1 items-start gap-8', isLastStep ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(
-                ' '
-            )}
-        >
-            {/* Main form */}
-            <div className={['flex flex-col gap-6', isLastStep ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
-                <StepProgress
-                    steps={INTERESES_STEPS}
-                    currentStep={currentStep}
-                    maxReachedStep={maxReachedStep}
-                    onStepClick={handleStepClick}
-                />
-                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
-                    {stepContent[currentStep]}
-                </div>
+        <div className="flex flex-col gap-6">
+            <StepProgress
+                steps={INTERESES_STEPS}
+                currentStep={currentStep}
+                maxReachedStep={maxReachedStep}
+                onStepClick={handleStepClick}
+            />
+            <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
+                {stepContent[currentStep]}
             </div>
-
-            {/* Sidebar */}
-            <aside
-                className={[
-                    'no-print',
-                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
-                    isLastStep ? 'lg:col-span-2' : '',
-                ].join(' ')}
-            >
-                <UpsellWidget />
-            </aside>
         </div>
     );
 }

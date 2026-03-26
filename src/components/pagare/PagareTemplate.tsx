@@ -352,10 +352,9 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                                     {deudor.nombreCompleto || '___________________'}
                                 </p>
                                 <p className="text-[9px] text-slate-700">
-                                    DEUDOR · {deudor.tipoDocumento || 'Doc.'}{' '}
-                                    {deudor.numeroDocumento || '___________________'}
+                                    {deudor.tipoDocumento || 'Doc.'} {deudor.numeroDocumento || '___________________'}
                                 </p>
-                                {deudor.email && <p className="text-[9px] text-slate-700">{deudor.email}</p>}
+                                <p className="text-[9px] text-slate-700 font-bold">DEUDOR</p>
                             </div>
                             <div className="border border-slate-400 rounded w-14 h-16 flex items-end justify-center pb-1 shrink-0">
                                 <span className="text-[7px] text-slate-400 uppercase tracking-[0.5px]">Huella</span>
@@ -371,10 +370,10 @@ export default function PagareTemplate({ formData }: PagareTemplateProps) {
                                     {acreedor.nombreCompleto || '___________________'}
                                 </p>
                                 <p className="text-[9px] text-slate-700">
-                                    ACREEDOR · {acreedor.tipoDocumento || 'Doc.'}{' '}
+                                    {acreedor.tipoDocumento || 'Doc.'}{' '}
                                     {acreedor.numeroDocumento || '___________________'}
                                 </p>
-                                {acreedor.email && <p className="text-[9px] text-slate-700">{acreedor.email}</p>}
+                                <p className="text-[9px] text-slate-700 font-bold">ACREEDOR</p>
                             </div>
                             <div className="border border-slate-400 rounded w-14 h-16 flex items-end justify-center pb-1 shrink-0">
                                 <span className="text-[7px] text-slate-400 uppercase tracking-[0.5px]">Huella</span>

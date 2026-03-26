@@ -14,7 +14,6 @@ import {
 import { $tutelaFormData, $tutelaStep, $tutelaMaxStep } from '../../stores/tutela';
 import { generarHechosConIA } from '../../services/geminiHechos';
 import StepProgress from '../shared/StepProgress';
-import UpsellWidget from '../shared/UpsellWidget';
 import Step1Accionante from './steps/Step1Accionante';
 import Step2EPS from './steps/Step2EPS';
 import Step3CondicionMedica from './steps/Step3CondicionMedica';
@@ -103,8 +102,6 @@ export default function TutelaForm() {
         [triggerIA]
     );
 
-    const isLastStep = currentStep === TUTELA_STEPS.length;
-
     const stepContent: Record<number, React.ReactNode> = {
         1: (
             <Step1Accionante
@@ -179,32 +176,16 @@ export default function TutelaForm() {
     };
 
     return (
-        <div
-            className={['grid grid-cols-1 items-start gap-8', isLastStep ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(
-                ' '
-            )}
-        >
-            <div className={['flex flex-col gap-6', isLastStep ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
-                <StepProgress
-                    steps={TUTELA_STEPS}
-                    currentStep={currentStep}
-                    maxReachedStep={maxReachedStep}
-                    onStepClick={handleStepClick}
-                />
-                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
-                    {stepContent[currentStep]}
-                </div>
+        <div className="flex flex-col gap-6">
+            <StepProgress
+                steps={TUTELA_STEPS}
+                currentStep={currentStep}
+                maxReachedStep={maxReachedStep}
+                onStepClick={handleStepClick}
+            />
+            <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
+                {stepContent[currentStep]}
             </div>
-
-            <aside
-                className={[
-                    'no-print',
-                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
-                    isLastStep ? 'lg:col-span-2' : '',
-                ].join(' ')}
-            >
-                <UpsellWidget />
-            </aside>
         </div>
     );
 }

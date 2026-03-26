@@ -96,7 +96,7 @@ export const STEPS = [
     { number: 2, label: 'Arrendador' },
     { number: 3, label: 'Arrendatario' },
     { number: 4, label: 'Condiciones' },
-    { number: 5, label: 'Contrato' },
+    { number: 5, label: 'Preview' },
 ] as const;
 
 export const DEPARTAMENTOS = [

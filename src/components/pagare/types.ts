@@ -72,7 +72,7 @@ export const PAGARE_STEPS = [
     { number: 1, label: 'Acreedor' },
     { number: 2, label: 'Deudor' },
     { number: 3, label: 'Obligación' },
-    { number: 4, label: 'Pagaré' },
+    { number: 4, label: 'Preview' },
 ] as const;
 
 export const TIPOS_DOC_PERSONA: TipoDocPersona[] = ['CC', 'CE', 'NIT', 'Pasaporte'];

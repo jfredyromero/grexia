@@ -4,6 +4,7 @@ import Navbar from '../../../components/shared/Navbar.astro';
 import Breadcrumb from '../../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import PagareForm from '../../../components/pagare/PagareForm';
+import UpsellWidget from '../../../components/shared/UpsellWidget.astro';
 import { getToolBySlug } from '../../../config/tools';
 
 const tool = getToolBySlug('pagare')!;
@@ -43,8 +44,14 @@ const base = import.meta.env.BASE_URL;
                 </div>
             </div>
 
-            <!-- React island: full form with internal layout -->
-            <PagareForm client:only="react" />
+            <div class="grid grid-cols-1 lg:grid-cols-3 items-start gap-8">
+                <div class="lg:col-span-2">
+                    <PagareForm client:only="react" />
+                </div>
+                <aside class="no-print lg:sticky lg:top-[50vh] lg:-translate-y-1/2">
+                    <UpsellWidget />
+                </aside>
+            </div>
         </div>
     </main>
     <WhatsAppButton />

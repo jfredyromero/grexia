@@ -12,7 +12,6 @@ import {
 } from './validation';
 import { $arrendamientoFormData, $arrendamientoStep, $arrendamientoMaxStep } from '../../stores/arrendamiento';
 import StepProgress from '../shared/StepProgress';
-import UpsellWidget from '../shared/UpsellWidget';
 import StepInmueble from './steps/StepInmueble';
 import StepArrendador from './steps/StepArrendador';
 import StepArrendatario from './steps/StepArrendatario';
@@ -81,8 +80,6 @@ export default function ArrendamientoForm() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    const isStep5 = currentStep === 5;
-
     const stepContent: Record<number, React.ReactNode> = {
         1: (
             <StepInmueble
@@ -131,35 +128,16 @@ export default function ArrendamientoForm() {
     };
 
     return (
-        <div
-            className={['grid grid-cols-1 items-start gap-8', isStep5 ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(' ')}
-        >
-            {/* Main form column */}
-            <div className={['flex flex-col gap-6', isStep5 ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
-                {/* Step progress */}
-                <StepProgress
-                    steps={STEPS}
-                    currentStep={currentStep}
-                    maxReachedStep={maxReachedStep}
-                    onStepClick={handleStepClick}
-                />
-
-                {/* Step card */}
-                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
-                    {stepContent[currentStep]}
-                </div>
+        <div className="flex flex-col gap-6">
+            <StepProgress
+                steps={STEPS}
+                currentStep={currentStep}
+                maxReachedStep={maxReachedStep}
+                onStepClick={handleStepClick}
+            />
+            <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
+                {stepContent[currentStep]}
             </div>
-
-            {/* Sidebar: upsell widget */}
-            <aside
-                className={[
-                    'no-print',
-                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
-                    isStep5 ? 'lg:col-span-2' : '',
-                ].join(' ')}
-            >
-                <UpsellWidget />
-            </aside>
         </div>
     );
 }

@@ -59,10 +59,6 @@ export default function TutelaSelector() {
                                     <p className="text-xs text-slate-500">{t.descripcion}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-1 text-xs font-semibold text-primary mt-auto">
-                                Generar tutela
-                                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                            </div>
                             <span className="absolute top-3 right-3 text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
                                 Disponible
                             </span>
@@ -94,9 +90,12 @@ export default function TutelaSelector() {
                             <div className="bg-secondary text-white text-xs rounded-lg px-4 py-3 shadow-xl max-w-[200px] text-center">
                                 <p className="font-semibold mb-1">Asesoría personalizada</p>
                                 <p className="text-slate-300 mb-2">Esta temática requiere orientación de un experto.</p>
-                                <span className="inline-flex items-center gap-1 text-blue-300 font-semibold pointer-events-auto">
+                                <a
+                                    className="inline-flex items-center gap-1 text-blue-300 font-semibold pointer-events-auto"
+                                    href={base + 'asesoria/checkout'}
+                                >
                                     Agenda una sesión →
-                                </span>
+                                </a>
                             </div>
                         </div>
                     </div>

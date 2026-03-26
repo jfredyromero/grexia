@@ -208,14 +208,16 @@ describe('PagareTemplate — cláusulas', () => {
 // ── Signature blocks ──────────────────────────────────────────────────────────
 
 describe('PagareTemplate — bloques de firma', () => {
-    it('muestra "DEUDOR ·" con documento en el bloque de firma', () => {
+    it('muestra el documento y rol DEUDOR en el bloque de firma', () => {
         const { container } = renderTemplate();
-        expect(container.textContent).toMatch(/DEUDOR\s*·\s*CC\s*9876543210/);
+        expect(container.textContent).toMatch(/CC\s*9876543210/);
+        expect(container.textContent).toContain('DEUDOR');
     });
 
-    it('muestra "ACREEDOR ·" con documento en el bloque de firma', () => {
+    it('muestra el documento y rol ACREEDOR en el bloque de firma', () => {
         const { container } = renderTemplate();
-        expect(container.textContent).toMatch(/ACREEDOR\s*·\s*CC\s*1234567890/);
+        expect(container.textContent).toMatch(/CC\s*1234567890/);
+        expect(container.textContent).toContain('ACREEDOR');
     });
 
     it('muestra el email del acreedor cuando se provee', () => {

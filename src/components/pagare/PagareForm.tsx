@@ -5,7 +5,6 @@ import { PAGARE_STEPS } from './types';
 import { validateAcreedor, validateDeudor, validateObligacion, hasErrors } from './validation';
 import { $pagareFormData, $pagareStep, $pagareMaxStep } from '../../stores/pagare';
 import StepProgress from '../shared/StepProgress';
-import UpsellWidget from '../shared/UpsellWidget';
 import StepAcreedor from './steps/StepAcreedor';
 import StepDeudor from './steps/StepDeudor';
 import StepObligacion from './steps/StepObligacion';
@@ -60,8 +59,6 @@ export default function PagareForm() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    const isLastStep = currentStep === PAGARE_STEPS.length;
-
     const stepContent: Record<number, React.ReactNode> = {
         1: (
             <StepAcreedor
@@ -98,34 +95,16 @@ export default function PagareForm() {
     };
 
     return (
-        <div
-            className={['grid grid-cols-1 items-start gap-8', isLastStep ? 'lg:grid-cols-5' : 'lg:grid-cols-3'].join(
-                ' '
-            )}
-        >
-            {/* Main form column */}
-            <div className={['flex flex-col gap-6', isLastStep ? 'lg:col-span-3' : 'lg:col-span-2'].join(' ')}>
-                <StepProgress
-                    steps={PAGARE_STEPS}
-                    currentStep={currentStep}
-                    maxReachedStep={maxReachedStep}
-                    onStepClick={handleStepClick}
-                />
-                <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
-                    {stepContent[currentStep]}
-                </div>
+        <div className="flex flex-col gap-6">
+            <StepProgress
+                steps={PAGARE_STEPS}
+                currentStep={currentStep}
+                maxReachedStep={maxReachedStep}
+                onStepClick={handleStepClick}
+            />
+            <div className="bg-white rounded-lg shadow-sm border border-slate-100 p-6 sm:p-8">
+                {stepContent[currentStep]}
             </div>
-
-            {/* Sidebar: upsell widget */}
-            <aside
-                className={[
-                    'no-print',
-                    'lg:sticky lg:top-[50vh] lg:-translate-y-1/2',
-                    isLastStep ? 'lg:col-span-2' : '',
-                ].join(' ')}
-            >
-                <UpsellWidget />
-            </aside>
         </div>
     );
 }
