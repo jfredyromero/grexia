@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Confirmacion from '../Confirmacion';
 
-const FAKE_CALENDAR = 'https://calendar.google.com/appointments/test-session';
+const FAKE_CALENDLY_URL = 'https://calendly.com/grexiaco/test-session';
 
 // ── Location mock ─────────────────────────────────────────────────────────────
 
@@ -20,7 +20,7 @@ function mockFetchOk() {
     vi.stubGlobal(
         'fetch',
         vi.fn().mockResolvedValue({
-            json: () => Promise.resolve({ ok: true, calendarUrl: FAKE_CALENDAR }),
+            json: () => Promise.resolve({ ok: true, calendarUrl: FAKE_CALENDLY_URL }),
         })
     );
 }
@@ -29,7 +29,7 @@ function mockFetchFailed(reason = 'Rechazada') {
     vi.stubGlobal(
         'fetch',
         vi.fn().mockResolvedValue({
-            json: () => Promise.resolve({ ok: false, reason }),
+            json: () => Promise.resolve({ ok: false, pago: { estado: reason, monto: 0 } }),
         })
     );
 }
@@ -40,19 +40,23 @@ function mockFetchNetworkError() {
 
 beforeEach(() => {
     setSearch('?ref_payco=TEST_REF_123');
+    localStorage.clear();
     mockFetchOk();
 });
 
 afterEach(() => {
     vi.unstubAllGlobals();
+    localStorage.clear();
 });
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('Confirmacion', () => {
     it('muestra spinner mientras carga', () => {
-        // fetch nunca resuelve durante este test
-        vi.stubGlobal('fetch', vi.fn(() => new Promise(() => {})));
+        vi.stubGlobal(
+            'fetch',
+            vi.fn(() => new Promise(() => {}))
+        );
 
         render(<Confirmacion />);
 
@@ -60,12 +64,12 @@ describe('Confirmacion', () => {
         expect(screen.getByText(/verificando tu pago/i)).toBeInTheDocument();
     });
 
-    it('muestra botón "Agendar" con la URL correcta cuando pago es Aceptado', async () => {
+    it('muestra botón "Agendar" con la URL de Calendly correcta cuando pago es Aceptado', async () => {
         render(<Confirmacion />);
 
         const btn = await screen.findByTestId('btn-agendar');
         expect(btn).toBeInTheDocument();
-        expect(btn).toHaveAttribute('href', FAKE_CALENDAR);
+        expect(btn).toHaveAttribute('data-calendly-url', FAKE_CALENDLY_URL);
         expect(screen.getByTestId('confirmacion-exito')).toBeInTheDocument();
     });
 
@@ -83,7 +87,7 @@ describe('Confirmacion', () => {
         render(<Confirmacion />);
 
         await screen.findByTestId('confirmacion-fallido');
-        expect(screen.getByText(/no pudimos verificar tu pago/i)).toBeInTheDocument();
+        expect(screen.getByText(/pago no completado/i)).toBeInTheDocument();
         expect(screen.getByText(/rechazada/i)).toBeInTheDocument();
         expect(screen.getByTestId('btn-soporte')).toBeInTheDocument();
     });
@@ -121,5 +125,33 @@ describe('Confirmacion', () => {
         await userEvent.click(btn);
 
         await waitFor(() => expect(reloadMock).toHaveBeenCalled());
+    });
+
+    it('deshabilita el botón y guarda en localStorage al recibir evento calendly.event_scheduled', async () => {
+        render(<Confirmacion />);
+
+        await screen.findByTestId('btn-agendar');
+
+        window.dispatchEvent(
+            new MessageEvent('message', {
+                data: { event: 'calendly.event_scheduled' },
+            })
+        );
+
+        await waitFor(() => {
+            expect(screen.getByTestId('btn-agendar')).toBeDisabled();
+        });
+        expect(screen.getByText(/sesión agendada/i)).toBeInTheDocument();
+        expect(localStorage.getItem('booked_TEST_REF_123')).toBe('1');
+    });
+
+    it('botón inicia deshabilitado si la ref ya está en localStorage', async () => {
+        localStorage.setItem('booked_TEST_REF_123', '1');
+
+        render(<Confirmacion />);
+
+        const btn = await screen.findByTestId('btn-agendar');
+        expect(btn).toBeDisabled();
+        expect(screen.getByText(/sesión agendada/i)).toBeInTheDocument();
     });
 });

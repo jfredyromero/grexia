@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-const EPAYCO_CALENDAR_URL = import.meta.env.EPAYCO_CALENDAR_URL as string;
+const CALENDLY_URL = import.meta.env.CALENDLY_URL as string;
 
 export interface PagoData {
     estado: string;
@@ -86,7 +86,7 @@ export const GET: APIRoute = async ({ url }) => {
     }
 
     try {
-        const result = await verificarPago(ref, EPAYCO_CALENDAR_URL);
+        const result = await verificarPago(ref, CALENDLY_URL);
         return new Response(JSON.stringify(result), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
