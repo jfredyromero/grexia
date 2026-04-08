@@ -123,6 +123,7 @@ const canonicalURL = canonical ?? Astro.url.href;
                 />
             )
         }
+        <slot name="head" />
         <link
             rel="preconnect"
             href="https://fonts.googleapis.com"

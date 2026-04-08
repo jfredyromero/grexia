@@ -16,7 +16,7 @@ import Button from '../shared/Button';
 
 const EPAYCO_KEY = import.meta.env.PUBLIC_EPAYCO_P_KEY as string;
 const IS_TEST = import.meta.env.PUBLIC_EPAYCO_TEST !== 'false';
-const BASE = import.meta.env.BASE_URL; // siempre termina en /
+const BASE = import.meta.env.BASE_URL;
 const RESPONSE_URL = `${import.meta.env.SITE}${BASE}asesoria/confirmacion`;
 const CONFIRMATION_URL = `${import.meta.env.SITE}${BASE}api/pago/confirmar`;
 
@@ -93,7 +93,7 @@ export default function Checkout() {
 
         handlerRef.current?.open({
             name: 'Asesoría legal Grexia',
-            description: 'Sesión virtual con abogado',
+            description: 'Asesoría Virtual con Abogado Especialista',
             currency: 'cop',
             amount: '59900',
             tax_base: '59900',

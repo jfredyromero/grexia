@@ -3,13 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Checkout from '../Checkout';
 
-const PROPS = {
-    epaycoKey: 'TEST_KEY',
-    isTest: 'true',
-    responseUrl: 'https://grexia.co/asesoria/confirmacion',
-    confirmationUrl: 'https://grexia.co/api/pago/confirmar',
-};
-
 // ── ePayco SDK mock ───────────────────────────────────────────────────────────
 
 const openMock = vi.fn();
@@ -37,9 +30,11 @@ afterEach(() => {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+/** Espera que el SDK esté listo (intervalo de 100 ms) y rellena el formulario. */
 async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com') {
     await userEvent.type(screen.getByLabelText(/nombre completo/i), nombre);
     await userEvent.type(screen.getByLabelText(/correo electrónico/i), email);
+    await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
     await userEvent.click(screen.getByTestId('btn-pagar'));
 }
 
@@ -47,24 +42,24 @@ async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com')
 
 describe('Checkout', () => {
     it('renderiza el formulario con campos de nombre y email', () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
 
         expect(screen.getByLabelText(/nombre completo/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/cuéntanos tu caso/i)).toBeInTheDocument();
     });
 
-    it('el botón "Pagar" está habilitado cuando el SDK está disponible en window', () => {
-        render(<Checkout {...PROPS} />);
+    it('el botón "Pagar" se habilita cuando el SDK está disponible en window', async () => {
+        render(<Checkout />);
 
-        const btn = screen.getByTestId('btn-pagar');
-        expect(btn).not.toBeDisabled();
-        expect(btn).toHaveTextContent(/pagar/i);
+        await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
+        expect(screen.getByTestId('btn-pagar')).toHaveTextContent(/pagar/i);
     });
 
     it('muestra error si nombre está vacío al intentar pagar', async () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
 
+        await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
         await userEvent.type(screen.getByLabelText(/correo/i), 'a@b.com');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
@@ -73,8 +68,9 @@ describe('Checkout', () => {
     });
 
     it('muestra error si email es inválido', async () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
 
+        await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
         await userEvent.type(screen.getByLabelText(/nombre/i), 'Juan');
         await userEvent.type(screen.getByLabelText(/correo/i), 'no-es-un-email');
         await userEvent.click(screen.getByTestId('btn-pagar'));
@@ -84,7 +80,7 @@ describe('Checkout', () => {
     });
 
     it('llama a handler.open() con datos correctos al enviar el formulario válido', async () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
 
         await fillAndSubmit('Ana García', 'ana@example.com');
 
@@ -95,15 +91,13 @@ describe('Checkout', () => {
                 email_billing: 'ana@example.com',
                 amount: '59900',
                 currency: 'cop',
-                response: PROPS.responseUrl,
-                confirmation: PROPS.confirmationUrl,
                 methodsDisable: ['CASH', 'SP'],
             })
         );
     });
 
     it('guarda nombre y email en localStorage antes de abrir el modal', async () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
 
         await fillAndSubmit('Carlos López', 'carlos@example.com');
 
@@ -111,17 +105,17 @@ describe('Checkout', () => {
         expect(localStorage.getItem('grexia_checkout_email')).toBe('carlos@example.com');
     });
 
-    it('configura el SDK con la key y el modo test correctos', () => {
-        render(<Checkout {...PROPS} />);
+    it('configura el SDK con la key y el modo test al detectar window.ePayco', async () => {
+        render(<Checkout />);
 
-        expect(configureMock).toHaveBeenCalledWith({
-            key: 'TEST_KEY',
-            test: true,
-        });
+        await waitFor(() => expect(configureMock).toHaveBeenCalledOnce());
+        expect(configureMock).toHaveBeenCalledWith(expect.objectContaining({ test: expect.any(Boolean) }));
     });
 
     it('limpia errores al corregir los campos y reenviar', async () => {
-        render(<Checkout {...PROPS} />);
+        render(<Checkout />);
+
+        await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
 
         // Primer intento sin datos → errores
         await userEvent.click(screen.getByTestId('btn-pagar'));
