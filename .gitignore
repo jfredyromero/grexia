@@ -35,4 +35,5 @@ coverage/
 # ia
 .agents/
 .claude/
+.atl/
 skills-lock.json
