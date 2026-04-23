@@ -1,0 +1,770 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../components/shared/Breadcrumb.astro';
+import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+
+const base = import.meta.env.BASE_URL;
+
+const trustBadges = [
+    { icon: 'balance', label: 'Marco legal vigente' },
+    { icon: 'lock', label: 'Sin registro' },
+    { icon: 'picture_as_pdf', label: 'PDF en 1 minuto' },
+];
+
+const socialAvatars = [
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+        alt: 'Usuaria de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        alt: 'Usuario de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
+        alt: 'Usuario de Grexia',
+    },
+];
+
+const faqArrendamiento = [
+    {
+        question: '¿El contrato de arrendamiento debe ser escrito o puede ser verbal?',
+        answer: 'Legalmente puede ser verbal, pero un contrato verbal es prácticamente imposible de probar ante un juez. Sin documento escrito, no puedes demostrar el canon acordado, la duración, las condiciones del inmueble ni las responsabilidades de cada parte. La Ley 820 de 2003 no exige escritura pública, pero sí recomienda el formato escrito para proteger a ambas partes.',
+    },
+    {
+        question: '¿Qué diferencia hay entre arrendar vivienda y arrendar un local comercial?',
+        answer: 'Son dos regímenes jurídicos distintos. La vivienda urbana se rige por la Ley 820 de 2003, que establece límites al canon anual (no puede subir más del IPC + 1%), protecciones al arrendatario y plazos de preaviso. Los locales comerciales y oficinas se rigen por el Código de Comercio, donde las partes tienen más libertad para acordar condiciones. Grexia genera contratos para ambos tipos.',
+    },
+    {
+        question: '¿Cuánto puede subir el arriendo cada año?',
+        answer: 'Para vivienda urbana, la Ley 820 de 2003 establece que el incremento anual no puede superar el IPC (Índice de Precios al Consumidor) del año anterior más un punto porcentual. Para locales comerciales, el incremento lo acuerdan libremente las partes en el contrato.',
+    },
+    {
+        question: '¿Qué es el coarrendatario y cuándo se necesita?',
+        answer: 'El coarrendatario (o codeudor solidario) es una tercera persona que garantiza el pago del canon si el arrendatario principal no cumple. No es obligatorio por ley, pero muchos arrendadores lo exigen como garantía adicional. En Grexia puedes incluir un coarrendatario opcionalmente al completar el formulario.',
+    },
+    {
+        question: '¿El depósito de garantía tiene límites legales?',
+        answer: 'Sí. Para vivienda urbana, la Ley 820 de 2003 limita el depósito a un máximo de dos (2) cánones de arrendamiento. No puede exigirse más. Al terminar el contrato, el arrendador debe devolver el depósito dentro de los 30 días siguientes, descontando los daños comprobados al inmueble.',
+    },
+    {
+        question: '¿Puedo terminar el contrato antes del plazo acordado?',
+        answer: 'Depende de quién termina y por qué. El arrendatario puede dar por terminado el contrato con un preaviso de tres (3) meses, pagando una indemnización si no hay justa causa. El arrendador puede terminarlo con tres meses de preaviso al vencimiento, o con un preaviso mayor si necesita el inmueble para uso propio o reparaciones. El incumplimiento del otro también es causal de terminación.',
+    },
+];
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqArrendamiento.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+};
+---
+
+<Layout
+    title="Contrato de Arrendamiento en Colombia: Guía Completa | Grexia"
+    description="Aprende qué es un contrato de arrendamiento, cuándo usarlo, la normativa colombiana y los riesgos legales de no hacerlo bien. Genera el tuyo gratis en Grexia."
+    canonical="https://grexia.co/guias/contrato-arrendamiento"
+    schema={faqSchema}
+>
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="grow flex items-center justify-center">
+            <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+                <!-- Breadcrumb -->
+                <div class="mb-10">
+                    <Breadcrumb
+                        items={[{ label: 'Guías', href: base + 'guias' }, { label: 'Contrato de Arrendamiento' }]}
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+                    <!-- Izquierda: texto -->
+                    <div class="flex flex-col gap-8 order-2 lg:order-1">
+                        <!-- Trust Badges -->
+                        <div class="hidden lg:flex flex-wrap gap-3">
+                            {
+                                trustBadges.map((badge) => (
+                                    <div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-primary text-[20px] font-bold">
+                                            {badge.icon}
+                                        </span>
+                                        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                                            {badge.label}
+                                        </span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <!-- H1 -->
+                        <div class="space-y-6">
+                            <h1
+                                class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl"
+                            >
+                                Todo sobre el contrato de
+                                <span class="relative whitespace-nowrap text-secondary">
+                                    arrendamiento
+                                    <span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"
+                                    ></span>
+                                </span>
+                                en Colombia
+                            </h1>
+                            <p class="max-w-lg text-lg text-slate-600 leading-relaxed">
+                                Entiende qué es, cuándo usarlo, qué dice la normativa colombiana y por qué un contrato
+                                mal hecho puede costarte más que no tener ninguno. Y al final, genera el tuyo gratis en
+                                minutos.
+                            </p>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a
+                                href={base + 'herramientas/arrendamiento/generar'}
+                                class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+                            >
+                                Generar contrato gratis
+                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </a>
+                            <a
+                                href={base + 'asesoria/checkout'}
+                                class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
+                            >
+                                Hablar con un abogado
+                            </a>
+                        </div>
+
+                        <!-- Social Proof -->
+                        <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
+                            <div class="flex -space-x-4">
+                                {
+                                    socialAvatars.map((a) => (
+                                        <img
+                                            alt={a.alt}
+                                            class="h-12 w-12 rounded-full border-2 border-white object-cover"
+                                            src={a.src}
+                                        />
+                                    ))
+                                }
+                                <div
+                                    class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+                                >
+                                    +1.2k
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <div class="flex text-yellow-400 text-sm">
+                                    {
+                                        Array.from({ length: 5 }).map(() => (
+                                            <span class="material-symbols-outlined text-[18px]">star</span>
+                                        ))
+                                    }
+                                </div>
+                                <p class="text-sm font-medium text-slate-600">
+                                    Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Legal basis -->
+                        <p class="text-sm text-slate-500 -mt-4">
+                            Conforme a <strong class="text-slate-700">la Ley 820 de 2003 y el Código de Comercio</strong
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Derecha: imagen -->
+                    <div class="relative hidden lg:block order-1 lg:order-2">
+                        <div
+                            class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+                        >
+                            <img
+                                alt="Contrato de arrendamiento en Colombia"
+                                class="h-full w-full object-cover object-center"
+                                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
+                            />
+                            <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
+
+                            <!-- Glass Widget: abogado -->
+                            <div
+                                class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-white"
+                                        >
+                                            <span class="material-symbols-outlined text-white text-[20px]">person</span>
+                                        </div>
+                                        <div
+                                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                        >
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-slate-800">Abogado disponible</span>
+                                        <span class="text-xs text-slate-700">Derecho Civil y Comercial</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm"
+                                >
+                                    "¿Tienes dudas sobre tu contrato? Te asesoramos en 45 min."
+                                </div>
+                            </div>
+
+                            <!-- Glass Widget: guía badge -->
+                            <div
+                                class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
+                            >
+                                <div
+                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                                >
+                                    <span class="material-symbols-outlined text-[24px]">menu_book</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">
+                                        Guía completa
+                                    </p>
+                                    <p class="text-sm font-bold text-slate-800">Normativa vigente</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blobs decorativos -->
+                        <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl">
+                        </div>
+                        <div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ ES? ──────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">info</span>
+                        Definición legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué es un contrato de arrendamiento?
+                    </h2>
+                </div>
+
+                <!-- Definición destacada -->
+                <div class="rounded-lg border-l-4 border-primary bg-slate-50 p-6 mb-10">
+                    <p class="text-base text-slate-700 leading-relaxed italic">
+                        "El arrendamiento es un contrato en que las dos partes se obligan recíprocamente, la una a
+                        conceder el goce de una cosa, o a ejecutar una obra o prestar un servicio, y la otra a pagar por
+                        este goce, obra o servicio un precio determinado."
+                    </p>
+                    <p class="mt-3 text-sm font-semibold text-primary">Código Civil colombiano, Art. 1973</p>
+                </div>
+
+                <div class="prose prose-slate max-w-none text-slate-600 text-base leading-relaxed space-y-4">
+                    <p>
+                        En términos simples, un contrato de arrendamiento es el acuerdo legal que formaliza la relación
+                        entre el dueño de un inmueble (arrendador) y quien lo ocupa a cambio de un pago mensual
+                        (arrendatario). Define el precio, la duración, las condiciones del inmueble y las
+                        responsabilidades de cada parte.
+                    </p>
+                    <p>
+                        En Colombia, el arrendamiento de <strong>vivienda urbana</strong> tiene su propio régimen jurídico:
+                        la <strong>Ley 820 de 2003</strong>. El arrendamiento de locales comerciales y oficinas se rige
+                        por el <strong>Código de Comercio</strong>, que da más libertad a las partes para acordar
+                        condiciones.
+                    </p>
+                </div>
+
+                <!-- Pills de tipo -->
+                <div class="mt-10 flex flex-wrap gap-3 justify-center">
+                    {
+                        [
+                            { icon: 'home', label: 'Vivienda urbana', ley: 'Ley 820 de 2003' },
+                            { icon: 'storefront', label: 'Local comercial', ley: 'Código de Comercio' },
+                            { icon: 'corporate_fare', label: 'Oficina', ley: 'Código de Comercio' },
+                        ].map((t) => (
+                            <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                <span class="material-symbols-outlined text-primary text-[20px]">{t.icon}</span>
+                                <div>
+                                    <p class="text-sm font-bold text-secondary">{t.label}</p>
+                                    <p class="text-xs text-slate-500">{t.ley}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Verbal vs escrito -->
+                <div class="mt-10 rounded-lg bg-amber-50 border border-amber-200 p-5 flex gap-4">
+                    <span class="material-symbols-outlined text-amber-500 text-[24px] shrink-0 mt-0.5">warning</span>
+                    <div>
+                        <p class="text-sm font-bold text-amber-900 mb-1">¿Verbal o escrito?</p>
+                        <p class="text-sm text-amber-800 leading-relaxed">
+                            La ley permite contratos verbales, pero ante cualquier disputa son prácticamente imposibles
+                            de probar. Sin documento escrito, no puedes demostrar el canon acordado, el plazo ni las
+                            condiciones del inmueble. <strong>El contrato escrito es tu única protección real.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITÁS UNO? ───────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitás un contrato de arrendamiento?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Siempre que exista un intercambio de uso de inmueble por dinero, necesitás uno.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'home',
+                                titulo: 'Arrendar tu vivienda',
+                                descripcion:
+                                    'Si sos propietario y querés arrendar tu apartamento, casa o habitación a otra persona. Protege tu inmueble y formaliza el canon.',
+                            },
+                            {
+                                icon: 'storefront',
+                                titulo: 'Alquilar un local comercial',
+                                descripcion:
+                                    'Si vas a instalar un negocio en un local ajeno, o si sos propietario y querés proteger tu propiedad ante un inquilino comercial.',
+                            },
+                            {
+                                icon: 'swap_horiz',
+                                titulo: 'Subarrendar con autorización',
+                                descripcion:
+                                    'Si ya tienes un inmueble arrendado y, con autorización del propietario, quieres subarrendarlo a un tercero. Necesitas un contrato adicional.',
+                            },
+                        ].map((c) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{c.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary mb-2">{c.titulo}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">{c.descripcion}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── MARCO LEGAL ───────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">balance</span>
+                        Normatividad
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Bajo qué normativa se rige?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        El régimen jurídico depende del tipo de inmueble que se arrienda.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    {
+                        [
+                            {
+                                norma: 'Código Civil, Art. 1973',
+                                year: '1887',
+                                color: 'bg-slate-100 border-slate-300',
+                                textColor: 'text-slate-600',
+                                titulo: 'Definición base del arrendamiento',
+                                descripcion:
+                                    'Establece la definición legal del contrato de arrendamiento aplicable a todos los tipos de inmuebles. Es la norma raíz de la que derivan las demás regulaciones.',
+                            },
+                            {
+                                norma: 'Ley 820 de 2003',
+                                year: '2003',
+                                color: 'bg-primary/10 border-primary/30',
+                                textColor: 'text-primary',
+                                titulo: 'Régimen de arrendamiento de vivienda urbana',
+                                descripcion:
+                                    'La norma principal para apartamentos y casas. Regula el incremento anual del canon (máximo IPC + 1%), el monto del depósito (máximo 2 cánones), los plazos de preaviso y los derechos del arrendatario.',
+                            },
+                            {
+                                norma: 'Código de Comercio',
+                                year: 'Vigente',
+                                color: 'bg-blue-50 border-blue-200',
+                                textColor: 'text-blue-700',
+                                titulo: 'Arrendamiento de locales comerciales y oficinas',
+                                descripcion:
+                                    'Para inmuebles de uso comercial, las partes tienen mayor libertad contractual. No aplica el límite de incremento de la Ley 820, pero sí los principios generales del derecho comercial.',
+                            },
+                        ].map((n) => (
+                            <div class={`rounded-lg border ${n.color} p-6 flex gap-5`}>
+                                <div class="shrink-0 text-center">
+                                    <span class={`text-xs font-black uppercase tracking-wider ${n.textColor}`}>
+                                        {n.year}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class={`text-xs font-bold uppercase tracking-wider ${n.textColor} mb-1`}>
+                                        {n.norma}
+                                    </p>
+                                    <h3 class="text-base font-black text-secondary mb-1">{n.titulo}</h3>
+                                    <p class="text-sm text-slate-600 leading-relaxed">{n.descripcion}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PARTES DEL CONTRATO ───────────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Quiénes participan en el contrato?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Cada parte tiene derechos y obligaciones específicas definidas por la ley.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'person',
+                                titulo: 'Arrendador',
+                                rol: 'Propietario del inmueble',
+                                obligaciones: [
+                                    'Entregar el inmueble en buen estado',
+                                    'Mantenerlo en condiciones habitables',
+                                    'Respetar el plazo pactado',
+                                    'Devolver el depósito al vencer el contrato',
+                                ],
+                            },
+                            {
+                                icon: 'person_outline',
+                                titulo: 'Arrendatario',
+                                rol: 'Quien ocupa el inmueble',
+                                obligaciones: [
+                                    'Pagar el canon en la fecha acordada',
+                                    'Cuidar el inmueble y no modificarlo sin permiso',
+                                    'Usarlo según el objeto del contrato',
+                                    'Entregar el inmueble al vencer el plazo',
+                                ],
+                            },
+                            {
+                                icon: 'group',
+                                titulo: 'CoArrendatario',
+                                rol: 'Garante solidario (opcional)',
+                                obligaciones: [
+                                    'Responde por el canon si el arrendatario no paga',
+                                    'Asume las mismas obligaciones del arrendatario',
+                                    'No tiene derecho a habitar el inmueble (salvo acuerdo)',
+                                    'Es exigible directamente sin agotar al deudor principal',
+                                ],
+                            },
+                        ].map((p) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{p.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary">{p.titulo}</h3>
+                                <p class="text-xs text-primary font-semibold uppercase tracking-wide mt-0.5 mb-4">
+                                    {p.rol}
+                                </p>
+                                <ul class="space-y-2">
+                                    {p.obligaciones.map((o) => (
+                                        <li class="flex items-start gap-2 text-sm text-slate-600">
+                                            <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                                check_circle
+                                            </span>
+                                            {o}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── LOS PELIGROS ─────────────────────────────────────────────── -->
+        <section class="bg-secondary py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-red-300 mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">warning</span>
+                        Riesgo legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        ¿Qué pasa si no tienes un contrato?
+                    </h2>
+                    <p class="mt-3 text-lg text-blue-100/80 max-w-xl mx-auto">
+                        Operar sin contrato escrito no es solo informal: es exponerte a consecuencias legales reales.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    {
+                        [
+                            {
+                                icon: 'receipt_long',
+                                titulo: 'Sin prueba del canon acordado',
+                                descripcion:
+                                    'Si el arrendatario decide pagar menos o negar el monto, no tienes ningún documento para demostrar cuánto se acordó. Los jueces no pueden inventar el precio.',
+                            },
+                            {
+                                icon: 'gavel',
+                                titulo: 'No puedes iniciar restitución del inmueble',
+                                descripcion:
+                                    'El proceso de restitución judicial requiere presentar el contrato de arrendamiento como prueba. Sin él, el proceso es mucho más lento, costoso y con resultado incierto.',
+                            },
+                            {
+                                icon: 'savings',
+                                titulo: 'Perdés el depósito sin recurso',
+                                descripcion:
+                                    'Sin contrato, no hay registro formal del depósito entregado ni de las condiciones del inmueble al inicio. Reclamar su devolución se vuelve casi imposible.',
+                            },
+                            {
+                                icon: 'handyman',
+                                titulo: 'Sin protección ante daños al inmueble',
+                                descripcion:
+                                    'Si el arrendatario daña el inmueble y no hay contrato que describa el estado inicial, probar la responsabilidad se convierte en tu problema.',
+                            },
+                        ].map((r) => (
+                            <div class="rounded-lg bg-white/10 border border-white/20 p-6">
+                                <div class="flex items-start gap-4">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/20">
+                                        <span class="material-symbols-outlined text-red-400 text-[20px]">{r.icon}</span>
+                                    </span>
+                                    <div>
+                                        <h3 class="text-base font-black text-white mb-1">{r.titulo}</h3>
+                                        <p class="text-sm text-slate-300 leading-relaxed">{r.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div class="mt-10 rounded-lg bg-white/5 border border-white/10 p-6 text-center">
+                    <p class="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                        Y recuerda: <strong class="text-white"
+                            >un contrato mal redactado tiene el mismo riesgo que no tener ninguno.</strong
+                        >
+                        Cláusulas ambiguas, ausencia de plazos o condiciones ilegales pueden invalidar tu protección.
+                    </p>
+                </div>
+
+                <!-- CTA inline -->
+                <div class="mt-10 text-center">
+                    <a
+                        href={base + 'herramientas/arrendamiento/generar'}
+                        class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-10 text-base font-bold text-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+                    >
+                        Genera el tuyo ahora, gratis con Grexia
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    </a>
+                    <p class="mt-3 text-sm text-blue-200/70">Sin registro. Sin tarjeta. En menos de 2 minutos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ DEBE INCLUIR? ───────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué debe incluir un contrato de arrendamiento?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Un contrato completo cubre estas cláusulas esenciales. Grexia las incluye todas automáticamente.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {
+                        [
+                            'Identificación completa de las partes (arrendador y arrendatario)',
+                            'Descripción detallada del inmueble (dirección, área, estrato)',
+                            'Canon mensual acordado en pesos colombianos',
+                            'Fecha de inicio y duración del contrato',
+                            'Día del mes para el pago del canon',
+                            'Monto y condiciones del depósito de garantía',
+                            'Objeto del contrato (vivienda / comercial / oficina)',
+                            'Obligaciones del arrendador y el arrendatario',
+                            'Causales de terminación del contrato',
+                            'Condiciones para el incremento anual del canon',
+                            'Cláusula de coarrendatario (si aplica)',
+                            'Firma de todas las partes con fecha',
+                        ].map((item) => (
+                            <div class="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
+                                <span class="material-symbols-outlined text-primary text-[18px] shrink-0">
+                                    check_circle
+                                </span>
+                                <span class="text-sm text-slate-700">{item}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div
+                    class="mt-8 rounded-lg bg-primary/5 border border-primary/20 p-5 flex items-center justify-between gap-6 flex-col sm:flex-row"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-[28px]">auto_awesome</span>
+                        <p class="text-sm text-slate-700">
+                            <strong class="text-secondary">Grexia incluye todas estas cláusulas automáticamente</strong> según
+                            el tipo de inmueble que elijas. Solo completa el formulario y descarga el PDF.
+                        </p>
+                    </div>
+                    <a
+                        href={base + 'herramientas/arrendamiento'}
+                        class="shrink-0 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                    >
+                        Ver herramienta
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITÁS UN ABOGADO? ───────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitás un abogado?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Grexia cubre los casos estándar. Para situaciones complejas, un abogado es la respuesta.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <!-- Grexia alcanza -->
+                    <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                                <span class="material-symbols-outlined text-primary text-[20px]">description</span>
+                            </span>
+                            <h3 class="text-lg font-black text-secondary">Grexia es suficiente</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            {
+                                [
+                                    'Arrendamiento de vivienda estándar (apartamento, casa)',
+                                    'Local comercial con condiciones claras entre las partes',
+                                    'Contrato nuevo entre partes de confianza',
+                                    'Renovación de contrato sin cambios estructurales',
+                                    'Arrendamiento con coarrendatario conocido',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-600">
+                                        <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                            check_circle
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + 'herramientas/arrendamiento/generar'}
+                            class="mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Generar contrato gratis
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Necesitás asesoría -->
+                    <div class="rounded-lg bg-secondary border-2 border-primary p-8 shadow-xl relative overflow-hidden">
+                        <div
+                            class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"
+                        >
+                        </div>
+                        <div class="relative flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                                <span class="material-symbols-outlined text-blue-400 text-[20px]">gavel</span>
+                            </span>
+                            <h3 class="text-lg font-black text-white">Necesitás asesoría profesional</h3>
+                        </div>
+                        <ul class="relative space-y-3">
+                            {
+                                [
+                                    'Disputa o conflicto con el arrendatario / arrendador',
+                                    'Proceso de restitución del inmueble ante un juzgado',
+                                    'Arrendamiento con cláusulas especiales o atípicas',
+                                    'Inmuebles con hipoteca, embargos o situaciones jurídicas complejas',
+                                    'Arrendamiento de locales de alto valor económico',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-300">
+                                        <span class="material-symbols-outlined text-blue-400 text-[16px] mt-0.5 shrink-0">
+                                            chevron_right
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + 'asesoria/checkout'}
+                            class="relative mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Agendar asesoría por $59.900
+                            <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FAQ ──────────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        Preguntas frecuentes sobre arrendamiento
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600">
+                        Lo que más nos preguntan sobre contratos de arrendamiento en Colombia.
+                    </p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-6 py-2 shadow-sm">
+                    <FAQAccordion
+                        client:load
+                        items={faqArrendamiento}
+                    />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>
