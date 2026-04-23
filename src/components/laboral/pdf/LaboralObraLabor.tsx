@@ -77,7 +77,7 @@ export default function LaboralObraLabor({ formData }: Props) {
                     <View style={s.conditionRow}>
                         <Text style={s.conditionLabel}>Salario u Honorarios: </Text>
                         <Text style={{ fontSize: 9.5, color: '#1e293b', flex: 1 }}>
-                            {salarioWords} ({salarioFormatted}) — {ol.modalidadPago || '___________________'}
+                            {salarioWords} ({salarioFormatted}), {ol.modalidadPago || '___________________'}
                         </Text>
                     </View>
                     <View style={s.conditionRow}>

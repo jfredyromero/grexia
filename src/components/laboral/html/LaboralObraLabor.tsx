@@ -110,7 +110,7 @@ export default function LaboralObraLabor({ formData }: LaboralObraLaborProps) {
                             Salario u Honorarios
                         </p>
                         <p>
-                            <strong>{salarioWords}</strong> ({salarioFormatted}) —{' '}
+                            <strong>{salarioWords}</strong> ({salarioFormatted}),{' '}
                             {ol.modalidadPago || '___________________'}
                         </p>
                     </div>

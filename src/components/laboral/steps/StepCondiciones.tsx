@@ -190,8 +190,8 @@ export default function StepCondiciones({
                                     Esta jornada requiere asesoría legal
                                 </p>
                                 <p className="text-xs text-amber-700 mt-1">
-                                    Para jornadas especiales o atípicas es necesario redactar el contrato con
-                                    acompañamiento profesional.{' '}
+                                    Para jornadas especiales o atípicas es necesario redactar el contrato con asesoría
+                                    profesional.{' '}
                                     <a
                                         href="/asesoria/checkout"
                                         className="underline font-semibold hover:text-amber-900"

@@ -33,7 +33,7 @@ export const TOOLS: ToolConfig[] = [
         description:
             'Genera contratos de arrendamiento residencial y comercial con validez legal en Colombia. Gratis, sin registro.',
         icon: 'home_work',
-        legalBasis: 'Ley 820 de 2003',
+        legalBasis: 'Ley 820 de 2003 · Código de Comercio',
         href: {
             landing: 'herramientas/arrendamiento',
             form: 'herramientas/arrendamiento/generar',
@@ -41,13 +41,13 @@ export const TOOLS: ToolConfig[] = [
         heroHeadline: {
             prefix: 'Tu contrato de',
             highlight: 'arrendamiento',
-            suffix: 'listo en minutos',
+            suffix: 'listo en segundos',
         },
         heroSubtitle:
-            'Genera tu contrato gratis con validez legal en Colombia (Ley 820 de 2003). Sin registro, sin letra pequeña. Listo para descargar en PDF.',
+            'Genera tu contrato gratis con validez legal en Colombia. Vivienda, local comercial u oficina, sin registro, sin letra pequeña. Listo para descargar en PDF.',
         trustBadges: [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
-            { icon: 'verified', label: 'Ley 820 de 2003' },
+            { icon: 'verified', label: 'Validez legal garantizada' },
             { icon: 'download', label: 'Descarga en PDF' },
         ],
         howItWorksSteps: [
@@ -55,13 +55,13 @@ export const TOOLS: ToolConfig[] = [
                 icon: 'edit_note',
                 title: 'Rellena el formulario',
                 description:
-                    'Ingresa los datos del inmueble, arrendador y arrendatario. Solo toma unos minutos y no necesitas registrarte.',
+                    'Ingresa los datos del inmueble, arrendador y arrendatario. Solo toma unos segundos y no necesitas registrarte.',
             },
             {
                 icon: 'auto_awesome',
                 title: 'Generamos tu contrato',
                 description:
-                    'El sistema crea automáticamente el contrato ajustado a la Ley 820 de 2003 con todas las cláusulas necesarias.',
+                    'El sistema crea automáticamente el contrato ajustado a la normativa colombiana vigente: Ley 820 de 2003 para vivienda o Código de Comercio para locales y oficinas.',
             },
             {
                 icon: 'picture_as_pdf',
@@ -93,7 +93,7 @@ export const TOOLS: ToolConfig[] = [
         heroHeadline: {
             prefix: 'Tu pagaré',
             highlight: 'legal',
-            suffix: 'listo en minutos',
+            suffix: 'listo en segundos',
         },
         heroSubtitle:
             'Genera un pagaré con validez legal en Colombia conforme al Código de Comercio. Sin registro, sin complicaciones. Descarga en PDF.',
@@ -195,7 +195,7 @@ export const TOOLS: ToolConfig[] = [
         heroHeadline: {
             prefix: 'Tu promesa de',
             highlight: 'compraventa',
-            suffix: 'lista en minutos',
+            suffix: 'lista en segundos',
         },
         heroSubtitle:
             'Genera tu promesa de compraventa de inmueble gratis con validez legal en Colombia (Codigo Civil Art. 1611). Sin registro, sin complicaciones. Descarga en PDF.',
@@ -209,7 +209,7 @@ export const TOOLS: ToolConfig[] = [
                 icon: 'edit_note',
                 title: 'Completa los datos',
                 description:
-                    'Ingresa los datos del vendedor, comprador, inmueble, condiciones economicas y escritura. Solo toma unos minutos.',
+                    'Ingresa los datos del vendedor, comprador, inmueble, condiciones economicas y escritura. Solo toma unos segundos.',
             },
             {
                 icon: 'auto_awesome',
@@ -245,7 +245,7 @@ export const TOOLS: ToolConfig[] = [
         heroHeadline: {
             prefix: 'Tu acción de',
             highlight: 'tutela',
-            suffix: 'lista en minutos',
+            suffix: 'lista en segundos',
         },
         heroSubtitle:
             'Protege tus derechos fundamentales con una tutela generada por Grexia. Sin registro, sin complicaciones. Lista para presentar ante un juez.',
@@ -259,7 +259,7 @@ export const TOOLS: ToolConfig[] = [
                 icon: 'edit_note',
                 title: 'Rellena el formulario',
                 description:
-                    'Selecciona la temática, ingresa tus datos y cuéntanos qué derecho fue vulnerado. Solo toma unos minutos.',
+                    'Selecciona la temática, ingresa tus datos y cuéntanos qué derecho fue vulnerado. Solo toma unos segundos.',
             },
             {
                 icon: 'auto_awesome',
@@ -295,7 +295,7 @@ export const TOOLS: ToolConfig[] = [
         heroHeadline: {
             prefix: 'Tu contrato',
             highlight: 'laboral',
-            suffix: 'listo en minutos',
+            suffix: 'listo en segundos',
         },
         heroSubtitle:
             'Genera tu contrato de trabajo con validez legal en Colombia (Código Sustantivo del Trabajo). Sin registro, sin letra pequeña. Listo para descargar en PDF.',
@@ -315,7 +315,7 @@ export const TOOLS: ToolConfig[] = [
                 icon: 'edit_note',
                 title: 'Ingresa los datos',
                 description:
-                    'Completa los datos del empleador, trabajador y las condiciones laborales. Solo toma unos minutos.',
+                    'Completa los datos del empleador, trabajador y las condiciones laborales. Solo toma unos segundos.',
             },
             {
                 icon: 'picture_as_pdf',

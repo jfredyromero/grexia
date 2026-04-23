@@ -129,7 +129,7 @@ export default function LaboralTerminoFijo({ formData }: Props) {
                         <Text>
                             {metodoPagoLabel(tf.metodoPago)}
                             {tf.metodoPago === 'transferencia' && tf.cuentaBancaria
-                                ? ` — Cta. ${tf.cuentaBancaria}`
+                                ? `, Cta. ${tf.cuentaBancaria}`
                                 : ''}
                         </Text>
                     </View>

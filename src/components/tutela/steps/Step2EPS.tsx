@@ -104,7 +104,7 @@ export default function Step2EPS({ data, onChange, onNext, onBack, forceValidate
                 type="text"
                 value={data.sedeEPS}
                 onChange={set('sedeEPS')}
-                placeholder="Bogotá D.C. — Calle 100 # 15-32"
+                placeholder="Bogotá D.C., Calle 100 # 15-32"
                 error={errors.sedeEPS}
             />
 

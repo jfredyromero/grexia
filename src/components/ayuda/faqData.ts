@@ -6,7 +6,7 @@ export interface FAQItem {
 export const FAQ_DATA: FAQItem[] = [
     {
         question: '¿Qué es Grexia?',
-        answer: 'Grexia es una plataforma LegalTech colombiana que te permite generar documentos legales con validez en Colombia de manera gratuita, sin registro y en minutos. Automatizamos la creación de contratos, pagarés, acciones de tutela y más, para que cualquier persona pueda acceder a herramientas legales sin necesidad de un abogado para trámites estándar.',
+        answer: 'Grexia es una plataforma LegalTech colombiana que te permite generar documentos legales con validez en Colombia de manera gratuita, sin registro y en segundos. Automatizamos la creación de contratos, pagarés, acciones de tutela y más, para que cualquier persona pueda acceder a herramientas legales sin necesidad de un abogado para trámites estándar.',
     },
     {
         question: '¿Los documentos tienen validez legal en Colombia?',
@@ -34,7 +34,7 @@ export const FAQ_DATA: FAQItem[] = [
     },
     {
         question: '¿Qué es el Plan Empresarial?',
-        answer: 'El Plan Empresarial está diseñado para empresas y despachos jurídicos que necesitan generar documentos en volumen, integrar Grexia con sus sistemas o acceder a funcionalidades avanzadas. Incluye soporte prioritario, personalización de documentos y facturación. Podés contactarnos a través del formulario de Plan Empresarial para recibir una propuesta.',
+        answer: 'El Plan Empresarial está diseñado para empresas y despachos jurídicos que necesitan generar documentos en volumen, integrar Grexia con sus sistemas o acceder a funcionalidades avanzadas. Incluye soporte prioritario, personalización de documentos y facturación. Puedes contactarnos a través del formulario de Plan Empresarial para recibir una propuesta.',
     },
     {
         question: '¿Grexia reemplaza a un abogado?',
@@ -50,6 +50,6 @@ export const FAQ_DATA: FAQItem[] = [
     },
     {
         question: '¿Cómo contacto al equipo de Grexia?',
-        answer: 'Podés contactarnos por correo electrónico a soporte@grexia.co o a través de WhatsApp haciendo clic en el botón de WhatsApp disponible en todas las páginas. Para empresas o alianzas, también tenemos el formulario de Plan Empresarial. Respondemos en un plazo máximo de 24 horas hábiles.',
+        answer: 'Puedes contactarnos por correo electrónico a soporte@grexia.co o a través de WhatsApp haciendo clic en el botón de WhatsApp disponible en todas las páginas. Para empresas o alianzas, también tenemos el formulario de Plan Empresarial. Respondemos en un plazo máximo de 24 horas hábiles.',
     },
 ];

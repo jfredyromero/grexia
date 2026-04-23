@@ -28,9 +28,9 @@ export function formatJornada(jornada: JornadaTrabajo): string {
 }
 
 export const JORNADA_OPTIONS: Array<{ value: JornadaTrabajo; label: string }> = [
-    { value: 'lunes-viernes-8-5', label: 'Lunes a viernes — 8:00 a.m. a 5:00 p.m.' },
-    { value: 'lunes-viernes-7-4', label: 'Lunes a viernes — 7:00 a.m. a 4:00 p.m.' },
-    { value: 'lunes-sabado-8-12', label: 'Lunes a sábado — 8:00 a.m. a 12:00 p.m.' },
+    { value: 'lunes-viernes-8-5', label: 'Lunes a viernes: 8:00 a.m. a 5:00 p.m.' },
+    { value: 'lunes-viernes-7-4', label: 'Lunes a viernes: 7:00 a.m. a 4:00 p.m.' },
+    { value: 'lunes-sabado-8-12', label: 'Lunes a sábado: 8:00 a.m. a 12:00 p.m.' },
     { value: 'turnos-rotativos', label: 'Turnos rotativos' },
     { value: 'otro', label: 'Otro (requiere asesoría legal)' },
 ];

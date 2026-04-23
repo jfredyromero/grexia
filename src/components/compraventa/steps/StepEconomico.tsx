@@ -13,15 +13,15 @@ const FORMA_PAGO_OPTIONS = [
     },
     {
         value: '50% al momento de la firma de la promesa y 50% al momento del otorgamiento de la escritura publica',
-        label: '50% al firmar la promesa — 50% al otorgar la escritura',
+        label: '50% al firmar la promesa / 50% al otorgar la escritura',
     },
     {
         value: '30% al momento de la firma de la promesa y 70% al momento del otorgamiento de la escritura publica',
-        label: '30% al firmar la promesa — 70% al otorgar la escritura',
+        label: '30% al firmar la promesa / 70% al otorgar la escritura',
     },
     {
         value: '10% como arras confirmatorias al momento de la firma de la promesa y el saldo restante al momento del otorgamiento de la escritura publica',
-        label: '10% como arras al firmar — saldo restante al otorgar la escritura',
+        label: '10% como arras al firmar, saldo restante al otorgar la escritura',
     },
 ];
 
