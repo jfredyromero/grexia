@@ -1,7 +1,7 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
-import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, Clause, SigBlock } from './shared';
+import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, Clause, SigBlock } from '../../pdf/shared';
 
 // ── Main component ────────────────────────────────────────────────────────────
 

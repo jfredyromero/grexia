@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { PDFHeader, PDFFooter, PDFWatermark, C, BLUE, BLUE_LIGHT_BG } from '../arrendamiento/pdf/shared';
+import { PDFHeader, PDFFooter, PDFWatermark, C, BLUE, BLUE_LIGHT_BG } from '../pdf/shared';
 import type { ResultadoLiquidacion } from './interesesUtils';
 import { formatCOP, formatPct } from './interesesUtils';
 

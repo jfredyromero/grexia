@@ -1,7 +1,7 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import type { PagareFormData } from './types';
 import { formatCOP, formatDate, numberToWordsCOP, periodoLabel } from './pagareUtils';
-import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, SigBlock } from '../arrendamiento/pdf/shared';
+import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, Para, SigBlock } from '../pdf/shared';
 
 // ── Main component ────────────────────────────────────────────────────────────
 

@@ -1,7 +1,7 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import type { CompraventaFormData } from './types';
 import { formatCOP, formatDate, numberToWordsCOP } from './compraventaUtils';
-import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, SigBlock } from '../arrendamiento/pdf/shared';
+import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, SigBlock } from '../pdf/shared';
 
 interface CompraventaPDFProps {
     formData: CompraventaFormData;

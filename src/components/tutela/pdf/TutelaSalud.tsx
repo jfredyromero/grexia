@@ -7,16 +7,7 @@ import {
     getEPSDisplay,
     getFechaHoy,
 } from '../tutelaUtils';
-import {
-    PDFHeader,
-    PDFFooter,
-    PDFWatermark,
-    pdfStyles as s,
-    B,
-    SigBlock,
-    C,
-    BLUE,
-} from '../../arrendamiento/pdf/shared';
+import { PDFHeader, PDFFooter, PDFWatermark, pdfStyles as s, B, SigBlock, C, BLUE } from '../../pdf/shared';
 
 const ts = StyleSheet.create({
     sectionLabel: {

@@ -1,4 +1,4 @@
-export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa' | 'tutela';
+export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa' | 'tutela' | 'laboral';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -279,6 +279,57 @@ export const TOOLS: ToolConfig[] = [
         heroLawyerAvatar:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
         heroChat: 'Hola, ¿vulneraron alguno de tus derechos fundamentales? Te ayudo a preparar tu tutela.',
+    },
+    {
+        slug: 'laboral',
+        name: 'Contrato Laboral',
+        shortName: 'Laboral',
+        description:
+            'Genera contratos de trabajo a término fijo y por obra o labor con validez legal en Colombia. Gratis, sin registro.',
+        icon: 'work',
+        legalBasis: 'Código Sustantivo del Trabajo',
+        href: {
+            landing: 'herramientas/laboral',
+            form: 'herramientas/laboral/generar',
+        },
+        heroHeadline: {
+            prefix: 'Tu contrato',
+            highlight: 'laboral',
+            suffix: 'listo en minutos',
+        },
+        heroSubtitle:
+            'Genera tu contrato de trabajo con validez legal en Colombia (Código Sustantivo del Trabajo). Sin registro, sin letra pequeña. Listo para descargar en PDF.',
+        trustBadges: [
+            { icon: 'check_circle', label: 'Gratis · Sin registro' },
+            { icon: 'verified', label: 'Cód. Sust. del Trabajo' },
+            { icon: 'download', label: 'Descarga en PDF' },
+        ],
+        howItWorksSteps: [
+            {
+                icon: 'article',
+                title: 'Elige el tipo de contrato',
+                description:
+                    'Selecciona entre contrato a término fijo o por obra y labor. Ambos con plena validez legal en Colombia.',
+            },
+            {
+                icon: 'edit_note',
+                title: 'Ingresa los datos',
+                description:
+                    'Completa los datos del empleador, trabajador y las condiciones laborales. Solo toma unos minutos.',
+            },
+            {
+                icon: 'picture_as_pdf',
+                title: 'Descarga en PDF',
+                description:
+                    'Revisa tu contrato, descárgalo en PDF y fírmalo. Listo para usar, sin costo y sin trámites adicionales.',
+            },
+        ],
+        heroImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80',
+        heroLawyerName: 'Abogado Andrés',
+        heroLawyerSpecialty: 'Derecho Laboral · En línea',
+        heroLawyerAvatar:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        heroChat: 'Hola, ¿necesitas generar un contrato laboral? Te ayudo a crearlo correctamente.',
     },
 ];
 

@@ -1,7 +1,7 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import type { ArrendamientoFormData } from '../types';
 import { formatCOP, formatDate, numberToWordsCOP } from '../contractUtils';
-import { C, PDFHeader, PDFFooter, PDFWatermark, pdfStyles, B, Para, Clause, SigBlock } from './shared';
+import { C, PDFHeader, PDFFooter, PDFWatermark, pdfStyles, B, Para, Clause, SigBlock } from '../../pdf/shared';
 
 // ── Local-only styles (list items for Incumplimiento clause) ─────────────────
 
