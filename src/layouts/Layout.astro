@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/shared/Footer.astro';
+import CTAFinal from '../components/shared/CTAFinal.astro';
 
 interface Props {
     title?: string;
@@ -47,5 +49,7 @@ const base = import.meta.env.BASE_URL;
     </head>
     <body class="bg-background-light text-slate-900 overflow-x-hidden relative min-h-screen flex flex-col">
         <slot />
+        <CTAFinal />
+        <Footer />
     </body>
 </html>

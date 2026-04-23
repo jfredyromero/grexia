@@ -1,0 +1,161 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Política de Privacidad · Grexia | Documentos Legales para Colombia">
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="bg-white pt-14 pb-0 lg:pt-20">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-black tracking-tight text-secondary sm:text-5xl lg:text-6xl leading-tight">
+                    Política de
+                    <span class="relative whitespace-nowrap">
+                        Privacidad
+                        <span class="absolute bottom-1 left-0 h-3 w-full bg-primary/40 rounded-full"></span>
+                    </span>
+                </h1>
+                <p class="mx-auto mt-8 max-w-xl text-lg text-slate-600">
+                    Cómo recolectamos, usamos y protegemos tus datos personales conforme a la Ley 1581 de 2012.
+                </p>
+            </div>
+        </section>
+
+        <!-- ─── CONTENIDO ─────────────────────────────────────────────────── -->
+        <section class="py-12 lg:py-20">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <!-- Breadcrumb -->
+                <nav
+                    class="mb-8 flex items-center gap-1.5 text-sm text-slate-500"
+                    aria-label="Breadcrumb"
+                >
+                    <a
+                        href={base}
+                        class="hover:text-primary transition-colors"
+                        >Inicio</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <a
+                        href={base + 'ayuda'}
+                        class="hover:text-primary transition-colors"
+                        >Ayuda</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <span class="font-semibold text-secondary">Política de Privacidad</span>
+                </nav>
+
+                <div class="rounded-lg border border-slate-200 bg-white px-8 py-8 shadow-sm">
+                    <p class="text-xs text-slate-400 mb-6">
+                        Conforme a la Ley 1581 de 2012. Última actualización: enero de 2025
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-0 mb-3">1. Responsable del Tratamiento</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia S.A.S., identificada con NIT en trámite, con domicilio en la ciudad de Bogotá D.C.,
+                        Colombia, es el Responsable del Tratamiento de los datos personales recolectados a través de la
+                        plataforma. Para consultas sobre privacidad puedes contactarnos en
+                        <a
+                            href="mailto:privacidad@grexia.co"
+                            class="text-primary font-medium hover:underline"
+                            >privacidad@grexia.co</a
+                        >.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">2. Datos Recolectados</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Los datos ingresados en los formularios de generación de documentos son procesados localmente en
+                        tu navegador y NO son almacenados en nuestros servidores. Solo recolectamos:
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 space-y-1.5">
+                        <li>Datos de formularios: procesados localmente, no almacenados.</li>
+                        <li>Cookies analíticas: para estadísticas de uso agregadas y anónimas.</li>
+                        <li>Datos de contacto: cuando nos escribís voluntariamente vía email o WhatsApp.</li>
+                    </ul>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">3. Finalidad del Tratamiento</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Los datos recolectados tienen las siguientes finalidades: generar los documentos solicitados por
+                        el usuario, prestar el servicio de Asesoría Legal cuando sea contratado, elaborar estadísticas
+                        anónimas de uso para mejorar la plataforma, y atender consultas y solicitudes enviadas por los
+                        usuarios.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">4. Derechos del Titular</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013, como titular de tus datos tenés los
+                        siguientes derechos:
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 space-y-1.5">
+                        <li>Acceso: conocer los datos personales que Grexia conserva sobre vos.</li>
+                        <li>Rectificación: solicitar la corrección de datos inexactos o incompletos.</li>
+                        <li>Supresión: solicitar la eliminación de tus datos cuando no sea necesario conservarlos.</li>
+                        <li>Revocatoria: retirar el consentimiento otorgado para el tratamiento.</li>
+                        <li>Quejas: presentar quejas ante la Superintendencia de Industria y Comercio (SIC).</li>
+                    </ul>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Para ejercer estos derechos, escríbenos a
+                        <a
+                            href="mailto:privacidad@grexia.co"
+                            class="text-primary font-medium hover:underline"
+                            >privacidad@grexia.co</a
+                        >.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">5. Cookies</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia utiliza los siguientes tipos de cookies:
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 space-y-1.5">
+                        <li>Esenciales: necesarias para el funcionamiento básico de la plataforma.</li>
+                        <li>Analíticas: Google Analytics para estadísticas anónimas de uso.</li>
+                        <li>Preferencias: recuerdan tus configuraciones y preferencias de uso.</li>
+                    </ul>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Podés gestionar o deshabilitar las cookies desde la configuración de tu navegador. Ten en cuenta
+                        que deshabilitar ciertas cookies puede afectar la funcionalidad de la plataforma.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">6. Medidas de Seguridad</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia implementa las siguientes medidas de seguridad para proteger tu información:
+                        comunicaciones cifradas mediante HTTPS/TLS, procesamiento local de los datos de formularios
+                        (nunca salen de tu dispositivo), control de acceso estricto a los sistemas de la plataforma, y
+                        auditorías periódicas de seguridad.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">7. Transferencia Internacional</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia puede utilizar proveedores de servicios externos (como servicios de hosting o analíticas)
+                        que pueden implicar transferencias internacionales de datos. Todos estos proveedores cumplen con
+                        estándares de privacidad equivalentes o superiores a los exigidos por la legislación colombiana
+                        y han suscrito los acuerdos de tratamiento de datos correspondientes.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">8. Contacto</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Para cualquier consulta, solicitud o queja relacionada con el tratamiento de tus datos
+                        personales, puedes contactar al Oficial de Privacidad de Grexia en
+                        <a
+                            href="mailto:privacidad@grexia.co"
+                            class="text-primary font-medium hover:underline"
+                            >privacidad@grexia.co</a
+                        >
+                        o al equipo de soporte en
+                        <a
+                            href="mailto:soporte@grexia.co"
+                            class="text-primary font-medium hover:underline"
+                            >soporte@grexia.co</a
+                        >.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>

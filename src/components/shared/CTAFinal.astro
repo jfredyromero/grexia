@@ -1,0 +1,225 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="relative w-full overflow-hidden bg-secondary">
+    <!-- Decoración de fondo -->
+    <div class="pointer-events-none absolute -top-24 -left-24 h-64 w-64 rounded-full bg-white/5 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-16 left-1/3 h-48 w-48 rounded-full bg-white/5 blur-2xl"></div>
+
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="grid grid-cols-1 items-center gap-10 py-16 lg:grid-cols-2 lg:py-24">
+            <!-- Texto izquierda -->
+            <div>
+                <span
+                    class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-blue-200 mb-6"
+                >
+                    <span class="material-symbols-outlined text-[14px]">rocket_launch</span>
+                    Empieza hoy, gratis
+                </span>
+                <h2 class="text-4xl font-black leading-tight text-white lg:text-5xl">
+                    ¿Qué esperas para resolver tus documentos legales?
+                </h2>
+                <p class="mt-5 max-w-md text-lg text-blue-100/80">
+                    Sin registro, sin tarjeta. Genera tu primer documento en menos de 2 minutos.
+                </p>
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <a
+                        href={base + '#herramientas'}
+                        class="flex h-12 items-center justify-center gap-1.5 rounded-full bg-white px-8 text-sm font-bold text-secondary shadow-lg transition-all hover:-translate-y-px hover:bg-slate-50"
+                    >
+                        Generar documento gratis
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </a>
+                    <a
+                        href={base + 'asesoria/checkout'}
+                        class="flex h-12 items-center justify-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-8 text-sm font-bold text-white transition-all hover:-translate-y-px hover:bg-white/25"
+                    >
+                        Agendar asesoría
+                        <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mockup derecha -->
+            <div
+                id="cta-mockup"
+                class="relative hidden h-80 lg:flex lg:h-96"
+            >
+                <!-- Tarjeta trasera -->
+                <div
+                    class="card-back absolute right-8 top-4 w-64 rounded-lg bg-white/10 p-5 shadow-xl backdrop-blur-sm"
+                >
+                    <div class="mb-3 flex items-center gap-2">
+                        <div class="h-2 w-2 rounded-full bg-blue-300"></div>
+                        <div class="h-1.5 w-20 rounded-full bg-white/30"></div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="h-1.5 w-full rounded-full bg-white/20"></div>
+                        <div class="h-1.5 w-4/5 rounded-full bg-white/20"></div>
+                        <div class="h-1.5 w-full rounded-full bg-white/20"></div>
+                        <div class="h-1.5 w-3/5 rounded-full bg-white/20"></div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta principal -->
+                <div class="card-front absolute right-0 top-8 w-72 rounded-lg bg-white p-6 shadow-2xl">
+                    <div class="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                        <span
+                            class="text-xs font-black uppercase tracking-widest text-primary"
+                            style="font-family: 'Montserrat', sans-serif;"
+                            >Grexia</span
+                        >
+                        <span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary"
+                            >PDF</span
+                        >
+                    </div>
+                    <div class="mb-4">
+                        <div class="mb-1.5 h-2 w-3/4 rounded-full bg-slate-800"></div>
+                        <div class="h-2 w-1/2 rounded-full bg-slate-300"></div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <div class="h-1.5 w-full rounded-full bg-slate-200"></div>
+                        <div class="h-1.5 w-full rounded-full bg-slate-200"></div>
+                        <div class="h-1.5 w-4/5 rounded-full bg-slate-200"></div>
+                        <div class="h-1.5 w-full rounded-full bg-slate-200"></div>
+                        <div class="h-1.5 w-3/4 rounded-full bg-slate-200"></div>
+                        <div class="h-1.5 w-full rounded-full bg-slate-200"></div>
+                    </div>
+                    <div class="mt-5 flex items-end justify-between border-t border-slate-100 pt-4">
+                        <div>
+                            <div class="mb-1 h-1 w-16 rounded-full bg-slate-800"></div>
+                            <div class="h-1 w-12 rounded-full bg-slate-300"></div>
+                        </div>
+                        <div>
+                            <div class="mb-1 h-1 w-16 rounded-full bg-slate-800"></div>
+                            <div class="h-1 w-12 rounded-full bg-slate-300"></div>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-center">
+                        <span class="text-[9px] font-bold uppercase tracking-widest text-slate-300">grexia.co</span>
+                    </div>
+                </div>
+
+                <!-- Check flotante -->
+                <div
+                    class="card-badge absolute bottom-12 right-2 flex h-10 w-10 items-center justify-center rounded-full bg-green-400 shadow-lg"
+                >
+                    <span class="material-symbols-outlined text-[18px] text-white">check</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Estado inicial — cartas apiladas, invisibles */
+    .card-back {
+        opacity: 0;
+        transform: translate(24px, 16px) rotate(2deg);
+    }
+    .card-front {
+        opacity: 0;
+        transform: translate(0, 48px) rotate(-3deg);
+    }
+    .card-badge {
+        opacity: 0;
+        transform: scale(0) rotate(-15deg);
+    }
+
+    /* Activación al entrar en viewport */
+    #cta-mockup.is-visible .card-back {
+        animation:
+            deal-back 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.1s both,
+            float-back 4s ease-in-out 0.9s infinite;
+    }
+    #cta-mockup.is-visible .card-front {
+        animation:
+            deal-front 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) 0.35s both,
+            float-front 4s ease-in-out 1.1s infinite;
+    }
+    #cta-mockup.is-visible .card-badge {
+        animation: badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.85s both;
+    }
+
+    @keyframes deal-back {
+        from {
+            opacity: 0;
+            transform: translate(24px, 16px) rotate(2deg);
+        }
+        30% {
+            opacity: 1;
+        }
+        to {
+            opacity: 1;
+            transform: translate(0, 0) rotate(-6deg);
+        }
+    }
+
+    @keyframes deal-front {
+        from {
+            opacity: 0;
+            transform: translate(0, 48px) rotate(-3deg);
+        }
+        30% {
+            opacity: 1;
+        }
+        to {
+            opacity: 1;
+            transform: translate(0, 0) rotate(2deg);
+        }
+    }
+
+    @keyframes float-back {
+        0%,
+        100% {
+            transform: translate(0, 0) rotate(-6deg);
+        }
+        50% {
+            transform: translate(0, -8px) rotate(-7deg);
+        }
+    }
+
+    @keyframes float-front {
+        0%,
+        100% {
+            transform: translate(0, 0) rotate(2deg);
+        }
+        50% {
+            transform: translate(0, -6px) rotate(3deg);
+        }
+    }
+
+    @keyframes badge-pop {
+        from {
+            opacity: 0;
+            transform: scale(0) rotate(-15deg);
+        }
+        70% {
+            transform: scale(1.25) rotate(5deg);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+    }
+</style>
+
+<script>
+    const mockup = document.getElementById('cta-mockup');
+
+    if (mockup) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        mockup.classList.add('is-visible');
+                        observer.unobserve(mockup);
+                    }
+                });
+            },
+            { threshold: 0.4 }
+        );
+        observer.observe(mockup);
+    }
+</script>

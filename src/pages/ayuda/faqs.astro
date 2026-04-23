@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import { FAQ_DATA } from '../../components/ayuda/faqData';
+
+const base = import.meta.env.BASE_URL;
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_DATA.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+};
+---
+
+<Layout
+    title="Preguntas Frecuentes · Grexia | Documentos Legales para Colombia"
+    schema={faqSchema}
+>
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="bg-white pt-14 pb-0 lg:pt-20">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-black tracking-tight text-secondary sm:text-5xl lg:text-6xl leading-tight">
+                    Preguntas
+                    <span class="relative whitespace-nowrap">
+                        Frecuentes
+                        <span class="absolute bottom-1 left-0 h-3 w-full bg-primary/40 rounded-full"></span>
+                    </span>
+                </h1>
+                <p class="mx-auto mt-8 max-w-xl text-lg text-slate-600">
+                    Todo lo que necesitas saber sobre Grexia, sus herramientas y cómo funcionan los documentos.
+                </p>
+            </div>
+        </section>
+
+        <!-- ─── CONTENIDO ─────────────────────────────────────────────────── -->
+        <section class="py-12 lg:py-20">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <!-- Breadcrumb -->
+                <nav
+                    class="mb-8 flex items-center gap-1.5 text-sm text-slate-500"
+                    aria-label="Breadcrumb"
+                >
+                    <a
+                        href={base}
+                        class="hover:text-primary transition-colors"
+                        >Inicio</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <a
+                        href={base + 'ayuda'}
+                        class="hover:text-primary transition-colors"
+                        >Ayuda</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <span class="font-semibold text-secondary">Preguntas Frecuentes</span>
+                </nav>
+
+                <div class="rounded-lg border border-slate-200 bg-white px-6 py-2 shadow-sm">
+                    <FAQAccordion
+                        client:load
+                        items={FAQ_DATA}
+                    />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>

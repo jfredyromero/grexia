@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Términos y Condiciones · Grexia | Documentos Legales para Colombia">
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="bg-white pt-14 pb-0 lg:pt-20">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-black tracking-tight text-secondary sm:text-5xl lg:text-6xl leading-tight">
+                    Términos y
+                    <span class="relative whitespace-nowrap">
+                        Condiciones
+                        <span class="absolute bottom-1 left-0 h-3 w-full bg-primary/40 rounded-full"></span>
+                    </span>
+                </h1>
+                <p class="mx-auto mt-8 max-w-xl text-lg text-slate-600">
+                    Las condiciones que regulan el uso de la plataforma Grexia y los servicios que ofrecemos.
+                </p>
+            </div>
+        </section>
+
+        <!-- ─── CONTENIDO ─────────────────────────────────────────────────── -->
+        <section class="py-12 lg:py-20">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <!-- Breadcrumb -->
+                <nav
+                    class="mb-8 flex items-center gap-1.5 text-sm text-slate-500"
+                    aria-label="Breadcrumb"
+                >
+                    <a
+                        href={base}
+                        class="hover:text-primary transition-colors"
+                        >Inicio</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <a
+                        href={base + 'ayuda'}
+                        class="hover:text-primary transition-colors"
+                        >Ayuda</a
+                    >
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <span class="font-semibold text-secondary">Términos y Condiciones</span>
+                </nav>
+
+                <div class="rounded-lg border border-slate-200 bg-white px-8 py-8 shadow-sm">
+                    <p class="text-xs text-slate-400 mb-6">Última actualización: enero de 2025</p>
+
+                    <h2 class="text-base font-bold text-secondary mt-0 mb-3">1. Objeto del Servicio</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia S.A.S. (en adelante "Grexia") es una plataforma de automatización documental que facilita
+                        la generación de documentos legales estándar para personas naturales y jurídicas domiciliadas en
+                        Colombia. Las herramientas de Grexia son de acceso gratuito y no requieren registro previo. El
+                        uso de esta plataforma no constituye prestación de servicios jurídicos ni establece relación
+                        abogado-cliente.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">2. Condiciones de Uso</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Al utilizar Grexia, el usuario declara ser mayor de edad conforme a la legislación colombiana,
+                        proporcionar datos veraces y exactos, y utilizar los documentos generados exclusivamente para
+                        fines lícitos. Grexia no se hace responsable por el uso indebido de los documentos generados. El
+                        usuario entiende que los documentos son modelos estándar y no sustituyen la asesoría jurídica
+                        profesional.
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-slate-600 mb-4 space-y-1.5">
+                        <li>Ser mayor de edad según la legislación colombiana vigente.</li>
+                        <li>Proporcionar información veraz, completa y exacta.</li>
+                        <li>Utilizar los documentos únicamente para fines lícitos.</li>
+                        <li>No reproducir, comercializar ni distribuir los documentos generados sin autorización.</li>
+                    </ul>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">3. Propiedad Intelectual</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Todos los contenidos, diseños, plantillas y código fuente de Grexia están protegidos por las
+                        leyes de propiedad intelectual colombianas e internacionales, incluidas la Ley 23 de 1982 y la
+                        Decisión Andina 351 de 1993. Queda prohibida la reproducción, distribución o modificación de los
+                        contenidos sin autorización expresa y por escrito de Grexia S.A.S.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">4. Limitación de Responsabilidad</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Los servicios de Grexia se prestan "tal como están" ("as is"). Grexia no garantiza que los
+                        documentos generados sean idóneos para la situación particular de cada usuario. Es
+                        responsabilidad del usuario verificar la idoneidad de los documentos para su caso específico,
+                        preferiblemente con asesoría de un abogado. Grexia no será responsable por daños directos,
+                        indirectos, incidentales o consecuentes derivados del uso de la plataforma.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">5. Pagos y Reembolsos</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        La generación de documentos es completamente gratuita. El servicio de Asesoría Legal tiene un
+                        costo de $59.900 COP por sesión de 45 minutos. En caso de que el servicio no pueda prestarse por
+                        causas imputables a Grexia, se realizará el reembolso total dentro de los 5 días hábiles
+                        siguientes a la solicitud. No se realizan reembolsos por servicios ya prestados.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">6. Modificaciones al Servicio</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Grexia se reserva el derecho de modificar, suspender o descontinuar cualquier aspecto del
+                        servicio en cualquier momento, sin previo aviso y sin responsabilidad alguna frente a los
+                        usuarios. Las modificaciones a los presentes Términos y Condiciones entrarán en vigor desde su
+                        publicación en la plataforma.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">7. Ley Aplicable y Jurisdicción</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Los presentes Términos y Condiciones se rigen por las leyes de la República de Colombia.
+                        Cualquier controversia derivada del uso de la plataforma será sometida a la jurisdicción de los
+                        jueces de la ciudad de Bogotá D.C., Colombia, con renuncia expresa a cualquier otro fuero que
+                        pudiera corresponder.
+                    </p>
+
+                    <h2 class="text-base font-bold text-secondary mt-8 mb-3">8. Contacto</h2>
+                    <p class="text-sm leading-relaxed text-slate-600 mb-4">
+                        Para consultas relacionadas con estos Términos y Condiciones, puedes contactarnos a través de
+                        <a
+                            href="mailto:soporte@grexia.co"
+                            class="text-primary font-medium hover:underline"
+                            >soporte@grexia.co</a
+                        >, por WhatsApp a través del botón disponible en la plataforma, o mediante el formulario de Plan
+                        Empresarial para consultas corporativas.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>

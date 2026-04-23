@@ -43,10 +43,16 @@ const base = import.meta.env.BASE_URL;
                     Herramientas
                 </a>
                 <a
-                    href={base + '#precios'}
+                    href={base + 'planes'}
                     class="text-sm font-medium text-slate-700 transition-colors hover:text-secondary"
                 >
                     Precios
+                </a>
+                <a
+                    href={base + 'ayuda'}
+                    class="text-sm font-medium text-slate-700 transition-colors hover:text-secondary"
+                >
+                    Ayuda
                 </a>
             </nav>
 
@@ -116,11 +122,18 @@ const base = import.meta.env.BASE_URL;
                 Herramientas
             </a>
             <a
-                href={base + '#precios'}
+                href={base + 'planes'}
                 class="mobile-menu-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
             >
                 <span class="material-symbols-outlined text-[18px] text-slate-400">sell</span>
                 Precios
+            </a>
+            <a
+                href={base + 'ayuda'}
+                class="mobile-menu-link flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-secondary"
+            >
+                <span class="material-symbols-outlined text-[18px] text-slate-400">help_outline</span>
+                Ayuda
             </a>
             <a
                 href={base + 'asesoria/checkout'}
