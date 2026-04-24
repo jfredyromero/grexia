@@ -150,3 +150,64 @@ test.describe('Guía — Promesa de Compraventa', () => {
         await expect(cta).toHaveAttribute('href', /herramientas\/compraventa/);
     });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Índice de Guías
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Guía — Index', () => {
+    const URL = '/guias';
+
+    test('carga y muestra el hero con H1 sobre firmar', async ({ page }) => {
+        await page.goto(URL);
+        const h1 = page.getByRole('heading', { level: 1 });
+        await expect(h1).toBeVisible();
+        await expect(h1).toContainText(/firmando/i);
+    });
+
+    test('muestra 3 tarjetas de guía con enlaces correctos', async ({ page }) => {
+        await page.goto(URL);
+        await expect(page.getByRole('link', { name: /Contrato de Arrendamiento/i }).first()).toHaveAttribute(
+            'href',
+            /guias\/contrato-arrendamiento/
+        );
+        await expect(page.getByRole('link', { name: /Pagar[eé]/i }).first()).toHaveAttribute('href', /guias\/pagare/);
+        await expect(page.getByRole('link', { name: /Promesa de Compraventa/i }).first()).toHaveAttribute(
+            'href',
+            /guias\/promesa-compraventa/
+        );
+    });
+
+    test('cada tarjeta muestra su marco legal', async ({ page }) => {
+        await page.goto(URL);
+        await expect(page.getByText(/Ley 820 de 2003/).first()).toBeVisible();
+        await expect(page.getByText(/C[oó]digo de Comercio/).first()).toBeVisible();
+        await expect(page.getByText(/Art\.? 1611/i).first()).toBeVisible();
+    });
+
+    test('cada tarjeta muestra la badge "Herramienta disponible"', async ({ page }) => {
+        await page.goto(URL);
+        const badges = page.getByText(/Herramienta disponible/i);
+        await expect(badges).toHaveCount(3);
+    });
+
+    test('clic en tarjeta Pagaré navega a la guía del pagaré', async ({ page }) => {
+        await page.goto(URL);
+        await page
+            .getByRole('link', { name: /Pagar[eé]/i })
+            .first()
+            .click();
+        await expect(page).toHaveURL(/guias\/pagare/);
+        await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    });
+
+    test('página tiene title, meta description y canonical correctos', async ({ page }) => {
+        await page.goto(URL);
+        await expect(page).toHaveTitle(/Guías/i);
+        await expect(page).toHaveTitle(/Grexia/i);
+        const description = page.locator('meta[name="description"]');
+        await expect(description).toHaveAttribute('content', /.{50,}/);
+        const canonical = page.locator('link[rel="canonical"]');
+        await expect(canonical).toHaveAttribute('href', /grexia\.co\/guias/);
+    });
+});
