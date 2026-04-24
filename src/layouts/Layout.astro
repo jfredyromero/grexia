@@ -5,9 +5,12 @@ import CTAFinal from '../components/shared/CTAFinal.astro';
 
 interface Props {
     title?: string;
+    description?: string;
+    canonical?: string;
+    schema?: Record<string, unknown>;
 }
 
-const { title = 'Grexia - LegalTech Colombia' } = Astro.props;
+const { title = 'Grexia - LegalTech Colombia', description, canonical, schema } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -29,6 +32,30 @@ const base = import.meta.env.BASE_URL;
             content={Astro.generator}
         />
         <title>{title}</title>
+        {
+            description && (
+                <meta
+                    name="description"
+                    content={description}
+                />
+            )
+        }
+        {
+            canonical && (
+                <link
+                    rel="canonical"
+                    href={canonical}
+                />
+            )
+        }
+        {
+            schema && (
+                <script
+                    type="application/ld+json"
+                    set:html={JSON.stringify(schema)}
+                />
+            )
+        }
         <link
             rel="preconnect"
             href="https://fonts.googleapis.com"

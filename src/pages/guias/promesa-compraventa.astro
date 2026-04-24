@@ -1,0 +1,796 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../components/shared/Breadcrumb.astro';
+import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import { TOOLS } from '../../config/tools';
+
+const base = import.meta.env.BASE_URL;
+const tool = TOOLS.find((t) => t.slug === 'compraventa')!;
+
+const trustBadges = [
+    { icon: 'balance', label: 'Marco legal vigente' },
+    { icon: 'lock', label: 'Sin registro' },
+    { icon: 'picture_as_pdf', label: 'PDF en 1 minuto' },
+];
+
+const socialAvatars = [
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+        alt: 'Usuaria de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        alt: 'Usuario de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
+        alt: 'Usuario de Grexia',
+    },
+];
+
+const faqCompraventa = [
+    {
+        question: '¿La promesa de compraventa debe ser por escrito o puede ser verbal?',
+        answer: 'Debe ser por escrito sin excepción. El artículo 1611 del Código Civil colombiano exige expresamente que la promesa conste por escrito; las promesas verbales de venta de inmueble no producen obligación alguna. Firmar una promesa escrita es el primer requisito de validez del documento.',
+    },
+    {
+        question: '¿Cuál es la diferencia entre las arras y la cláusula penal?',
+        answer: 'Las arras (artículos 1859 a 1861 del Código Civil) son una suma que una parte entrega a la otra para asegurar el negocio. Si quien las dio se retracta, las pierde; si quien las recibió se retracta, las devuelve dobladas. La cláusula penal (artículo 1592) es una sanción que se paga por incumplir la obligación principal. Las arras son una prestación efectiva y anticipada; la cláusula penal solo fija un monto que se exige si hay incumplimiento.',
+    },
+    {
+        question: '¿Qué pasa si la promesa no tiene fecha exacta para firmar la escritura?',
+        answer: 'La promesa adolece de nulidad absoluta. La Corte Suprema de Justicia ha sostenido que el artículo 1611 exige un plazo o condición clara y verificable para la firma de la escritura pública. Sin fecha, hora y notaría específicas, la promesa pierde efectos jurídicos y ninguna parte puede exigir su cumplimiento. Por eso Grexia pide esa fecha de forma obligatoria.',
+    },
+    {
+        question: '¿Cuánto tiempo tiene validez una promesa de compraventa?',
+        answer: 'La ley colombiana no fija un plazo máximo. Lo determinan libremente las partes, y en la práctica suelen pactarse entre 30 y 90 días, aunque puede extenderse hasta 6 meses en operaciones con crédito hipotecario. La promesa pierde validez cuando se firma la escritura pública, cuando vence el plazo sin ejecutarse o cuando se declara judicialmente su nulidad o resolución.',
+    },
+    {
+        question: '¿Necesito autenticar la promesa en una notaría?',
+        answer: 'No es obligatorio. La promesa es un documento privado y produce plenos efectos si cumple los cuatro requisitos del artículo 1611. Sin embargo, autenticar las firmas en una notaría da mayor peso probatorio y evita discusiones posteriores sobre la autenticidad del documento ante un juez. Grexia genera la promesa lista para firmar y llevar a autenticación si lo deseas.',
+    },
+    {
+        question: '¿Qué debo revisar del inmueble antes de firmar la promesa?',
+        answer: 'Pide el certificado de tradición y libertad con máximo 30 días de expedición en la Oficina de Registro de Instrumentos Públicos. Verifica que el vendedor aparezca como propietario actual, que no haya hipotecas, embargos, demandas ni limitaciones al dominio, y confirma que los linderos, la matrícula inmobiliaria y la cédula catastral coinciden con lo que describe la promesa. Omitir este paso es la causa más común de fraude inmobiliario en Colombia.',
+    },
+];
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqCompraventa.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+};
+---
+
+<Layout
+    title="Promesa de Compraventa de Inmueble en Colombia: Guía Completa | Grexia"
+    description="Aprende qué es una promesa de compraventa, requisitos del Art. 1611, arras, cláusula penal y los riesgos legales de firmarla mal. Genera la tuya gratis en Grexia."
+    canonical="https://grexia.co/guias/promesa-compraventa"
+    schema={faqSchema}
+>
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="grow flex items-center justify-center">
+            <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+                <!-- Breadcrumb -->
+                <div class="mb-10">
+                    <Breadcrumb
+                        items={[{ label: 'Guías', href: base + 'guias' }, { label: 'Promesa de Compraventa' }]}
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+                    <!-- Izquierda: texto -->
+                    <div class="flex flex-col gap-8 order-2 lg:order-1">
+                        <!-- Trust Badges -->
+                        <div class="hidden lg:flex flex-wrap gap-3">
+                            {
+                                trustBadges.map((badge) => (
+                                    <div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-primary text-[20px] font-bold">
+                                            {badge.icon}
+                                        </span>
+                                        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                                            {badge.label}
+                                        </span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <!-- H1 -->
+                        <div class="space-y-6">
+                            <h1
+                                class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl"
+                            >
+                                Todo sobre la promesa de
+                                <span class="relative whitespace-nowrap text-secondary">
+                                    compraventa
+                                    <span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"
+                                    ></span>
+                                </span>
+                                en Colombia
+                            </h1>
+                            <p class="max-w-lg text-lg text-slate-600 leading-relaxed">
+                                Entiende qué es, qué exige el Código Civil, cómo funcionan las arras y la cláusula
+                                penal, y por qué una promesa mal redactada puede costarte tu inmueble o tu dinero. Y al
+                                final, genera la tuya gratis en minutos.
+                            </p>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a
+                                href={base + tool.href.form}
+                                class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+                            >
+                                Generar promesa gratis
+                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </a>
+                            <a
+                                href={base + 'asesoria/checkout'}
+                                class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
+                            >
+                                Hablar con un abogado
+                            </a>
+                        </div>
+
+                        <!-- Social Proof -->
+                        <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
+                            <div class="flex -space-x-4">
+                                {
+                                    socialAvatars.map((a) => (
+                                        <img
+                                            alt={a.alt}
+                                            class="h-12 w-12 rounded-full border-2 border-white object-cover"
+                                            src={a.src}
+                                        />
+                                    ))
+                                }
+                                <div
+                                    class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+                                >
+                                    +1.2k
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <div class="flex text-yellow-400 text-sm">
+                                    {
+                                        Array.from({ length: 5 }).map(() => (
+                                            <span class="material-symbols-outlined text-[18px]">star</span>
+                                        ))
+                                    }
+                                </div>
+                                <p class="text-sm font-medium text-slate-600">
+                                    Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Legal basis -->
+                        <p class="text-sm text-slate-500 -mt-4">
+                            Conforme al <strong class="text-slate-700">artículo 1611 del Código Civil colombiano</strong
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Derecha: imagen -->
+                    <div class="relative hidden lg:block order-1 lg:order-2">
+                        <div
+                            class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+                        >
+                            <img
+                                alt="Promesa de compraventa de inmueble en Colombia"
+                                class="h-full w-full object-cover object-center"
+                                src={tool.heroImage}
+                            />
+                            <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
+
+                            <!-- Glass Widget: abogado -->
+                            <div
+                                class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-white overflow-hidden"
+                                        >
+                                            <img
+                                                alt={tool.heroLawyerName}
+                                                class="h-full w-full object-cover"
+                                                src={tool.heroLawyerAvatar}
+                                            />
+                                        </div>
+                                        <div
+                                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                        >
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-slate-800">{tool.heroLawyerName}</span>
+                                        <span class="text-xs text-slate-700">{tool.heroLawyerSpecialty}</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm"
+                                >
+                                    "{tool.heroChat}"
+                                </div>
+                            </div>
+
+                            <!-- Glass Widget: guía badge -->
+                            <div
+                                class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
+                            >
+                                <div
+                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                                >
+                                    <span class="material-symbols-outlined text-[24px]">menu_book</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">
+                                        Guía completa
+                                    </p>
+                                    <p class="text-sm font-bold text-slate-800">Normativa vigente</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blobs decorativos -->
+                        <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl">
+                        </div>
+                        <div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ ES? ──────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">info</span>
+                        Definición legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué es una promesa de compraventa?
+                    </h2>
+                </div>
+
+                <!-- Definición destacada -->
+                <div class="rounded-lg border-l-4 border-primary bg-slate-50 p-6 mb-10">
+                    <p class="text-base text-slate-700 leading-relaxed italic">
+                        "La promesa de celebrar un contrato no produce obligación alguna, salvo que concurra que conste
+                        por escrito, que el contrato prometido no sea ineficaz, que contenga un plazo o condición que
+                        fije la época en que ha de celebrarse, y que se determine de tal suerte el contrato que para
+                        perfeccionarlo solo falte la tradición de la cosa o las formalidades legales."
+                    </p>
+                    <p class="mt-3 text-sm font-semibold text-primary">Código Civil colombiano, Art. 1611</p>
+                </div>
+
+                <div class="prose prose-slate max-w-none text-slate-600 text-base leading-relaxed space-y-4">
+                    <p>
+                        En términos simples, la promesa de compraventa es el acuerdo previo a la firma de la escritura
+                        pública en el que vendedor y comprador se comprometen a formalizar la venta de un inmueble en
+                        una fecha determinada, bajo condiciones concretas y por un precio fijo.
+                    </p>
+                    <p>
+                        No es la venta en sí: la venta se perfecciona cuando se firma la <strong
+                            >escritura pública en notaría</strong
+                        > y se registra en la Oficina de Registro de Instrumentos Públicos. La promesa es la obligación de
+                        firmar esa escritura. Por eso su redacción debe ser quirúrgica: una promesa incompleta o ambigua se
+                        declara
+                        <strong>nula de pleno derecho</strong>, y el negocio se cae.
+                    </p>
+                </div>
+
+                <!-- Pills de tipo -->
+                <div class="mt-10 flex flex-wrap gap-3 justify-center">
+                    {
+                        [
+                            {
+                                icon: 'undo',
+                                label: 'Con arras de retractación',
+                                ley: 'Código Civil, Art. 1859',
+                            },
+                            {
+                                icon: 'handshake',
+                                label: 'Con arras confirmatorias',
+                                ley: 'Código Civil, Art. 1861',
+                            },
+                            {
+                                icon: 'gavel',
+                                label: 'Con cláusula penal',
+                                ley: 'Código Civil, Art. 1592',
+                            },
+                        ].map((t) => (
+                            <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                <span class="material-symbols-outlined text-primary text-[20px]">{t.icon}</span>
+                                <div>
+                                    <p class="text-sm font-bold text-secondary">{t.label}</p>
+                                    <p class="text-xs text-slate-500">{t.ley}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Advertencia verbal vs escrito -->
+                <div class="mt-10 rounded-lg bg-amber-50 border border-amber-200 p-5 flex gap-4">
+                    <span class="material-symbols-outlined text-amber-500 text-[24px] shrink-0 mt-0.5">warning</span>
+                    <div>
+                        <p class="text-sm font-bold text-amber-900 mb-1">Promesa verbal no vale nada</p>
+                        <p class="text-sm text-amber-800 leading-relaxed">
+                            A diferencia del arrendamiento, el artículo 1611 del Código Civil exige
+                            <strong>expresamente</strong> que la promesa conste por escrito. Una promesa de compraventa verbal
+                            es jurídicamente inexistente: no puedes exigir la venta, no puedes recuperar el dinero entregado
+                            y no tienes prueba ante un juez. <strong>El escrito no es opcional, es la ley.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UNA? ───────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas una promesa de compraventa?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Cada vez que hay dinero de por medio antes de firmar la escritura, necesitas una.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'payments',
+                                titulo: 'Vas a entregar o recibir arras',
+                                descripcion:
+                                    'Si como comprador vas a abonar una suma para reservar el inmueble, o como vendedor vas a recibirla, necesitas la promesa para formalizar qué pasa si alguien se retracta.',
+                            },
+                            {
+                                icon: 'account_balance',
+                                titulo: 'Esperas desembolso de crédito hipotecario',
+                                descripcion:
+                                    'Los bancos exigen la promesa de compraventa firmada para estudiar y aprobar el crédito. Sin ese documento, el banco no desembolsa y la operación no avanza.',
+                            },
+                            {
+                                icon: 'schedule',
+                                titulo: 'El negocio no se firma el mismo día',
+                                descripcion:
+                                    'Si entre el acuerdo y la firma de la escritura pasan días o meses, la promesa protege el precio acordado, la fecha de entrega y las condiciones del inmueble.',
+                            },
+                        ].map((c) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{c.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary mb-2">{c.titulo}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">{c.descripcion}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── MARCO LEGAL ───────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">balance</span>
+                        Normatividad
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Bajo qué normativa se rige?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        La promesa de compraventa se rige por el Código Civil y su jurisprudencia.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    {
+                        [
+                            {
+                                norma: 'Código Civil, Art. 1611',
+                                year: '1887',
+                                color: 'bg-primary/10 border-primary/30',
+                                textColor: 'text-primary',
+                                titulo: 'Requisitos de validez de la promesa',
+                                descripcion:
+                                    'Establece los cuatro requisitos obligatorios: constar por escrito, que el contrato prometido sea válido, fijar plazo o condición para la firma de la escritura, y determinar el contrato con tal detalle que solo falte la tradición o las formalidades. Incumplir cualquiera acarrea nulidad absoluta.',
+                            },
+                            {
+                                norma: 'Código Civil, Art. 1859 a 1861',
+                                year: '1887',
+                                color: 'bg-slate-100 border-slate-300',
+                                textColor: 'text-slate-600',
+                                titulo: 'Régimen de las arras',
+                                descripcion:
+                                    'Regula las arras de retractación (quien las dio las pierde, quien las recibió las devuelve dobladas) y las arras confirmatorias, que aseguran el negocio sin permitir retracto. Fija el plazo de dos meses para retractarse si las partes no establecen uno.',
+                            },
+                            {
+                                norma: 'Código Civil, Art. 1592',
+                                year: '1887',
+                                color: 'bg-blue-50 border-blue-200',
+                                textColor: 'text-blue-700',
+                                titulo: 'Cláusula penal e indemnización',
+                                descripcion:
+                                    'Define la cláusula penal como la pena pactada para asegurar el cumplimiento. La cláusula penal no puede ser enorme: el Código Civil permite reducirla a máximo el doble de la prestación principal cuando resulta desproporcionada (art. 1601).',
+                            },
+                        ].map((n) => (
+                            <div class={`rounded-lg border ${n.color} p-6 flex gap-5`}>
+                                <div class="shrink-0 text-center">
+                                    <span class={`text-xs font-black uppercase tracking-wider ${n.textColor}`}>
+                                        {n.year}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class={`text-xs font-bold uppercase tracking-wider ${n.textColor} mb-1`}>
+                                        {n.norma}
+                                    </p>
+                                    <h3 class="text-base font-black text-secondary mb-1">{n.titulo}</h3>
+                                    <p class="text-sm text-slate-600 leading-relaxed">{n.descripcion}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PARTES DE LA PROMESA ──────────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Quiénes participan en la promesa?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Cada parte tiene derechos y obligaciones específicas definidas por la ley.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'store',
+                                titulo: 'Promitente vendedor',
+                                rol: 'Propietario del inmueble',
+                                obligaciones: [
+                                    'Acreditar titularidad del inmueble con matrícula inmobiliaria',
+                                    'Garantizar que el inmueble está libre de gravámenes',
+                                    'Firmar la escritura pública en la fecha pactada',
+                                    'Entregar el inmueble en las condiciones acordadas',
+                                ],
+                            },
+                            {
+                                icon: 'person',
+                                titulo: 'Promitente comprador',
+                                rol: 'Futuro dueño del inmueble',
+                                obligaciones: [
+                                    'Pagar el precio en la forma y plazo acordados',
+                                    'Entregar las arras pactadas si las hay',
+                                    'Concurrir a la notaría en la fecha prometida',
+                                    'Asumir los gastos de escrituración que le correspondan',
+                                ],
+                            },
+                            {
+                                icon: 'group',
+                                titulo: 'Testigo',
+                                rol: 'Da fe del acto (opcional)',
+                                obligaciones: [
+                                    'Presenciar la firma de la promesa',
+                                    'Confirmar la identidad de las partes',
+                                    'Aportar prueba testimonial si hay disputa',
+                                    'No adquiere obligaciones económicas',
+                                ],
+                            },
+                        ].map((p) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{p.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary">{p.titulo}</h3>
+                                <p class="text-xs text-primary font-semibold uppercase tracking-wide mt-0.5 mb-4">
+                                    {p.rol}
+                                </p>
+                                <ul class="space-y-2">
+                                    {p.obligaciones.map((o) => (
+                                        <li class="flex items-start gap-2 text-sm text-slate-600">
+                                            <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                                check_circle
+                                            </span>
+                                            {o}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── LOS PELIGROS ─────────────────────────────────────────────── -->
+        <section class="bg-secondary py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-red-300 mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">warning</span>
+                        Riesgo legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        ¿Qué pasa si firmas una promesa mal redactada?
+                    </h2>
+                    <p class="mt-3 text-lg text-blue-100/80 max-w-xl mx-auto">
+                        En negocios inmobiliarios, un error en la promesa puede costarte el inmueble, las arras y años
+                        de litigio.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    {
+                        [
+                            {
+                                icon: 'gavel',
+                                titulo: 'Nulidad absoluta del documento',
+                                descripcion:
+                                    'Si falta la fecha exacta para firmar la escritura, los linderos del inmueble o el precio en números y letras, la Corte Suprema declara la promesa nula. No puedes exigir la venta y ambas partes deben restituir lo recibido.',
+                            },
+                            {
+                                icon: 'money_off',
+                                titulo: 'Pierdes las arras entregadas',
+                                descripcion:
+                                    'Si tú como comprador te retractas sin causa, pierdes las arras. Si como vendedor incumples, debes devolverlas dobladas (art. 1859). Sin promesa clara sobre qué tipo de arras son, el juez decide y rara vez a tu favor.',
+                            },
+                            {
+                                icon: 'report',
+                                titulo: 'Fraude inmobiliario por hipotecas ocultas',
+                                descripcion:
+                                    'Es la estafa más común en Colombia: el vendedor oculta embargos, hipotecas o sucesiones pendientes. Sin verificar el certificado de tradición y libertad antes de firmar, puedes pagar por un inmueble que nunca podrás registrar a tu nombre.',
+                            },
+                            {
+                                icon: 'home_work',
+                                titulo: 'Doble venta del mismo inmueble',
+                                descripcion:
+                                    'Algunos vendedores firman varias promesas sobre el mismo inmueble y cobran arras a varios compradores. El primero que logre firmar la escritura se queda con el bien; los demás quedan con un pleito de cobro en contra de un estafador.',
+                            },
+                        ].map((r) => (
+                            <div class="rounded-lg bg-white/10 border border-white/20 p-6">
+                                <div class="flex items-start gap-4">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/20">
+                                        <span class="material-symbols-outlined text-red-400 text-[20px]">{r.icon}</span>
+                                    </span>
+                                    <div>
+                                        <h3 class="text-base font-black text-white mb-1">{r.titulo}</h3>
+                                        <p class="text-sm text-slate-300 leading-relaxed">{r.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div class="mt-10 rounded-lg bg-white/5 border border-white/10 p-6 text-center">
+                    <p class="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                        Y recuerda: <strong class="text-white"
+                            >una promesa sin fecha clara para firmar la escritura es jurídicamente inexistente.</strong
+                        >
+                        La Corte Suprema ha ratificado que el artículo 1611 no admite ambigüedades: si no hay día, hora y
+                        notaría, no hay promesa.
+                    </p>
+                </div>
+
+                <!-- CTA inline -->
+                <div class="mt-10 text-center">
+                    <a
+                        href={base + tool.href.form}
+                        class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-10 text-base font-bold text-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+                    >
+                        Genera la tuya ahora, gratis con Grexia
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    </a>
+                    <p class="mt-3 text-sm text-blue-200/70">Sin registro. Sin tarjeta. En segundos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ DEBE INCLUIR? ───────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué debe incluir la promesa de compraventa?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Una promesa válida cubre estas cláusulas esenciales. Grexia las incluye todas automáticamente.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {
+                        [
+                            'Datos completos del vendedor y comprador (nombre, cédula, ciudad de expedición)',
+                            'Dirección exacta del inmueble (departamento, ciudad, dirección)',
+                            'Área construida y linderos norte, sur, oriente y occidente',
+                            'Número de matrícula inmobiliaria y cédula catastral',
+                            'Título de adquisición (escritura anterior, notaría y folio)',
+                            'Precio total de venta en números y en letras',
+                            'Descripción detallada de qué incluye el precio',
+                            'Forma de pago (cuotas, crédito hipotecario, contado)',
+                            'Valor de las arras y régimen aplicable',
+                            'Valor de la cláusula penal en caso de incumplimiento',
+                            'Fecha, hora y notaría exactas para firmar la escritura',
+                            'Distribución de gastos de escrituración y registro',
+                        ].map((item) => (
+                            <div class="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
+                                <span class="material-symbols-outlined text-primary text-[18px] shrink-0">
+                                    check_circle
+                                </span>
+                                <span class="text-sm text-slate-700">{item}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div
+                    class="mt-8 rounded-lg bg-primary/5 border border-primary/20 p-5 flex items-center justify-between gap-6 flex-col sm:flex-row"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-[28px]">auto_awesome</span>
+                        <p class="text-sm text-slate-700">
+                            <strong class="text-secondary"
+                                >Grexia genera una promesa con las 18 cláusulas ajustadas al Código Civil</strong
+                            >, incluyendo arras, cláusula penal, linderos y tradición. Solo completa el formulario y
+                            descarga el PDF.
+                        </p>
+                    </div>
+                    <a
+                        href={base + tool.href.landing}
+                        class="shrink-0 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                    >
+                        Ver herramienta
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UN ABOGADO? ───────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas un abogado?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Grexia cubre las promesas estándar entre partes de confianza. Para casos complejos, un abogado
+                        es la respuesta.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <!-- Grexia alcanza -->
+                    <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                                <span class="material-symbols-outlined text-primary text-[20px]">description</span>
+                            </span>
+                            <h3 class="text-lg font-black text-secondary">Grexia es suficiente</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            {
+                                [
+                                    'Promesa de compraventa de vivienda entre particulares',
+                                    'Operación con crédito hipotecario tradicional',
+                                    'Inmueble con certificado de tradición y libertad limpio',
+                                    'Partes con capacidad plena y documentación al día',
+                                    'Pago de contado o en cuotas sin financiación compleja',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-600">
+                                        <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                            check_circle
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + tool.href.form}
+                            class="mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Generar promesa gratis
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Necesitas asesoría -->
+                    <div class="rounded-lg bg-secondary border-2 border-primary p-8 shadow-xl relative overflow-hidden">
+                        <div
+                            class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"
+                        >
+                        </div>
+                        <div class="relative flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                                <span class="material-symbols-outlined text-blue-400 text-[20px]">gavel</span>
+                            </span>
+                            <h3 class="text-lg font-black text-white">Necesitas asesoría profesional</h3>
+                        </div>
+                        <ul class="relative space-y-3">
+                            {
+                                [
+                                    'Inmueble con hipoteca, embargo o demanda vigente',
+                                    'Bienes en sucesión, divorcio o disputa patrimonial',
+                                    'Promesa en proyectos de vivienda sobre planos',
+                                    'Operaciones con personas jurídicas o fiducia inmobiliaria',
+                                    'Inmuebles rurales, lotes de engorde o con afectación POT',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-300">
+                                        <span class="material-symbols-outlined text-blue-400 text-[16px] mt-0.5 shrink-0">
+                                            chevron_right
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + 'asesoria/checkout'}
+                            class="relative mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Agendar asesoría por $59.900
+                            <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FAQ ──────────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        Preguntas frecuentes sobre la promesa de compraventa
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600">
+                        Lo que más nos preguntan sobre promesas de compraventa de inmueble en Colombia.
+                    </p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-6 py-2 shadow-sm">
+                    <FAQAccordion
+                        client:load
+                        items={faqCompraventa}
+                    />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>
