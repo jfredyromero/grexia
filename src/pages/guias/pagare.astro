@@ -1,0 +1,781 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../components/shared/Breadcrumb.astro';
+import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import { TOOLS } from '../../config/tools';
+
+const base = import.meta.env.BASE_URL;
+const tool = TOOLS.find((t) => t.slug === 'pagare')!;
+
+const trustBadges = [
+    { icon: 'balance', label: 'Marco legal vigente' },
+    { icon: 'lock', label: 'Sin registro' },
+    { icon: 'picture_as_pdf', label: 'PDF en 1 minuto' },
+];
+
+const socialAvatars = [
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+        alt: 'Usuaria de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        alt: 'Usuario de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
+        alt: 'Usuario de Grexia',
+    },
+];
+
+const faqPagare = [
+    {
+        question: '¿Un pagaré escrito en una servilleta o en papel común tiene validez legal?',
+        answer: 'Sí, siempre que cumpla con los requisitos del artículo 621 y 709 del Código de Comercio: mención del derecho incorporado, firma del otorgante, promesa incondicional de pagar una suma determinada de dinero, nombre del beneficiario, indicación de ser pagadero a la orden o al portador, y forma de vencimiento. La ley no exige un formato específico, pero si falta alguno de estos elementos el documento pierde su carácter de título valor y no podrás cobrarlo mediante proceso ejecutivo.',
+    },
+    {
+        question: '¿Qué diferencia hay entre un pagaré y una letra de cambio?',
+        answer: 'En el pagaré quien lo firma hace una promesa de pagar una suma de dinero. En la letra de cambio se da una orden a un tercero para que pague. El pagaré involucra solo dos partes (acreedor y deudor) y no requiere aceptación: el deudor se obliga directamente al firmarlo. La letra de cambio puede involucrar hasta tres personas (girador, girado y beneficiario) y requiere aceptación del girado. Ambos son títulos valores regidos por el Código de Comercio.',
+    },
+    {
+        question: '¿En cuánto tiempo prescribe un pagaré en Colombia?',
+        answer: 'La acción cambiaria directa contra el deudor principal del pagaré prescribe en tres (3) años contados desde la fecha de vencimiento, según el artículo 789 del Código de Comercio. Si el pagaré no tiene fecha de vencimiento, los tres años se cuentan desde la fecha en que el acreedor presenta el título para el pago. Pasado ese plazo pierdes el derecho de cobrarlo por vía ejecutiva, aunque la obligación natural subsiste.',
+    },
+    {
+        question: '¿El pagaré necesita autenticación ante notario para ser válido?',
+        answer: 'No. La ley no exige autenticar el pagaré ante notario para que tenga validez como título valor. Sin embargo, autenticar la firma del deudor es altamente recomendable porque evita que luego alegue falsedad de la firma o alteración del documento en el proceso ejecutivo. El costo de autenticar es bajo comparado con el riesgo de perder el cobro por una objeción sobre la firma.',
+    },
+    {
+        question: '¿Puedo cobrar intereses en un pagaré y cuál es el límite legal?',
+        answer: 'Sí. Puedes pactar intereses remuneratorios (durante el plazo) y moratorios (por incumplimiento). El artículo 884 del Código de Comercio establece que si las partes no pactan interés moratorio, será una y media veces el interés bancario corriente. El límite máximo legal es la tasa de usura certificada mensualmente por la Superintendencia Financiera: para enero de 2026 es 24,36% efectivo anual para crédito de consumo y ordinario. Si cobras por encima, pierdes todos los intereses.',
+    },
+    {
+        question: '¿Qué pasa si firmo un pagaré en blanco?',
+        answer: 'El artículo 622 del Código de Comercio permite los pagarés en blanco, pero exige que el acreedor los diligencie conforme a las instrucciones del suscriptor, que deben constar por escrito en una carta de instrucciones. Si firmas un pagaré sin carta de instrucciones escrita, te expones a que se diligencie por un monto superior, una fecha distinta o condiciones que no acordaste. En la práctica es uno de los mayores riesgos para el deudor y la Corte Constitucional ha advertido sobre sus abusos.',
+    },
+];
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqPagare.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+};
+---
+
+<Layout
+    title="Pagaré en Colombia: Guía Completa del Título Valor | Grexia"
+    description="Aprende qué es un pagaré, los requisitos del Art. 709 del Código de Comercio, la prescripción de 3 años y los riesgos de firmarlo mal. Genera el tuyo gratis en Grexia."
+    canonical="https://grexia.co/guias/pagare"
+    schema={faqSchema}
+>
+    <Navbar variant="home" />
+
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="grow flex items-center justify-center">
+            <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+                <!-- Breadcrumb -->
+                <div class="mb-10">
+                    <Breadcrumb items={[{ label: 'Guías', href: base + 'guias' }, { label: 'Pagaré' }]} />
+                </div>
+
+                <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+                    <!-- Izquierda: texto -->
+                    <div class="flex flex-col gap-8 order-2 lg:order-1">
+                        <!-- Trust Badges -->
+                        <div class="hidden lg:flex flex-wrap gap-3">
+                            {
+                                trustBadges.map((badge) => (
+                                    <div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-primary text-[20px] font-bold">
+                                            {badge.icon}
+                                        </span>
+                                        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                                            {badge.label}
+                                        </span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <!-- H1 -->
+                        <div class="space-y-6">
+                            <h1
+                                class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl"
+                            >
+                                Todo sobre el
+                                <span class="relative whitespace-nowrap text-secondary">
+                                    pagaré
+                                    <span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"
+                                    ></span>
+                                </span>
+                                en Colombia
+                            </h1>
+                            <p class="max-w-lg text-lg text-slate-600 leading-relaxed">
+                                Entiende qué es un título valor, qué dice el Código de Comercio y por qué un pagaré mal
+                                diligenciado puede convertirse en tu peor deuda. Y al final, genera el tuyo gratis en
+                                minutos.
+                            </p>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a
+                                href={base + tool.href.form}
+                                class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+                            >
+                                Generar pagaré gratis
+                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </a>
+                            <a
+                                href={base + 'asesoria/checkout'}
+                                class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
+                            >
+                                Hablar con un abogado
+                            </a>
+                        </div>
+
+                        <!-- Social Proof -->
+                        <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
+                            <div class="flex -space-x-4">
+                                {
+                                    socialAvatars.map((a) => (
+                                        <img
+                                            alt={a.alt}
+                                            class="h-12 w-12 rounded-full border-2 border-white object-cover"
+                                            src={a.src}
+                                        />
+                                    ))
+                                }
+                                <div
+                                    class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+                                >
+                                    +1.2k
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <div class="flex text-yellow-400 text-sm">
+                                    {
+                                        Array.from({ length: 5 }).map(() => (
+                                            <span class="material-symbols-outlined text-[18px]">star</span>
+                                        ))
+                                    }
+                                </div>
+                                <p class="text-sm font-medium text-slate-600">
+                                    Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Legal basis -->
+                        <p class="text-sm text-slate-500 -mt-4">
+                            Conforme a
+                            <strong class="text-slate-700">los artículos 621, 709 y 789 del Código de Comercio</strong>
+                        </p>
+                    </div>
+
+                    <!-- Derecha: imagen -->
+                    <div class="relative hidden lg:block order-1 lg:order-2">
+                        <div
+                            class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+                        >
+                            <img
+                                alt="Pagaré como título valor en Colombia"
+                                class="h-full w-full object-cover object-center"
+                                src={tool.heroImage}
+                            />
+                            <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
+
+                            <!-- Glass Widget: abogado -->
+                            <div
+                                class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-white overflow-hidden"
+                                        >
+                                            <img
+                                                alt={tool.heroLawyerName}
+                                                class="h-full w-full object-cover"
+                                                src={tool.heroLawyerAvatar}
+                                            />
+                                        </div>
+                                        <div
+                                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                        >
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-slate-800">{tool.heroLawyerName}</span>
+                                        <span class="text-xs text-slate-700">{tool.heroLawyerSpecialty}</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm"
+                                >
+                                    "{tool.heroChat}"
+                                </div>
+                            </div>
+
+                            <!-- Glass Widget: guía badge -->
+                            <div
+                                class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
+                            >
+                                <div
+                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                                >
+                                    <span class="material-symbols-outlined text-[24px]">menu_book</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">
+                                        Guía completa
+                                    </p>
+                                    <p class="text-sm font-bold text-slate-800">Normativa vigente</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blobs decorativos -->
+                        <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl">
+                        </div>
+                        <div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ ES? ──────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">info</span>
+                        Definición legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">¿Qué es un pagaré?</h2>
+                </div>
+
+                <!-- Definición destacada -->
+                <div class="rounded-lg border-l-4 border-primary bg-slate-50 p-6 mb-10">
+                    <p class="text-base text-slate-700 leading-relaxed italic">
+                        "El pagaré debe contener, además de los requisitos que establece el artículo 621: 1) La promesa
+                        incondicional de pagar una suma determinada de dinero; 2) El nombre de la persona a quien deba
+                        hacerse el pago; 3) La indicación de ser pagadero a la orden o al portador, y 4) La forma de
+                        vencimiento."
+                    </p>
+                    <p class="mt-3 text-sm font-semibold text-primary">Código de Comercio colombiano, Art. 709</p>
+                </div>
+
+                <div class="prose prose-slate max-w-none text-slate-600 text-base leading-relaxed space-y-4">
+                    <p>
+                        En términos simples, un pagaré es un documento en el que una persona (el <strong>deudor</strong>
+                        u otorgante) promete por escrito pagar una suma de dinero a otra (el <strong>acreedor</strong> o beneficiario)
+                        en una fecha específica. Es un <strong>título valor</strong>, lo que significa que incorpora un
+                        derecho de cobro ejecutable directamente ante un juez sin necesidad de probar la deuda.
+                    </p>
+                    <p>
+                        A diferencia de un simple recibo, un contrato de préstamo o una promesa verbal, el pagaré
+                        permite iniciar un <strong>proceso ejecutivo</strong> (artículo 430 del Código General del Proceso):
+                        con solo presentarlo, el juez libra mandamiento de pago contra el deudor. Por eso se usa para garantizar
+                        préstamos, créditos comerciales, obligaciones bancarias y acuerdos de pago.
+                    </p>
+                </div>
+
+                <!-- Pills de tipo -->
+                <div class="mt-10 flex flex-wrap gap-3 justify-center">
+                    {
+                        [
+                            { icon: 'event_available', label: 'Pago único', detalle: 'Una sola fecha de vencimiento' },
+                            {
+                                icon: 'calendar_month',
+                                label: 'Pago en cuotas',
+                                detalle: 'Mensual, bimestral o trimestral',
+                            },
+                            { icon: 'edit_document', label: 'A la orden', detalle: 'Beneficiario específico' },
+                        ].map((t) => (
+                            <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                <span class="material-symbols-outlined text-primary text-[20px]">{t.icon}</span>
+                                <div>
+                                    <p class="text-sm font-bold text-secondary">{t.label}</p>
+                                    <p class="text-xs text-slate-500">{t.detalle}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Pagaré en blanco -->
+                <div class="mt-10 rounded-lg bg-amber-50 border border-amber-200 p-5 flex gap-4">
+                    <span class="material-symbols-outlined text-amber-500 text-[24px] shrink-0 mt-0.5">warning</span>
+                    <div>
+                        <p class="text-sm font-bold text-amber-900 mb-1">Cuidado con el pagaré en blanco</p>
+                        <p class="text-sm text-amber-800 leading-relaxed">
+                            El artículo 622 del Código de Comercio permite firmarlo con espacios en blanco, pero
+                            requiere que lo acompañes de una <strong>carta de instrucciones escrita</strong> que indique cómo
+                            debe llenarse. Sin esa carta, el acreedor puede diligenciarlo con un monto o fecha que nunca acordaste.
+                            Nunca firmes un pagaré en blanco sin instrucciones por escrito.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UNO? ───────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas un pagaré?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Siempre que quieras respaldar una obligación de pago en dinero con fuerza ejecutiva.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'payments',
+                                titulo: 'Prestar dinero a un tercero',
+                                descripcion:
+                                    'Si le prestas plata a un familiar, amigo o socio, el pagaré te permite exigir el pago por vía ejecutiva si no cumple, sin necesidad de probar la deuda en un proceso ordinario.',
+                            },
+                            {
+                                icon: 'handshake',
+                                titulo: 'Acuerdo de pago comercial',
+                                descripcion:
+                                    'Cuando un cliente reconoce una deuda y se compromete a pagarla en cuotas. El pagaré documenta el compromiso y te da título ejecutivo si incumple.',
+                            },
+                            {
+                                icon: 'security',
+                                titulo: 'Garantía de un negocio',
+                                descripcion:
+                                    'Como respaldo de un contrato de arrendamiento, compraventa a plazos o cualquier obligación futura. El pagaré refuerza la seguridad del acreedor.',
+                            },
+                        ].map((c) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{c.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary mb-2">{c.titulo}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">{c.descripcion}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── MARCO LEGAL ───────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">balance</span>
+                        Normatividad
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Bajo qué normativa se rige?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        El pagaré es un título valor regulado principalmente por el Código de Comercio de Colombia.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    {
+                        [
+                            {
+                                norma: 'Código de Comercio, Art. 621',
+                                year: '1971',
+                                color: 'bg-slate-100 border-slate-300',
+                                textColor: 'text-slate-600',
+                                titulo: 'Requisitos generales de los títulos valores',
+                                descripcion:
+                                    'Establece que todo título valor debe contener al menos dos elementos: la mención del derecho que se incorpora y la firma de quien lo crea. Sin firma, el pagaré no existe jurídicamente.',
+                            },
+                            {
+                                norma: 'Código de Comercio, Art. 709',
+                                year: '1971',
+                                color: 'bg-primary/10 border-primary/30',
+                                textColor: 'text-primary',
+                                titulo: 'Requisitos específicos del pagaré',
+                                descripcion:
+                                    'Define los cuatro elementos propios del pagaré: promesa incondicional de pagar una suma determinada, nombre del beneficiario, indicación de ser pagadero a la orden o al portador, y forma de vencimiento. Si falta uno, pierde su carácter de título valor.',
+                            },
+                            {
+                                norma: 'Código de Comercio, Art. 789',
+                                year: '1971',
+                                color: 'bg-blue-50 border-blue-200',
+                                textColor: 'text-blue-700',
+                                titulo: 'Prescripción de la acción cambiaria directa',
+                                descripcion:
+                                    'La acción cambiaria directa contra el deudor principal prescribe en tres (3) años contados desde la fecha de vencimiento. Pasado ese plazo, el pagaré pierde fuerza ejecutiva aunque la obligación natural subsista.',
+                            },
+                            {
+                                norma: 'Código de Comercio, Art. 884',
+                                year: '1971',
+                                color: 'bg-amber-50 border-amber-200',
+                                textColor: 'text-amber-700',
+                                titulo: 'Límite de intereses y sanción por usura',
+                                descripcion:
+                                    'Fija el límite de los intereses remuneratorios y moratorios. Si se pactan tasas por encima del máximo legal certificado por la Superintendencia Financiera (24,36% E.A. para enero de 2026), el acreedor pierde todos los intereses.',
+                            },
+                        ].map((n) => (
+                            <div class={`rounded-lg border ${n.color} p-6 flex gap-5`}>
+                                <div class="shrink-0 text-center">
+                                    <span class={`text-xs font-black uppercase tracking-wider ${n.textColor}`}>
+                                        {n.year}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class={`text-xs font-bold uppercase tracking-wider ${n.textColor} mb-1`}>
+                                        {n.norma}
+                                    </p>
+                                    <h3 class="text-base font-black text-secondary mb-1">{n.titulo}</h3>
+                                    <p class="text-sm text-slate-600 leading-relaxed">{n.descripcion}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PARTES DEL PAGARÉ ─────────────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Quiénes participan en un pagaré?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        El pagaré involucra dos partes principales con derechos y obligaciones claramente definidos.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    {
+                        [
+                            {
+                                icon: 'person',
+                                titulo: 'Acreedor',
+                                rol: 'Beneficiario del pago',
+                                obligaciones: [
+                                    'Recibir el pago en la fecha pactada',
+                                    'Diligenciar el pagaré conforme a instrucciones si lo recibió en blanco',
+                                    'Entregar o destruir el pagaré una vez pagado',
+                                    'Iniciar el proceso ejecutivo dentro de los 3 años si incumple el deudor',
+                                ],
+                            },
+                            {
+                                icon: 'person_outline',
+                                titulo: 'Deudor',
+                                rol: 'Otorgante del pagaré',
+                                obligaciones: [
+                                    'Pagar la suma prometida en la fecha acordada',
+                                    'Pagar los intereses remuneratorios y moratorios pactados',
+                                    'Responder con todo su patrimonio ante incumplimiento',
+                                    'Conservar copia del pagaré y de la carta de instrucciones',
+                                ],
+                            },
+                        ].map((p) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{p.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary">{p.titulo}</h3>
+                                <p class="text-xs text-primary font-semibold uppercase tracking-wide mt-0.5 mb-4">
+                                    {p.rol}
+                                </p>
+                                <ul class="space-y-2">
+                                    {p.obligaciones.map((o) => (
+                                        <li class="flex items-start gap-2 text-sm text-slate-600">
+                                            <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                                check_circle
+                                            </span>
+                                            {o}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── LOS PELIGROS ─────────────────────────────────────────────── -->
+        <section class="bg-secondary py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-red-300 mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">warning</span>
+                        Riesgo legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        ¿Qué pasa si firmas o cobras un pagaré mal hecho?
+                    </h2>
+                    <p class="mt-3 text-lg text-blue-100/80 max-w-xl mx-auto">
+                        Un pagaré con errores no es solo un papel: es la puerta de entrada a un proceso ejecutivo que
+                        puede costarte tus bienes o tu cobro.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    {
+                        [
+                            {
+                                icon: 'receipt_long',
+                                titulo: 'Si falta un requisito del Art. 709, no es título valor',
+                                descripcion:
+                                    'Sin promesa incondicional, sin firma, sin nombre del beneficiario o sin forma de vencimiento, el documento deja de ser título valor y no puedes cobrarlo por proceso ejecutivo. Tendrás que iniciar un proceso declarativo largo y probar toda la deuda.',
+                            },
+                            {
+                                icon: 'schedule',
+                                titulo: 'Prescribe a los 3 años desde el vencimiento',
+                                descripcion:
+                                    'El artículo 789 del Código de Comercio establece que la acción cambiaria directa prescribe en tres años. Si dejas pasar ese plazo sin demandar, pierdes el derecho de cobrarlo por vía ejecutiva de forma definitiva.',
+                            },
+                            {
+                                icon: 'edit_note',
+                                titulo: 'Pagaré en blanco sin carta de instrucciones',
+                                descripcion:
+                                    'Si firmas un pagaré con espacios en blanco y no entregas una carta de instrucciones escrita, el acreedor puede diligenciarlo por un monto mayor al acordado. La Corte Constitucional ha advertido sobre los abusos, especialmente en el sector financiero.',
+                            },
+                            {
+                                icon: 'percent',
+                                titulo: 'Pactar intereses por encima del límite legal',
+                                descripcion:
+                                    'Si el pagaré estipula intereses mayores a la tasa de usura certificada por la Superfinanciera (24,36% E.A. para enero de 2026), el acreedor pierde TODOS los intereses, no solo el exceso. Una cláusula mal redactada puede borrar tus ganancias.',
+                            },
+                        ].map((r) => (
+                            <div class="rounded-lg bg-white/10 border border-white/20 p-6">
+                                <div class="flex items-start gap-4">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/20">
+                                        <span class="material-symbols-outlined text-red-400 text-[20px]">{r.icon}</span>
+                                    </span>
+                                    <div>
+                                        <h3 class="text-base font-black text-white mb-1">{r.titulo}</h3>
+                                        <p class="text-sm text-slate-300 leading-relaxed">{r.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div class="mt-10 rounded-lg bg-white/5 border border-white/10 p-6 text-center">
+                    <p class="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                        Y recuerda: <strong class="text-white"
+                            >un pagaré mal redactado es más peligroso que no tener ninguno.</strong
+                        >
+                        Si firmas como deudor, te expone al cobro por un monto distinto al acordado. Si eres acreedor, puede
+                        perder su fuerza ejecutiva y quedarte sin herramientas para cobrar.
+                    </p>
+                </div>
+
+                <!-- CTA inline -->
+                <div class="mt-10 text-center">
+                    <a
+                        href={base + tool.href.form}
+                        class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-10 text-base font-bold text-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+                    >
+                        Genera el tuyo ahora, gratis con Grexia
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    </a>
+                    <p class="mt-3 text-sm text-blue-200/70">Sin registro. Sin tarjeta. En minutos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ DEBE INCLUIR? ───────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué debe incluir un pagaré válido?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Un pagaré completo cumple con los requisitos de los artículos 621 y 709 del Código de Comercio.
+                        Grexia los incluye todos automáticamente.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {
+                        [
+                            'Identificación completa del acreedor (nombre y documento)',
+                            'Identificación completa del deudor (nombre y documento)',
+                            'Ciudad y departamento de residencia del deudor',
+                            'Promesa incondicional de pagar una suma determinada',
+                            'Valor principal en números y letras',
+                            'Fecha de suscripción del pagaré',
+                            'Ciudad y departamento de suscripción',
+                            'Fecha de vencimiento o plan de cuotas',
+                            'Modalidad de pago (único o en cuotas)',
+                            'Periodicidad de las cuotas si aplica',
+                            'Tasa de interés remuneratorio pactada',
+                            'Tasa de interés de mora pactada',
+                            'Indicación de ser pagadero a la orden',
+                            'Firma del deudor con huella dactilar',
+                        ].map((item) => (
+                            <div class="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
+                                <span class="material-symbols-outlined text-primary text-[18px] shrink-0">
+                                    check_circle
+                                </span>
+                                <span class="text-sm text-slate-700">{item}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div
+                    class="mt-8 rounded-lg bg-primary/5 border border-primary/20 p-5 flex items-center justify-between gap-6 flex-col sm:flex-row"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-[28px]">auto_awesome</span>
+                        <p class="text-sm text-slate-700">
+                            <strong class="text-secondary">Grexia incluye todos estos elementos automáticamente</strong>
+                            según la modalidad de pago que elijas (único o en cuotas). Solo completa el formulario y descarga
+                            el PDF.
+                        </p>
+                    </div>
+                    <a
+                        href={base + tool.href.landing}
+                        class="shrink-0 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                    >
+                        Ver herramienta
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UN ABOGADO? ───────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas un abogado?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Grexia cubre los pagarés estándar. Para situaciones complejas o litigios, un abogado es la
+                        respuesta.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <!-- Grexia alcanza -->
+                    <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                                <span class="material-symbols-outlined text-primary text-[20px]">description</span>
+                            </span>
+                            <h3 class="text-lg font-black text-secondary">Grexia es suficiente</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            {
+                                [
+                                    'Préstamo de dinero entre particulares con plazo definido',
+                                    'Acuerdo de pago comercial en cuotas con fechas claras',
+                                    'Respaldo de una obligación con un deudor conocido',
+                                    'Pagaré con modalidad de pago único a una fecha específica',
+                                    'Documentación de una deuda con intereses dentro del límite legal',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-600">
+                                        <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                            check_circle
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + tool.href.form}
+                            class="mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Generar pagaré gratis
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Necesitas asesoría -->
+                    <div class="rounded-lg bg-secondary border-2 border-primary p-8 shadow-xl relative overflow-hidden">
+                        <div
+                            class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"
+                        >
+                        </div>
+                        <div class="relative flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                                <span class="material-symbols-outlined text-blue-400 text-[20px]">gavel</span>
+                            </span>
+                            <h3 class="text-lg font-black text-white">Necesitas asesoría profesional</h3>
+                        </div>
+                        <ul class="relative space-y-3">
+                            {
+                                [
+                                    'Iniciar un proceso ejecutivo para cobrar el pagaré',
+                                    'Responder a un mandamiento de pago con excepciones',
+                                    'Pagaré en blanco con conflicto sobre el monto diligenciado',
+                                    'Obligaciones garantizadas con bienes, avales o hipotecas',
+                                    'Alegación de usura, falsedad o alteración del documento',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-300">
+                                        <span class="material-symbols-outlined text-blue-400 text-[16px] mt-0.5 shrink-0">
+                                            chevron_right
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + 'asesoria/checkout'}
+                            class="relative mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Agendar asesoría por $59.900
+                            <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FAQ ──────────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        Preguntas frecuentes sobre el pagaré
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600">Lo que más nos preguntan sobre pagarés en Colombia.</p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-6 py-2 shadow-sm">
+                    <FAQAccordion
+                        client:load
+                        items={faqPagare}
+                    />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>
