@@ -1,5 +1,11 @@
 ---
 import { TOOLS } from '../../config/tools';
+
+interface Props {
+    showHeader?: boolean;
+}
+
+const { showHeader = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -8,21 +14,22 @@ const base = import.meta.env.BASE_URL;
     class="w-full bg-white py-8 lg:py-14"
 >
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <!-- Section Header -->
-        <div class="text-center mb-14">
-            <span
-                class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-secondary"
-            >
-                <span class="material-symbols-outlined text-primary text-[16px]">apps</span>
-                Herramientas
-            </span>
-            <h2 class="mt-4 text-3xl font-black tracking-tight text-secondary sm:text-4xl">
-                ¿Qué quieres generar hoy?
-            </h2>
-            <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">
-                Selecciona el documento que necesitas. Todos gratuitos, sin registro.
-            </p>
-        </div>
+        {
+            showHeader && (
+                <div class="text-center mb-14">
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-secondary">
+                        <span class="material-symbols-outlined text-primary text-[16px]">apps</span>
+                        Herramientas
+                    </span>
+                    <h2 class="mt-4 text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué quieres generar hoy?
+                    </h2>
+                    <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">
+                        Selecciona el documento que necesitas. Todos gratuitos, sin registro.
+                    </p>
+                </div>
+            )
+        }
 
         <!-- Tool Cards -->
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">

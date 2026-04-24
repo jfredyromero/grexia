@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/shared/Navbar.astro';
+import ToolGrid from '../../components/home/ToolGrid.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+---
+
+<Layout
+    title="Herramientas legales · Grexia | Documentos para Colombia"
+    description="Genera contratos de arrendamiento, pagarés, promesas de compraventa, tutelas y más. Gratis, sin registro, con respaldo legal colombiano."
+    canonical="https://grexia.co/herramientas"
+>
+    <Navbar variant="home" />
+    <main class="grow w-full">
+        {/* ── Hero ── */}
+        <section class="bg-white pt-14 pb-0 lg:pt-20">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-black tracking-tight text-secondary sm:text-5xl lg:text-6xl leading-tight">
+                    ¿Qué quieres
+                    <span class="relative inline-block">
+                        <span class="relative z-10">generar hoy?</span>
+                        <span
+                            aria-hidden="true"
+                            class="absolute left-0 bottom-1 h-3 w-full rounded-full bg-primary/20"
+                        ></span>
+                    </span>
+                </h1>
+                <p class="mx-auto mt-8 max-w-xl text-lg text-slate-600">
+                    Gratis, sin registro y con respaldo en la legislación colombiana vigente.
+                </p>
+            </div>
+        </section>
+
+        {/* ── Tool Grid ── */}
+        <ToolGrid showHeader={false} />
+    </main>
+    <WhatsAppButton />
+</Layout>
