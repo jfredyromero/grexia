@@ -1,0 +1,804 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Breadcrumb from '../../components/shared/Breadcrumb.astro';
+import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import { TOOLS } from '../../config/tools';
+
+const base = import.meta.env.BASE_URL;
+const tool = TOOLS.find((t) => t.slug === 'intereses')!;
+
+const trustBadges = [
+    { icon: 'balance', label: 'Marco legal vigente' },
+    { icon: 'lock', label: 'Sin registro' },
+    { icon: 'picture_as_pdf', label: 'PDF en 1 minuto' },
+];
+
+const socialAvatars = [
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+        alt: 'Usuaria de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        alt: 'Usuario de Grexia',
+    },
+    {
+        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
+        alt: 'Usuario de Grexia',
+    },
+];
+
+const faqIntereses = [
+    {
+        question: '¿Cuál es la diferencia entre intereses corrientes y moratorios?',
+        answer: 'Los intereses corrientes (también llamados remuneratorios) son los que se causan mientras la obligación está vigente y al día, como contraprestación por el uso del dinero. Los intereses moratorios se causan desde el día siguiente a la fecha en que el deudor entró en mora hasta el pago efectivo, como indemnización por el retardo. El artículo 884 del Código de Comercio establece que cuando las partes no pactan tasa de mora, esta equivale a una y media veces el interés bancario corriente certificado por la Superfinanciera.',
+    },
+    {
+        question: '¿Cuál es la tasa de usura en Colombia y qué pasa si me cobran de más?',
+        answer: 'La tasa de usura es el límite máximo legal de los intereses que se pueden cobrar y equivale a una y media veces (1.5x) el interés bancario corriente certificado por la Superintendencia Financiera. Para abril de 2026 está fijada en 26,76% efectivo anual. Si te cobran por encima de ese límite, el artículo 884 del Código de Comercio sanciona al acreedor con la pérdida de todos los intereses y, en casos graves, el artículo 305 del Código Penal tipifica la usura como delito con pena de prisión de 32 a 90 meses.',
+    },
+    {
+        question: '¿Por qué Grexia no calcula intereses sobre intereses (anatocismo)?',
+        answer: 'Porque el artículo 886 del Código de Comercio prohíbe el anatocismo como regla general: los intereses pendientes no producen intereses, salvo que exista demanda judicial sobre intereses adeudados con un año de antigüedad o un acuerdo posterior al vencimiento. Como en una liquidación inicial no se cumplen esas condiciones, Grexia siempre calcula los intereses sobre el capital original, sin capitalizar. Esto protege al deudor y evita que la liquidación sea objetada por ilegalidad ante un juez.',
+    },
+    {
+        question: '¿Cómo se calcula la tasa diaria a partir de la tasa efectiva anual (TEA)?',
+        answer: 'La fórmula que usa Grexia y que reconoce la Superfinanciera es la siguiente: tasa diaria = (1 + TEA)^(1/365) - 1. Esta es una fórmula de capitalización compuesta sobre 365 días. Por ejemplo, si la TEA es 17%, la tasa diaria equivalente es aproximadamente 0,0430%. Multiplicada por el capital y por el número de días en mora, da el interés causado en ese período. Cuando el período abarca varios trimestres, Grexia divide el cálculo en segmentos y aplica la tasa que rigió en cada uno.',
+    },
+    {
+        question: '¿Para qué sirve presentar una liquidación de intereses ante un juez?',
+        answer: 'Es el documento que cuantifica con exactitud cuánto te debe el deudor en un proceso ejecutivo. El artículo 446 del Código General del Proceso establece que, una vez ejecutoriado el auto que ordena seguir adelante con la ejecución, cualquiera de las partes presenta la liquidación del crédito con el capital y los intereses causados hasta esa fecha. La contraparte tiene tres días para objetarla con una liquidación alternativa. Una liquidación mal hecha es objetable y retrasa o frustra el cobro.',
+    },
+    {
+        question:
+            '¿Qué tasa se aplica si la fecha de pago es posterior a la última tasa publicada por la Superfinanciera?',
+        answer: 'Las tasas las certifica la Superfinanciera mes a mes (antes eran trimestrales). Si todavía no ha salido la certificación del período actual, se aplica por proyección la última tasa disponible y así lo indica Grexia en el reporte. Cuando la Superfinanciera publique la nueva certificación, la liquidación debe actualizarse antes de presentarla ante el juez para evitar diferencias y objeciones del deudor por aplicación de tasas no vigentes.',
+    },
+];
+
+const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqIntereses.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+};
+---
+
+<Layout
+    title="Liquidación de Intereses Judiciales en Colombia: Guía Completa | Grexia"
+    description="Aprende a calcular intereses corrientes y moratorios en Colombia con tasas de la Superfinanciera. Tasa de usura, Art. 884 Código de Comercio y Art. 446 CGP. Liquida gratis en Grexia."
+    canonical="https://grexia.co/guias/liquidacion-de-intereses"
+    schema={faqSchema}
+>
+    <main class="grow w-full">
+        <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+        <section class="grow flex items-center justify-center">
+            <div class="relative w-full max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+                <!-- Breadcrumb -->
+                <div class="mb-10">
+                    <Breadcrumb
+                        items={[{ label: 'Guías', href: base + 'guias' }, { label: 'Liquidación de Intereses' }]}
+                    />
+                </div>
+
+                <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+                    <!-- Izquierda: texto -->
+                    <div class="flex flex-col gap-8 order-2 lg:order-1">
+                        <!-- Trust Badges -->
+                        <div class="hidden lg:flex flex-wrap gap-3">
+                            {
+                                trustBadges.map((badge) => (
+                                    <div class="flex items-center gap-1.5 rounded-full bg-white border border-slate-200 px-3 py-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-primary text-[20px] font-bold">
+                                            {badge.icon}
+                                        </span>
+                                        <span class="text-xs font-semibold text-slate-700 uppercase tracking-wide">
+                                            {badge.label}
+                                        </span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+
+                        <!-- H1 -->
+                        <div class="space-y-6">
+                            <h1
+                                class="text-4xl font-black leading-[1.1] tracking-tight text-secondary sm:text-5xl xl:text-6xl"
+                            >
+                                Todo sobre la liquidación de
+                                <span class="relative whitespace-nowrap text-secondary">
+                                    intereses judiciales
+                                    <span class="absolute bottom-1 left-0 -z-10 h-3 w-full bg-primary/40 rounded-full"
+                                    ></span>
+                                </span>
+                                en Colombia
+                            </h1>
+                            <p class="max-w-lg text-lg text-slate-600 leading-relaxed">
+                                Entiende qué son los intereses corrientes y moratorios, cómo se calculan con tasas de la
+                                Superfinanciera y por qué una liquidación mal hecha puede frustrarte el cobro. Y al
+                                final, liquida la tuya gratis en segundos.
+                            </p>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a
+                                href={base + tool.href.form}
+                                class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
+                            >
+                                Liquidar intereses gratis
+                                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            </a>
+                            <a
+                                href={base + 'asesoria/checkout'}
+                                class="flex h-14 items-center justify-center rounded-full bg-white border border-slate-200 px-8 text-base font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300"
+                            >
+                                Hablar con un abogado
+                            </a>
+                        </div>
+
+                        <!-- Social Proof -->
+                        <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
+                            <div class="flex -space-x-4">
+                                {
+                                    socialAvatars.map((a) => (
+                                        <img
+                                            alt={a.alt}
+                                            class="h-12 w-12 rounded-full border-2 border-white object-cover"
+                                            src={a.src}
+                                        />
+                                    ))
+                                }
+                                <div
+                                    class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+                                >
+                                    +1.2k
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <div class="flex text-yellow-400 text-sm">
+                                    {
+                                        Array.from({ length: 5 }).map(() => (
+                                            <span class="material-symbols-outlined text-[18px]">star</span>
+                                        ))
+                                    }
+                                </div>
+                                <p class="text-sm font-medium text-slate-600">
+                                    Más de <span class="font-bold text-secondary">3.200 documentos</span> generados
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Legal basis -->
+                        <p class="text-sm text-slate-500 -mt-4">
+                            Conforme a <strong class="text-slate-700"
+                                >los artículos 884 y 886 del Código de Comercio y al Art. 446 del CGP</strong
+                            >
+                        </p>
+                    </div>
+
+                    <!-- Derecha: imagen -->
+                    <div class="relative hidden lg:block order-1 lg:order-2">
+                        <div
+                            class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
+                        >
+                            <img
+                                alt="Liquidación de intereses judiciales en Colombia"
+                                class="h-full w-full object-cover object-center"
+                                src={tool.heroImage}
+                            />
+                            <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
+
+                            <!-- Glass Widget: abogado -->
+                            <div
+                                class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <div class="relative">
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-white overflow-hidden"
+                                        >
+                                            <img
+                                                alt={tool.heroLawyerName}
+                                                class="h-full w-full object-cover"
+                                                src={tool.heroLawyerAvatar}
+                                            />
+                                        </div>
+                                        <div
+                                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
+                                        >
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-slate-800">{tool.heroLawyerName}</span>
+                                        <span class="text-xs text-slate-700">{tool.heroLawyerSpecialty}</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm"
+                                >
+                                    "{tool.heroChat}"
+                                </div>
+                            </div>
+
+                            <!-- Glass Widget: guía badge -->
+                            <div
+                                class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
+                            >
+                                <div
+                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+                                >
+                                    <span class="material-symbols-outlined text-[24px]">menu_book</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">
+                                        Guía completa
+                                    </p>
+                                    <p class="text-sm font-bold text-slate-800">Normativa vigente</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blobs decorativos -->
+                        <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl">
+                        </div>
+                        <div class="absolute -bottom-12 -left-12 -z-10 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ ES? ──────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">info</span>
+                        Definición legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué es una liquidación de intereses?
+                    </h2>
+                </div>
+
+                <!-- Definición destacada -->
+                <div class="rounded-lg border-l-4 border-primary bg-slate-50 p-6 mb-10">
+                    <p class="text-base text-slate-700 leading-relaxed italic">
+                        "Cuando en los negocios mercantiles haya de pagarse réditos de un capital, sin que se
+                        especifique por convenio el interés, éste será el bancario corriente; si las partes no han
+                        estipulado el interés moratorio, será equivalente a una y media veces del bancario corriente."
+                    </p>
+                    <p class="mt-3 text-sm font-semibold text-primary">Código de Comercio colombiano, Art. 884</p>
+                </div>
+
+                <div class="prose prose-slate max-w-none text-slate-600 text-base leading-relaxed space-y-4">
+                    <p>
+                        En términos simples, una <strong>liquidación de intereses</strong> es el cálculo detallado de cuánto
+                        debe pagar un deudor por concepto de intereses sobre un capital, durante un período determinado, aplicando
+                        las tasas legales vigentes. Es el documento que convierte una orden judicial genérica de pago en una
+                        <strong>suma exacta y cobrable</strong>.
+                    </p>
+                    <p>
+                        En Colombia, los intereses se calculan con la <strong>tasa efectiva anual (TEA)</strong> del interés
+                        bancario corriente que certifica la <strong>Superintendencia Financiera</strong> mes a mes. La fórmula
+                        reconocida es <strong>tasa diaria = (1 + TEA)^(1/365) - 1</strong>, que se multiplica por el
+                        capital y los días transcurridos en cada período. Cuando el cálculo abarca varios meses, hay que
+                        aplicar la tasa que rigió en cada uno.
+                    </p>
+                </div>
+
+                <!-- Pills de tipo -->
+                <div class="mt-10 flex flex-wrap gap-3 justify-center">
+                    {
+                        [
+                            {
+                                icon: 'attach_money',
+                                label: 'Intereses corrientes',
+                                detalle: 'TEA Superfinanciera',
+                            },
+                            {
+                                icon: 'trending_up',
+                                label: 'Intereses moratorios',
+                                detalle: 'TEA × 1.5 (Art. 884)',
+                            },
+                            { icon: 'block', label: 'Sin anatocismo', detalle: 'Art. 886 C. de Comercio' },
+                        ].map((t) => (
+                            <div class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                <span class="material-symbols-outlined text-primary text-[20px]">{t.icon}</span>
+                                <div>
+                                    <p class="text-sm font-bold text-secondary">{t.label}</p>
+                                    <p class="text-xs text-slate-500">{t.detalle}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <!-- Tasa de usura warning -->
+                <div class="mt-10 rounded-lg bg-amber-50 border border-amber-200 p-5 flex gap-4">
+                    <span class="material-symbols-outlined text-amber-500 text-[24px] shrink-0 mt-0.5">warning</span>
+                    <div>
+                        <p class="text-sm font-bold text-amber-900 mb-1">Cuidado con la tasa de usura</p>
+                        <p class="text-sm text-amber-800 leading-relaxed">
+                            La tasa de usura es el límite máximo legal y equivale a 1.5 veces el interés bancario
+                            corriente. Para abril de 2026 está fijada en 26,76% efectivo anual. Cobrar por encima
+                            implica perder todos los intereses (Art. 884 C. de Comercio) y, en casos graves, configura
+                            el delito de usura del <strong>Art. 305 del Código Penal</strong>, con prisión de 32 a 90
+                            meses.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UNA? ──────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas una liquidación de intereses?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Siempre que tengas que demostrar ante un juez, un deudor o un tercero cuánto se debe a una fecha
+                        específica.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'gavel',
+                                titulo: 'Proceso ejecutivo',
+                                descripcion:
+                                    'Cuando vas a presentar la liquidación del crédito ante el juzgado conforme al Art. 446 del CGP. Sin un cálculo correcto, el deudor objeta y se retrasa el cobro.',
+                            },
+                            {
+                                icon: 'handshake',
+                                titulo: 'Acuerdo de pago',
+                                descripcion:
+                                    'Para negociar con el deudor un pago total con corte a una fecha específica. Tener el cálculo respaldado en tasas oficiales evita disputas sobre el monto adeudado.',
+                            },
+                            {
+                                icon: 'receipt_long',
+                                titulo: 'Cobro extrajudicial',
+                                descripcion:
+                                    'Antes de iniciar un proceso, una liquidación clara con tasas certificadas le da peso a tu requerimiento de pago y demuestra que cobras dentro del límite legal.',
+                            },
+                        ].map((c) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-5 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{c.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary mb-2">{c.titulo}</h3>
+                                <p class="text-sm text-slate-600 leading-relaxed">{c.descripcion}</p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── MARCO LEGAL ───────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">balance</span>
+                        Normatividad
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Bajo qué normativa se rige?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Cuatro normas marcan el cálculo correcto de intereses en Colombia.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    {
+                        [
+                            {
+                                norma: 'Código Civil, Art. 1617',
+                                year: '1873',
+                                color: 'bg-slate-100 border-slate-300',
+                                textColor: 'text-slate-600',
+                                titulo: 'Indemnización por mora en obligaciones de dinero',
+                                descripcion:
+                                    'Establece las reglas generales del cobro de intereses por mora en obligaciones civiles: el acreedor no necesita justificar perjuicios, basta el hecho del retardo. Fija el interés legal civil en seis por ciento (6%) anual cuando no hay pacto.',
+                            },
+                            {
+                                norma: 'Código de Comercio, Art. 884',
+                                year: '1971',
+                                color: 'bg-primary/10 border-primary/30',
+                                textColor: 'text-primary',
+                                titulo: 'Interés bancario corriente y moratorio comercial',
+                                descripcion:
+                                    'Es la norma central. Fija el interés moratorio en una y media veces el bancario corriente certificado por la Superfinanciera (la "tasa de usura"). Cobrar más implica perder todos los intereses cobrados.',
+                            },
+                            {
+                                norma: 'Código de Comercio, Art. 886',
+                                year: '1971',
+                                color: 'bg-blue-50 border-blue-200',
+                                textColor: 'text-blue-700',
+                                titulo: 'Prohibición del anatocismo',
+                                descripcion:
+                                    'Los intereses pendientes no producen intereses. Solo se permite con demanda judicial sobre intereses adeudados con un año de antigüedad o mediante refinanciación posterior al vencimiento. Por eso Grexia siempre calcula sobre el capital original.',
+                            },
+                            {
+                                norma: 'Código General del Proceso, Art. 446',
+                                year: '2012',
+                                color: 'bg-amber-50 border-amber-200',
+                                textColor: 'text-amber-700',
+                                titulo: 'Liquidación del crédito en proceso ejecutivo',
+                                descripcion:
+                                    'Regula cómo se presenta la liquidación ante el juez una vez ejecutoriada la orden de pago. La contraparte tiene tres días para objetar con una liquidación alternativa. Una liquidación incorrecta retrasa el cobro o lo frustra por completo.',
+                            },
+                        ].map((n) => (
+                            <div class={`rounded-lg border ${n.color} p-6 flex gap-5`}>
+                                <div class="shrink-0 text-center">
+                                    <span class={`text-xs font-black uppercase tracking-wider ${n.textColor}`}>
+                                        {n.year}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p class={`text-xs font-bold uppercase tracking-wider ${n.textColor} mb-1`}>
+                                        {n.norma}
+                                    </p>
+                                    <h3 class="text-base font-black text-secondary mb-1">{n.titulo}</h3>
+                                    <p class="text-sm text-slate-600 leading-relaxed">{n.descripcion}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── PARTES ───────────────────────────────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Quiénes intervienen en la liquidación?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Cada parte tiene un rol específico en el cálculo y la aprobación de los intereses.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                    {
+                        [
+                            {
+                                icon: 'person',
+                                titulo: 'Acreedor',
+                                rol: 'Titular del derecho de cobro',
+                                obligaciones: [
+                                    'Presentar la liquidación con capital e intereses',
+                                    'Aplicar tasas certificadas por la Superfinanciera',
+                                    'Respetar el límite de la tasa de usura',
+                                    'Actualizar el cálculo si se objeta o vence',
+                                ],
+                            },
+                            {
+                                icon: 'person_outline',
+                                titulo: 'Deudor',
+                                rol: 'Obligado al pago',
+                                obligaciones: [
+                                    'Pagar el capital y los intereses causados',
+                                    'Objetar la liquidación dentro de los 3 días si está mal',
+                                    'Acompañar liquidación alternativa al objetar',
+                                    'Beneficiarse de la prohibición de anatocismo',
+                                ],
+                            },
+                            {
+                                icon: 'gavel',
+                                titulo: 'Juez',
+                                rol: 'Aprueba o modifica la liquidación',
+                                obligaciones: [
+                                    'Decidir sobre la liquidación presentada',
+                                    'Resolver objeciones por auto apelable',
+                                    'Modificar de oficio errores evidentes',
+                                    'Ordenar el pago de la suma aprobada',
+                                ],
+                            },
+                        ].map((p) => (
+                            <div class="rounded-lg border border-slate-200 bg-white p-7 shadow-sm">
+                                <span class="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-primary/10">
+                                    <span class="material-symbols-outlined text-[22px] text-primary">{p.icon}</span>
+                                </span>
+                                <h3 class="text-base font-black text-secondary">{p.titulo}</h3>
+                                <p class="text-xs text-primary font-semibold uppercase tracking-wide mt-0.5 mb-4">
+                                    {p.rol}
+                                </p>
+                                <ul class="space-y-2">
+                                    {p.obligaciones.map((o) => (
+                                        <li class="flex items-start gap-2 text-sm text-slate-600">
+                                            <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                                check_circle
+                                            </span>
+                                            {o}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── LOS PELIGROS ─────────────────────────────────────────────── -->
+        <section class="bg-secondary py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span
+                        class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-red-300 mb-4"
+                    >
+                        <span class="material-symbols-outlined text-[14px]">warning</span>
+                        Riesgo legal
+                    </span>
+                    <h2 class="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                        ¿Qué pasa si liquidas mal los intereses?
+                    </h2>
+                    <p class="mt-3 text-lg text-blue-100/80 max-w-xl mx-auto">
+                        Una liquidación incorrecta no solo retrasa el cobro: te expone a perder el dinero o a sanciones
+                        penales.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                    {
+                        [
+                            {
+                                icon: 'gavel',
+                                titulo: 'Pierdes todos los intereses por usura',
+                                descripcion:
+                                    'Si cobras por encima del límite legal certificado por la Superfinanciera, el Art. 884 del Código de Comercio te sanciona con la pérdida total de los intereses cobrados. Solo recuperas el capital.',
+                            },
+                            {
+                                icon: 'block',
+                                titulo: 'El juez rechaza tu liquidación',
+                                descripcion:
+                                    'Si capitalizas intereses sin que se cumplan las condiciones del Art. 886 (anatocismo prohibido) o aplicas tasas no vigentes, el deudor objeta la liquidación dentro de los 3 días y el juez la modifica o la rechaza.',
+                            },
+                            {
+                                icon: 'trending_down',
+                                titulo: 'Subestimas lo que te deben',
+                                descripcion:
+                                    'Si calculas con la tasa equivocada o pasas por alto los segmentos donde la TEA cambió, recibes menos de lo que legalmente te corresponde. La diferencia puede ser de cientos de miles o millones en obligaciones a varios años.',
+                            },
+                            {
+                                icon: 'report_problem',
+                                titulo: 'Riesgo penal por usura',
+                                descripcion:
+                                    'En casos graves, cobrar por encima de la tasa de usura configura el delito tipificado en el Art. 305 del Código Penal, con prisión de 32 a 90 meses y multas de 66.66 a 300 SMMLV. La pena aumenta si la utilidad triplica el IBC.',
+                            },
+                        ].map((r) => (
+                            <div class="rounded-lg bg-white/10 border border-white/20 p-6">
+                                <div class="flex items-start gap-4">
+                                    <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/20">
+                                        <span class="material-symbols-outlined text-red-400 text-[20px]">{r.icon}</span>
+                                    </span>
+                                    <div>
+                                        <h3 class="text-base font-black text-white mb-1">{r.titulo}</h3>
+                                        <p class="text-sm text-slate-300 leading-relaxed">{r.descripcion}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div class="mt-10 rounded-lg bg-white/5 border border-white/10 p-6 text-center">
+                    <p class="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+                        Y recuerda: <strong class="text-white"
+                            >una liquidación mal hecha es la causa número uno de objeciones en procesos ejecutivos
+                            colombianos.</strong
+                        >
+                        Aplicar tasas erradas, omitir cambios trimestrales o capitalizar sin permiso legal te puede costar
+                        meses de proceso y, en el peor caso, la pérdida total de los intereses.
+                    </p>
+                </div>
+
+                <!-- CTA inline -->
+                <div class="mt-10 text-center">
+                    <a
+                        href={base + tool.href.form}
+                        class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-10 text-base font-bold text-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+                    >
+                        Liquida la tuya ahora, gratis con Grexia
+                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                    </a>
+                    <p class="mt-3 text-sm text-blue-200/70">Sin registro. Sin tarjeta. En segundos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿QUÉ INCLUYE LA LIQUIDACIÓN? ─────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-4xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Qué incluye una liquidación correcta?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Un reporte completo cubre todos los elementos exigidos por el Art. 446 del CGP. Grexia los
+                        incluye automáticamente.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {
+                        [
+                            'Capital base de la obligación en pesos colombianos',
+                            'Tipo de interés aplicado (corriente o moratorio)',
+                            'Fecha de inicio del cálculo (mora o exigibilidad)',
+                            'Fecha de corte o de pago efectivo',
+                            'Total de días en el período liquidado',
+                            'Tasas TEA Superfinanciera por cada segmento',
+                            'Fórmula tasa diaria = (1 + TEA)^(1/365) - 1',
+                            'Tasa moratoria con factor 1.5 si aplica',
+                            'Detalle por trimestre con TEA y días',
+                            'Detalle mensual con interés acumulado',
+                            'Tasa promedio ponderada del período total',
+                            'Total de intereses causados en el período',
+                            'Advertencia legal sobre anatocismo (Art. 886)',
+                            'Referencia a la fuente de las tasas (Superfinanciera)',
+                        ].map((item) => (
+                            <div class="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
+                                <span class="material-symbols-outlined text-primary text-[18px] shrink-0">
+                                    check_circle
+                                </span>
+                                <span class="text-sm text-slate-700">{item}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <div
+                    class="mt-8 rounded-lg bg-primary/5 border border-primary/20 p-5 flex items-center justify-between gap-6 flex-col sm:flex-row"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary text-[28px]">auto_awesome</span>
+                        <p class="text-sm text-slate-700">
+                            <strong class="text-secondary">Grexia genera todos estos elementos automáticamente</strong> usando
+                            la tabla de tasas TEA certificadas por la Superfinanciera. Solo ingresas capital, tipo de interés
+                            y fechas.
+                        </p>
+                    </div>
+                    <a
+                        href={base + tool.href.landing}
+                        class="shrink-0 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                    >
+                        Ver herramienta
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── ¿CUÁNDO NECESITAS UN ABOGADO? ───────────────────────────── -->
+        <section class="bg-neutral-50 py-16 lg:py-24">
+            <div class="mx-auto max-w-5xl px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        ¿Cuándo necesitas un abogado?
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600 max-w-xl mx-auto">
+                        Grexia cubre liquidaciones estándar. Para litigios y casos complejos, un abogado es la
+                        respuesta.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <!-- Grexia alcanza -->
+                    <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                                <span class="material-symbols-outlined text-primary text-[20px]">calculate</span>
+                            </span>
+                            <h3 class="text-lg font-black text-secondary">Grexia es suficiente</h3>
+                        </div>
+                        <ul class="space-y-3">
+                            {
+                                [
+                                    'Liquidación de intereses sobre un pagaré u obligación clara',
+                                    'Cálculo previo a un acuerdo de pago con el deudor',
+                                    'Soporte numérico para un cobro extrajudicial',
+                                    'Actualización de una liquidación con corte a una fecha nueva',
+                                    'Comparación entre intereses corrientes y moratorios',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-600">
+                                        <span class="material-symbols-outlined text-primary text-[16px] mt-0.5 shrink-0">
+                                            check_circle
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + tool.href.form}
+                            class="mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Liquidar intereses gratis
+                            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                        </a>
+                    </div>
+
+                    <!-- Necesitas asesoría -->
+                    <div class="rounded-lg bg-secondary border-2 border-primary p-8 shadow-xl relative overflow-hidden">
+                        <div
+                            class="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"
+                        >
+                        </div>
+                        <div class="relative flex items-center gap-3 mb-6">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                                <span class="material-symbols-outlined text-blue-400 text-[20px]">gavel</span>
+                            </span>
+                            <h3 class="text-lg font-black text-white">Necesitas asesoría profesional</h3>
+                        </div>
+                        <ul class="relative space-y-3">
+                            {
+                                [
+                                    'Presentar la liquidación del crédito en un proceso ejecutivo',
+                                    'Responder a una objeción del deudor con liquidación alternativa',
+                                    'Liquidaciones contra entidades públicas (Art. 195 Ley 1437 / DTF)',
+                                    'Casos con anatocismo legal por demanda con un año de mora',
+                                    'Cobro de intereses sobre obligaciones con cláusulas atípicas',
+                                ].map((i) => (
+                                    <li class="flex items-start gap-2 text-sm text-slate-300">
+                                        <span class="material-symbols-outlined text-blue-400 text-[16px] mt-0.5 shrink-0">
+                                            chevron_right
+                                        </span>
+                                        {i}
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                        <a
+                            href={base + 'asesoria/checkout'}
+                            class="relative mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
+                        >
+                            Agendar asesoría por $59.900
+                            <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── FAQ ──────────────────────────────────────────────────────── -->
+        <section class="bg-white py-16 lg:py-24">
+            <div class="mx-auto max-w-3xl px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">
+                        Preguntas frecuentes sobre liquidación de intereses
+                    </h2>
+                    <p class="mt-3 text-lg text-slate-600">
+                        Lo que más nos preguntan sobre cálculo de intereses judiciales en Colombia.
+                    </p>
+                </div>
+                <div class="rounded-lg border border-slate-200 bg-white px-6 py-2 shadow-sm">
+                    <FAQAccordion
+                        client:load
+                        items={faqIntereses}
+                    />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <WhatsAppButton />
+</Layout>
