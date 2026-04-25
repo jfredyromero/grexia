@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/shared/Navbar.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import Breadcrumb from '../../components/shared/Breadcrumb.astro';
 import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
@@ -72,8 +71,6 @@ const faqSchema = {
     canonical="https://grexia.co/guias/contrato-arrendamiento"
     schema={faqSchema}
 >
-    <Navbar variant="home" />
-
     <main class="grow w-full">
         <!-- ─── HERO ──────────────────────────────────────────────────────── -->
         <section class="grow flex items-center justify-center">

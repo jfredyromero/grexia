@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/shared/Navbar.astro';
 import Breadcrumb from '../../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import TutelaForm from '../../../components/tutela/TutelaForm';
@@ -9,11 +8,11 @@ import UpsellWidget from '../../../components/shared/UpsellWidget.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="Generador de Tutela de Salud · Grexia">
-    <Navbar
-        variant="tool-form"
-        activeTool="tutela"
-    />
+<Layout
+    title="Generador de Tutela de Salud · Grexia"
+    navbarVariant="tool-form"
+    navbarActiveTool="tutela"
+>
     <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
             <div class="mb-8">

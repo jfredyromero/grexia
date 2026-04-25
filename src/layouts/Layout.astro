@@ -2,15 +2,27 @@
 import '../styles/global.css';
 import Footer from '../components/shared/Footer.astro';
 import CTAFinal from '../components/shared/CTAFinal.astro';
+import Navbar from '../components/shared/Navbar.astro';
+import { ClientRouter } from 'astro:transitions';
+import type { ToolSlug } from '../config/tools';
 
 interface Props {
     title?: string;
     description?: string;
     canonical?: string;
     schema?: Record<string, unknown>;
+    navbarVariant?: 'home' | 'tool-landing' | 'tool-form';
+    navbarActiveTool?: ToolSlug;
 }
 
-const { title = 'Grexia - LegalTech Colombia', description, canonical, schema } = Astro.props;
+const {
+    title = 'Grexia - LegalTech Colombia',
+    description,
+    canonical,
+    schema,
+    navbarVariant = 'home',
+    navbarActiveTool,
+} = Astro.props;
 const base = import.meta.env.BASE_URL;
 ---
 
@@ -73,8 +85,14 @@ const base = import.meta.env.BASE_URL;
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
             rel="stylesheet"
         />
+        <ClientRouter />
     </head>
     <body class="bg-background-light text-slate-900 overflow-x-hidden relative min-h-screen flex flex-col">
+        <Navbar
+            transition:animate="none"
+            variant={navbarVariant}
+            activeTool={navbarActiveTool}
+        />
         <slot />
         <CTAFinal />
         <Footer />

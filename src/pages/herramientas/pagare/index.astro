@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/shared/Navbar.astro';
 import ToolHero from '../../../components/tools/ToolHero.astro';
 import ToolHowItWorks from '../../../components/tools/ToolHowItWorks.astro';
 import SharedPricing from '../../../components/shared/SharedPricing.astro';
@@ -10,11 +9,11 @@ import { getToolBySlug } from '../../../config/tools';
 const tool = getToolBySlug('pagare')!;
 ---
 
-<Layout title="Generador de Pagaré · Grexia">
-    <Navbar
-        variant="tool-landing"
-        activeTool="pagare"
-    />
+<Layout
+    title="Generador de Pagaré · Grexia"
+    navbarVariant="tool-landing"
+    navbarActiveTool="pagare"
+>
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />
     <SharedPricing />

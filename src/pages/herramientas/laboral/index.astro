@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/shared/Navbar.astro';
 import ToolHero from '../../../components/tools/ToolHero.astro';
 import ToolHowItWorks from '../../../components/tools/ToolHowItWorks.astro';
 import SharedPricing from '../../../components/shared/SharedPricing.astro';
@@ -10,11 +9,11 @@ import { getToolBySlug } from '../../../config/tools';
 const tool = getToolBySlug('laboral')!;
 ---
 
-<Layout title="Generador de Contrato Laboral · Grexia">
-    <Navbar
-        variant="tool-landing"
-        activeTool="laboral"
-    />
+<Layout
+    title="Generador de Contrato Laboral · Grexia"
+    navbarVariant="tool-landing"
+    navbarActiveTool="laboral"
+>
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />
     <SharedPricing />

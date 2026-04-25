@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/shared/Navbar.astro';
 import Breadcrumb from '../../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import ArrendamientoForm from '../../../components/arrendamiento/ArrendamientoForm';
@@ -11,11 +10,11 @@ const tool = getToolBySlug('arrendamiento')!;
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="Generador de Contrato de Arrendamiento · Grexia">
-    <Navbar
-        variant="tool-form"
-        activeTool="arrendamiento"
-    />
+<Layout
+    title="Generador de Contrato de Arrendamiento · Grexia"
+    navbarVariant="tool-form"
+    navbarActiveTool="arrendamiento"
+>
     <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
             <!-- Page header -->

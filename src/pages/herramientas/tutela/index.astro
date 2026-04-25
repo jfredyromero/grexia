@@ -1,6 +1,5 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Navbar from '../../../components/shared/Navbar.astro';
 import ToolHero from '../../../components/tools/ToolHero.astro';
 import ToolHowItWorks from '../../../components/tools/ToolHowItWorks.astro';
 import SharedPricing from '../../../components/shared/SharedPricing.astro';
@@ -11,11 +10,11 @@ import { getToolBySlug } from '../../../config/tools';
 const tool = getToolBySlug('tutela')!;
 ---
 
-<Layout title="Generador de Tutela de Salud · Grexia">
-    <Navbar
-        variant="tool-landing"
-        activeTool="tutela"
-    />
+<Layout
+    title="Generador de Tutela de Salud · Grexia"
+    navbarVariant="tool-landing"
+    navbarActiveTool="tutela"
+>
     <ToolHero tool={tool} />
 
     <!-- Selector de temática -->
