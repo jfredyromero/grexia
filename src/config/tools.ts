@@ -36,7 +36,7 @@ export const TOOLS: ToolConfig[] = [
     {
         slug: 'contrato-arrendamiento',
         name: 'Contrato de Arrendamiento',
-        shortName: 'Arrendamiento',
+        shortName: 'Contrato de Arrendamiento',
         description:
             'Genera contratos de arrendamiento residencial y comercial con validez legal en Colombia. Gratis, sin registro.',
         icon: 'home_work',
@@ -139,7 +139,7 @@ export const TOOLS: ToolConfig[] = [
     {
         slug: 'liquidacion-de-intereses',
         name: 'Liquidador de Intereses',
-        shortName: 'Intereses',
+        shortName: 'Liquidación de Intereses',
         description:
             'Calcula intereses judiciales corrientes y moratorios con tasas certificadas por la Superintendencia Financiera de Colombia. Gratis, sin registro.',
         icon: 'calculate',
@@ -190,7 +190,7 @@ export const TOOLS: ToolConfig[] = [
     {
         slug: 'promesa-compraventa',
         name: 'Promesa de Compraventa',
-        shortName: 'Compraventa',
+        shortName: 'Promesa de Compraventa',
         description:
             'Genera tu promesa de compraventa de inmueble con validez legal en Colombia. Gratis, sin registro, conforme al Codigo Civil.',
         icon: 'real_estate_agent',
@@ -291,7 +291,7 @@ export const TOOLS: ToolConfig[] = [
     {
         slug: 'contrato-laboral',
         name: 'Contrato Laboral',
-        shortName: 'Laboral',
+        shortName: 'Contrato Laboral',
         description:
             'Genera contratos de trabajo a término fijo y por obra o labor con validez legal en Colombia. Gratis, sin registro.',
         icon: 'work',
@@ -384,7 +384,7 @@ export const TOOLS: ToolConfig[] = [
                     'Revisa tu poder, descárgalo en PDF y firmalo. Listo para presentar ante juzgado, notaría o entidad.',
             },
         ],
-        heroImage: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80',
+        heroImage: 'https://images.unsplash.com/photo-1559557809-e9b6eabeabfc?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Daniela',
         heroLawyerSpecialty: 'Procesal Civil · En línea',
         heroLawyerAvatar: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=200&q=80',
