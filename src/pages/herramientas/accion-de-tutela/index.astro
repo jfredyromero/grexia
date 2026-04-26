@@ -7,13 +7,13 @@ import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import TutelaSelector from '../../../components/tutela/TutelaSelector';
 import { getToolBySlug } from '../../../config/tools';
 
-const tool = getToolBySlug('tutela')!;
+const tool = getToolBySlug('accion-de-tutela')!;
 ---
 
 <Layout
     title="Generador de Tutela de Salud · Grexia"
     navbarVariant="tool-landing"
-    navbarActiveTool="tutela"
+    navbarActiveTool="accion-de-tutela"
 >
     <ToolHero tool={tool} />
 

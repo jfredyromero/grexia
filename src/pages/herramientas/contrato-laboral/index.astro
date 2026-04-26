@@ -6,13 +6,13 @@ import SharedPricing from '../../../components/shared/SharedPricing.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import { getToolBySlug } from '../../../config/tools';
 
-const tool = getToolBySlug('compraventa')!;
+const tool = getToolBySlug('contrato-laboral')!;
 ---
 
 <Layout
-    title="Promesa de Compraventa Gratis · Grexia"
+    title="Generador de Contrato Laboral · Grexia"
     navbarVariant="tool-landing"
-    navbarActiveTool="compraventa"
+    navbarActiveTool="contrato-laboral"
 >
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />

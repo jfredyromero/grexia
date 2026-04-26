@@ -7,7 +7,7 @@ const TEMATICAS = [
         icon: 'health_and_safety',
         descripcion: 'EPS, medicamentos, procedimientos, exámenes',
         activo: true,
-        href: base + 'herramientas/tutela/generar',
+        href: base + 'herramientas/accion-de-tutela/generar',
     },
     {
         value: 'vivienda',

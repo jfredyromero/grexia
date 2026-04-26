@@ -2,30 +2,31 @@
 import Layout from '../../../layouts/Layout.astro';
 import Breadcrumb from '../../../components/shared/Breadcrumb.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
-import InteresesForm from '../../../components/intereses/InteresesForm';
+import LaboralForm from '../../../components/laboral/LaboralForm';
 import UpsellWidget from '../../../components/shared/UpsellWidget.astro';
 import { getToolBySlug } from '../../../config/tools';
 
-const tool = getToolBySlug('intereses')!;
+const tool = getToolBySlug('contrato-laboral')!;
 const base = import.meta.env.BASE_URL;
 ---
 
 <Layout
-    title="Liquidador de Intereses · Grexia"
+    title="Generador de Contrato Laboral · Grexia"
     navbarVariant="tool-form"
-    navbarActiveTool="intereses"
+    navbarActiveTool="contrato-laboral"
 >
     <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-7xl px-6 lg:px-8 py-8 lg:py-14">
+            <!-- Page header -->
             <div class="mb-8">
                 <Breadcrumb
                     items={[
                         { label: 'Herramientas', href: base + 'herramientas' },
                         { label: tool.name, href: base + tool.href.landing },
-                        { label: 'Calcular' },
+                        { label: 'Generar' },
                     ]}
                 />
-                <h1 class="text-3xl font-black text-secondary mt-3">Liquida tus intereses</h1>
+                <h1 class="text-3xl font-black text-secondary mt-3">Genera tu contrato laboral</h1>
                 <div class="flex flex-wrap gap-3 mt-2">
                     <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
                         <span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
@@ -37,14 +38,14 @@ const base = import.meta.env.BASE_URL;
                     </span>
                     <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-500">
                         <span class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
-                        Tasas Superfinanciera Colombia
+                        Válido en Colombia · Código Sustantivo del Trabajo
                     </span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 items-start gap-8">
                 <div class="lg:col-span-2">
-                    <InteresesForm client:only="react" />
+                    <LaboralForm client:only="react" />
                 </div>
                 <aside class="no-print lg:sticky lg:top-[50vh] lg:-translate-y-1/2">
                     <UpsellWidget />

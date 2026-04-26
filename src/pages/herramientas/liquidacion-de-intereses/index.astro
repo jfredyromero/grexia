@@ -6,13 +6,13 @@ import SharedPricing from '../../../components/shared/SharedPricing.astro';
 import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import { getToolBySlug } from '../../../config/tools';
 
-const tool = getToolBySlug('laboral')!;
+const tool = getToolBySlug('liquidacion-de-intereses')!;
 ---
 
 <Layout
-    title="Generador de Contrato Laboral · Grexia"
+    title="Liquidador de Intereses Judiciales · Grexia"
     navbarVariant="tool-landing"
-    navbarActiveTool="laboral"
+    navbarActiveTool="liquidacion-de-intereses"
 >
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />

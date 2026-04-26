@@ -3,8 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import Breadcrumb from '../../components/shared/Breadcrumb.astro';
 import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import { TOOLS } from '../../config/tools';
 
 const base = import.meta.env.BASE_URL;
+const tool = TOOLS.find((t) => t.slug === 'contrato-arrendamiento')!;
 
 const trustBadges = [
     { icon: 'balance', label: 'Marco legal vigente' },
@@ -124,7 +126,7 @@ const faqSchema = {
                         <!-- CTAs -->
                         <div class="flex flex-col sm:flex-row gap-4 pt-2">
                             <a
-                                href={base + 'herramientas/arrendamiento/generar'}
+                                href={base + tool.href.form}
                                 class="flex h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 text-base font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:translate-y-0"
                             >
                                 Generar contrato gratis
@@ -582,7 +584,7 @@ const faqSchema = {
                 <!-- CTA inline -->
                 <div class="mt-10 text-center">
                     <a
-                        href={base + 'herramientas/arrendamiento/generar'}
+                        href={base + tool.href.form}
                         class="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-10 text-base font-bold text-secondary shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
                     >
                         Genera el tuyo ahora, gratis con Grexia
@@ -642,7 +644,7 @@ const faqSchema = {
                         </p>
                     </div>
                     <a
-                        href={base + 'herramientas/arrendamiento'}
+                        href={base + tool.href.landing}
                         class="shrink-0 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
                     >
                         Ver herramienta
@@ -692,7 +694,7 @@ const faqSchema = {
                             }
                         </ul>
                         <a
-                            href={base + 'herramientas/arrendamiento/generar'}
+                            href={base + tool.href.form}
                             class="mt-6 flex h-11 items-center justify-center gap-1.5 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-sm hover:bg-primary-hover transition-colors"
                         >
                             Generar contrato gratis

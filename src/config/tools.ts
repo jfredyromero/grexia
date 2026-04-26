@@ -1,4 +1,10 @@
-export type ToolSlug = 'arrendamiento' | 'pagare' | 'intereses' | 'compraventa' | 'tutela' | 'laboral';
+export type ToolSlug =
+    | 'contrato-arrendamiento'
+    | 'pagare'
+    | 'liquidacion-de-intereses'
+    | 'promesa-compraventa'
+    | 'accion-de-tutela'
+    | 'contrato-laboral';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -27,7 +33,7 @@ export interface ToolConfig {
 
 export const TOOLS: ToolConfig[] = [
     {
-        slug: 'arrendamiento',
+        slug: 'contrato-arrendamiento',
         name: 'Contrato de Arrendamiento',
         shortName: 'Arrendamiento',
         description:
@@ -35,8 +41,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'home_work',
         legalBasis: 'Ley 820 de 2003 · Código de Comercio',
         href: {
-            landing: 'herramientas/arrendamiento',
-            form: 'herramientas/arrendamiento/generar',
+            landing: 'herramientas/contrato-arrendamiento',
+            form: 'herramientas/contrato-arrendamiento/generar',
         },
         heroHeadline: {
             prefix: 'Tu contrato de',
@@ -130,7 +136,7 @@ export const TOOLS: ToolConfig[] = [
         heroChat: 'Hola, ¿necesitas generar un pagaré con validez legal? Puedo orientarte.',
     },
     {
-        slug: 'intereses',
+        slug: 'liquidacion-de-intereses',
         name: 'Liquidador de Intereses',
         shortName: 'Intereses',
         description:
@@ -138,8 +144,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'calculate',
         legalBasis: 'Superfinanciera Colombia',
         href: {
-            landing: 'herramientas/intereses',
-            form: 'herramientas/intereses/generar',
+            landing: 'herramientas/liquidacion-de-intereses',
+            form: 'herramientas/liquidacion-de-intereses/generar',
         },
         heroHeadline: {
             prefix: 'Liquida tus',
@@ -181,7 +187,7 @@ export const TOOLS: ToolConfig[] = [
         heroChat: 'Hola, ¿necesitas liquidar intereses judiciales? Te ayudo a calcularlo correctamente.',
     },
     {
-        slug: 'compraventa',
+        slug: 'promesa-compraventa',
         name: 'Promesa de Compraventa',
         shortName: 'Compraventa',
         description:
@@ -189,8 +195,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'real_estate_agent',
         legalBasis: 'Codigo Civil Art. 1611',
         href: {
-            landing: 'herramientas/compraventa',
-            form: 'herramientas/compraventa/generar',
+            landing: 'herramientas/promesa-compraventa',
+            form: 'herramientas/promesa-compraventa/generar',
         },
         heroHeadline: {
             prefix: 'Tu promesa de',
@@ -232,15 +238,15 @@ export const TOOLS: ToolConfig[] = [
         heroChat: 'Hola, ¿necesitas generar una promesa de compraventa? Te guio paso a paso.',
     },
     {
-        slug: 'tutela',
+        slug: 'accion-de-tutela',
         name: 'Acción de Tutela',
         shortName: 'Tutela',
         description: 'Genera tu acción de tutela para proteger tus derechos fundamentales. Gratis, sin registro.',
         icon: 'gavel',
         legalBasis: 'Art. 86 Constitución Política',
         href: {
-            landing: 'herramientas/tutela',
-            form: 'herramientas/tutela/generar',
+            landing: 'herramientas/accion-de-tutela',
+            form: 'herramientas/accion-de-tutela/generar',
         },
         heroHeadline: {
             prefix: 'Tu acción de',
@@ -281,7 +287,7 @@ export const TOOLS: ToolConfig[] = [
         heroChat: 'Hola, ¿vulneraron alguno de tus derechos fundamentales? Te ayudo a preparar tu tutela.',
     },
     {
-        slug: 'laboral',
+        slug: 'contrato-laboral',
         name: 'Contrato Laboral',
         shortName: 'Laboral',
         description:
@@ -289,8 +295,8 @@ export const TOOLS: ToolConfig[] = [
         icon: 'work',
         legalBasis: 'Código Sustantivo del Trabajo',
         href: {
-            landing: 'herramientas/laboral',
-            form: 'herramientas/laboral/generar',
+            landing: 'herramientas/contrato-laboral',
+            form: 'herramientas/contrato-laboral/generar',
         },
         heroHeadline: {
             prefix: 'Tu contrato',
