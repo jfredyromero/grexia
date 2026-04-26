@@ -9,7 +9,7 @@ import { tutelaBasica, tutelaSinMedico, tutelaOtraEPS } from './fixtures/tutelaT
 
 test.describe('Tutela — landing y selector', () => {
     test('landing muestra el selector de temáticas', async ({ page }) => {
-        await page.goto('/herramientas/tutela');
+        await page.goto('/herramientas/accion-de-tutela');
         await expect(page.getByRole('heading', { name: /tutela/i }).first()).toBeVisible();
         await expect(page.getByText('Salud', { exact: true })).toBeVisible();
         await expect(page.getByText('Vivienda', { exact: true })).toBeVisible();
@@ -17,14 +17,14 @@ test.describe('Tutela — landing y selector', () => {
     });
 
     test('las opciones deshabilitadas muestran tooltip en hover', async ({ page }) => {
-        await page.goto('/herramientas/tutela');
+        await page.goto('/herramientas/accion-de-tutela');
         const viviendaCard = page.locator('[class*="cursor-not-allowed"]').first();
         await viviendaCard.hover();
         await expect(page.getByText('Asesoría personalizada').first()).toBeVisible();
     });
 
     test('navega al formulario al seleccionar Salud', async ({ page }) => {
-        await page.goto('/herramientas/tutela');
+        await page.goto('/herramientas/accion-de-tutela');
         await page.locator('a[href*="tutela/generar"]').first().click();
         await expect(page).toHaveURL(new RegExp('tutela/generar'));
     });

@@ -146,7 +146,7 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
             localStorage.setItem('grexia_arr_max_v1', '3');
         });
 
-        await page.goto('/herramientas/arrendamiento/generar');
+        await page.goto('/herramientas/contrato-arrendamiento/generar');
         await page.waitForSelector('h2:has-text("El arrendatario")', { timeout: 15_000 });
 
         // Debe comenzar directamente en Step 3 (arrendatario)
@@ -169,7 +169,7 @@ test.describe('Arrendamiento — persistencia en localStorage', () => {
             localStorage.setItem('grexia_arr_max_v1', '9999');
         });
 
-        await page.goto('/herramientas/arrendamiento/generar');
+        await page.goto('/herramientas/contrato-arrendamiento/generar');
         await page.waitForSelector('button:has-text("Continuar")', { timeout: 15_000 });
 
         // Debe mostrar Step 1 limpio (selector de tipo de inmueble)
@@ -437,7 +437,7 @@ test.describe('Intereses — persistencia en localStorage', () => {
             localStorage.setItem('grexia_int_max_v1', '1');
         });
 
-        await page.goto('/herramientas/intereses/generar');
+        await page.goto('/herramientas/liquidacion-de-intereses/generar');
         await page.waitForSelector('h2:has-text("La obligación")', { timeout: 15_000 });
 
         // Debe comenzar en Step 1 con los datos pre-cargados
@@ -455,7 +455,7 @@ test.describe('Intereses — persistencia en localStorage', () => {
             localStorage.setItem('grexia_int_max_v1', '9999');
         });
 
-        await page.goto('/herramientas/intereses/generar');
+        await page.goto('/herramientas/liquidacion-de-intereses/generar');
         await page.waitForSelector('h2:has-text("La obligación")', { timeout: 15_000 });
 
         // Debe mostrar Step 1 limpio

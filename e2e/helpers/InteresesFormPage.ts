@@ -12,7 +12,7 @@ export class InteresesFormPage {
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto() {
-        await this.page.goto('/herramientas/intereses/generar');
+        await this.page.goto('/herramientas/liquidacion-de-intereses/generar');
         // client:only="react" — el componente no se SSR, el heading solo existe tras el render de React
         await this.page.waitForSelector('h2:has-text("La obligación")', { timeout: 10_000 });
     }

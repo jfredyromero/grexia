@@ -34,7 +34,7 @@ test.describe('Guía — Pagaré', () => {
         await expect(
             page.getByRole('heading', { name: /Qu[eé] pasa si firmas o cobras un pagar[eé] mal hecho/i })
         ).toBeVisible();
-        await expect(page.getByText(/Art[ií]culo 789/i)).toBeVisible();
+        await expect(page.getByText(/Art[ií]culo 789/i).first()).toBeVisible();
     });
 
     test('cita el artículo 709 del Código de Comercio', async ({ page }) => {
@@ -68,7 +68,7 @@ test.describe('Guía — Pagaré', () => {
 
     test('CTA final "Ver herramienta" apunta al landing de pagaré', async ({ page }) => {
         await page.goto(URL);
-        const cta = page.getByRole('link', { name: /Ver herramienta/i }).first();
+        const cta = page.getByRole('link', { name: /Ver herramienta\b/i }).first();
         await expect(cta).toBeVisible();
         await expect(cta).toHaveAttribute('href', /herramientas\/pagare/);
     });
@@ -94,7 +94,7 @@ test.describe('Guía — Promesa de Compraventa', () => {
         await page.goto(URL);
         const cta = page.getByRole('link', { name: /Generar promesa gratis/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/compraventa\/generar/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/promesa-compraventa\/generar/);
     });
 
     test('tiene CTA secundario para hablar con un abogado', async ({ page }) => {
@@ -145,9 +145,9 @@ test.describe('Guía — Promesa de Compraventa', () => {
 
     test('CTA final "Ver herramienta" apunta al landing de compraventa', async ({ page }) => {
         await page.goto(URL);
-        const cta = page.getByRole('link', { name: /Ver herramienta/i }).first();
+        const cta = page.getByRole('link', { name: /Ver herramienta\b/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/compraventa/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/promesa-compraventa/);
     });
 });
 
@@ -171,7 +171,7 @@ test.describe('Guía — Contrato Laboral', () => {
         await page.goto(URL);
         const cta = page.getByRole('link', { name: /Generar contrato gratis/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/laboral\/generar/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/contrato-laboral\/generar/);
     });
 
     test('tiene CTA secundario para hablar con un abogado', async ({ page }) => {
@@ -220,9 +220,9 @@ test.describe('Guía — Contrato Laboral', () => {
 
     test('CTA final "Ver herramienta" apunta al landing de laboral', async ({ page }) => {
         await page.goto(URL);
-        const cta = page.getByRole('link', { name: /Ver herramienta/i }).first();
+        const cta = page.getByRole('link', { name: /Ver herramienta\b/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/laboral/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/contrato-laboral/);
     });
 });
 
@@ -246,7 +246,7 @@ test.describe('Guía — Liquidación de Intereses', () => {
         await page.goto(URL);
         const cta = page.getByRole('link', { name: /Liquidar intereses gratis/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/intereses\/generar/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/liquidacion-de-intereses\/generar/);
     });
 
     test('tiene CTA secundario para hablar con un abogado', async ({ page }) => {
@@ -300,9 +300,9 @@ test.describe('Guía — Liquidación de Intereses', () => {
 
     test('CTA final "Ver herramienta" apunta al landing de intereses', async ({ page }) => {
         await page.goto(URL);
-        const cta = page.getByRole('link', { name: /Ver herramienta/i }).first();
+        const cta = page.getByRole('link', { name: /Ver herramienta\b/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/intereses/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/liquidacion-de-intereses/);
     });
 });
 
@@ -326,7 +326,7 @@ test.describe('Guía — Acción de Tutela', () => {
         await page.goto(URL);
         const cta = page.getByRole('link', { name: /Generar tutela gratis/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/tutela\/generar/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/accion-de-tutela\/generar/);
     });
 
     test('tiene CTA secundario para hablar con un abogado', async ({ page }) => {
@@ -377,9 +377,9 @@ test.describe('Guía — Acción de Tutela', () => {
 
     test('CTA final "Ver herramienta" apunta al landing de tutela', async ({ page }) => {
         await page.goto(URL);
-        const cta = page.getByRole('link', { name: /Ver herramienta/i }).first();
+        const cta = page.getByRole('link', { name: /Ver herramienta\b/i }).first();
         await expect(cta).toBeVisible();
-        await expect(cta).toHaveAttribute('href', /herramientas\/tutela/);
+        await expect(cta).toHaveAttribute('href', /herramientas\/accion-de-tutela/);
     });
 });
 
@@ -439,7 +439,7 @@ test.describe('Guía — Index', () => {
         await page.goto(URL);
         const card = page.getByRole('link', { name: /Liquidaci[oó]n de Intereses/i }).first();
         await expect(card).toBeVisible();
-        await expect(card.getByText(/Art\.? 884/i)).toBeVisible();
+        await expect(card.getByText(/Art\.? 884/i).first()).toBeVisible();
         await expect(card.getByText(/Herramienta disponible/i)).toBeVisible();
     });
 

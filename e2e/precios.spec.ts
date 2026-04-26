@@ -12,18 +12,18 @@ test.describe('T11 — Página de Precios', () => {
 
     test('hero visible con título principal', async ({ page }) => {
         await page.goto('precios');
-        const hero = page.locator('h1');
+        const hero = page.locator('h1').first();
         await expect(hero).toBeVisible();
-        await expect(hero).toContainText('Documentos legales para todos');
+        await expect(hero).toContainText('Elige el plan ideal');
     });
 
     test('sección #precios visible con los 3 planes', async ({ page }) => {
         await page.goto('precios');
         const preciosSection = page.locator('#precios');
         await expect(preciosSection).toBeVisible();
-        await expect(preciosSection.getByText('Gratis')).toBeVisible();
-        await expect(preciosSection.getByText('Asesoría')).toBeVisible();
-        await expect(preciosSection.getByText('Empresarial')).toBeVisible();
+        await expect(preciosSection.getByText('Gratis').first()).toBeVisible();
+        await expect(preciosSection.getByText('Asesoría').first()).toBeVisible();
+        await expect(preciosSection.getByText('Empresarial').first()).toBeVisible();
     });
 
     test('sección #como-funciona visible', async ({ page }) => {
@@ -57,11 +57,11 @@ test.describe('T11 — Página de Precios', () => {
         await expect(ctaSection.getByRole('link', { name: /Agendar asesoría/i })).toBeVisible();
     });
 
-    test('pills de navegación rápida visibles en el hero', async ({ page }) => {
+    test('secciones principales visibles por id', async ({ page }) => {
         await page.goto('precios');
-        await expect(page.getByRole('link', { name: 'Ver planes' })).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Cómo funciona' })).toBeVisible();
-        await expect(page.getByRole('link', { name: 'Comparar planes' })).toBeVisible();
+        await expect(page.locator('#precios')).toBeVisible();
+        await expect(page.locator('#como-funciona')).toBeVisible();
+        await expect(page.locator('#comparacion')).toBeVisible();
     });
 
     test('link "Precios" en navbar navega a /precios', async ({ page }) => {
@@ -69,6 +69,6 @@ test.describe('T11 — Página de Precios', () => {
         const preciosLink = page.locator('header').getByRole('link', { name: 'Precios' }).first();
         await expect(preciosLink).toBeVisible();
         await preciosLink.click();
-        await expect(page).toHaveURL(/\/grexia\/precios/);
+        await expect(page).toHaveURL(/\/precios/);
     });
 });

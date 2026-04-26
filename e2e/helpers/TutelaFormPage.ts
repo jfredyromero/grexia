@@ -77,7 +77,7 @@ export class TutelaFormPage {
     // ── Navigation ─────────────────────────────────────────────────────────────
 
     async goto() {
-        await this.page.goto('/herramientas/tutela/generar');
+        await this.page.goto('/herramientas/accion-de-tutela/generar');
         await this.page.waitForSelector('h2:has-text("Tus datos")', { timeout: 10_000 });
     }
 

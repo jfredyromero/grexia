@@ -35,7 +35,7 @@ export class LaboralFormPage {
                 localStorage.setItem('grexia_plan', '"empresarial"');
             });
         }
-        await this.page.goto('/herramientas/laboral/generar');
+        await this.page.goto('/herramientas/contrato-laboral/generar');
         await this.page.waitForSelector('h2:has-text("¿Qué tipo de contrato")', { timeout: 10_000 });
     }
 

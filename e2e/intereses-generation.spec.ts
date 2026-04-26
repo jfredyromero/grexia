@@ -117,7 +117,7 @@ test.describe('Intereses — Diferentes tasas', () => {
         });
 
         // Navegar de nuevo — ahora localStorage está limpio, carga en step 1
-        await page.goto('/herramientas/intereses/generar');
+        await page.goto('/herramientas/liquidacion-de-intereses/generar');
         await page.waitForSelector('h2:has-text("La obligación")', { timeout: 10_000 });
 
         const formMoratorio = new InteresesFormPage(page);

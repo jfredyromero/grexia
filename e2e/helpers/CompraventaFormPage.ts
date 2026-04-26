@@ -100,7 +100,7 @@ export class CompraventaFormPage {
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto() {
-        await this.page.goto('/herramientas/compraventa/generar');
+        await this.page.goto('/herramientas/promesa-compraventa/generar');
         await this.page.waitForSelector('h2:has-text("El vendedor")', { timeout: 10_000 });
     }
 

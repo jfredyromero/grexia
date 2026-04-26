@@ -60,7 +60,7 @@ export class ArrendamientoFormPage {
     // ── Navigation ────────────────────────────────────────────────────────────
 
     async goto() {
-        await this.page.goto('/herramientas/arrendamiento/generar');
+        await this.page.goto('/herramientas/contrato-arrendamiento/generar');
         // client:only="react" — el componente no se SSR, el botón sólo existe tras el render de React
         await this.page.waitForSelector('button:has-text("Continuar")', { timeout: 10_000 });
     }
