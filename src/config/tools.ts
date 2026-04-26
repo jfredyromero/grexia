@@ -55,6 +55,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Validez legal garantizada' },
             { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
         ],
         howItWorksSteps: [
             {
@@ -64,10 +65,10 @@ export const TOOLS: ToolConfig[] = [
                     'Ingresa los datos del inmueble, arrendador y arrendatario. Solo toma unos segundos y no necesitas registrarte.',
             },
             {
-                icon: 'auto_awesome',
+                icon: 'description',
                 title: 'Generamos tu contrato',
                 description:
-                    'El sistema crea automáticamente el contrato ajustado a la normativa colombiana vigente: Ley 820 de 2003 para vivienda o Código de Comercio para locales y oficinas.',
+                    'El sistema ensambla tu contrato usando plantillas jurídicas validadas por abogados, ajustadas a la Ley 820 de 2003 para vivienda o al Código de Comercio para locales y oficinas.',
             },
             {
                 icon: 'picture_as_pdf',
@@ -107,6 +108,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Código de Comercio' },
             { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
         ],
         howItWorksSteps: [
             {
@@ -158,6 +160,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Tasas Superfinanciera' },
             { icon: 'download', label: 'Reporte en PDF' },
+            { icon: 'balance', label: 'Validado por abogados' },
         ],
         howItWorksSteps: [
             {
@@ -209,6 +212,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Codigo Civil Art. 1611' },
             { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
         ],
         howItWorksSteps: [
             {
@@ -218,10 +222,10 @@ export const TOOLS: ToolConfig[] = [
                     'Ingresa los datos del vendedor, comprador, inmueble, condiciones economicas y escritura. Solo toma unos segundos.',
             },
             {
-                icon: 'auto_awesome',
+                icon: 'description',
                 title: 'Generamos tu promesa',
                 description:
-                    'El sistema crea automaticamente la promesa de compraventa con 18 clausulas ajustadas al Codigo Civil colombiano.',
+                    'El sistema ensambla tu promesa de compraventa usando plantillas jurídicas con 18 cláusulas validadas por abogados, ajustadas al Código Civil colombiano.',
             },
             {
                 icon: 'picture_as_pdf',
@@ -259,6 +263,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Art. 86 Constitución Política' },
             { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
         ],
         howItWorksSteps: [
             {
@@ -268,9 +273,10 @@ export const TOOLS: ToolConfig[] = [
                     'Selecciona la temática, ingresa tus datos y cuéntanos qué derecho fue vulnerado. Solo toma unos segundos.',
             },
             {
-                icon: 'auto_awesome',
+                icon: 'description',
                 title: 'Generamos tu tutela',
-                description: 'Grexia redacta la acción de tutela completa con todos los argumentos legales necesarios.',
+                description:
+                    'El sistema ensambla tu acción de tutela usando plantillas jurídicas validadas por abogados especializados en derechos fundamentales.',
             },
             {
                 icon: 'picture_as_pdf',
@@ -309,6 +315,7 @@ export const TOOLS: ToolConfig[] = [
             { icon: 'check_circle', label: 'Gratis · Sin registro' },
             { icon: 'verified', label: 'Cód. Sust. del Trabajo' },
             { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
         ],
         howItWorksSteps: [
             {

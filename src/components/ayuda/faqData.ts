@@ -52,4 +52,12 @@ export const FAQ_DATA: FAQItem[] = [
         question: '¿Cómo contacto al equipo de Grexia?',
         answer: 'Puedes contactarnos por correo electrónico a soporte@grexia.co o a través de WhatsApp haciendo clic en el botón de WhatsApp disponible en todas las páginas. Para empresas o alianzas, también tenemos el formulario de Plan Empresarial. Respondemos en un plazo máximo de 24 horas hábiles.',
     },
+    {
+        question: '¿Los documentos son generados con inteligencia artificial?',
+        answer: 'No. Ningún documento de Grexia es generado por inteligencia artificial. Todas las plantillas fueron redactadas, revisadas y validadas por abogados especializados en cada área del derecho colombiano. No existen leyes inventadas, artículos fabricados ni información incorrecta. Si necesitas condiciones especiales que van más allá de la plantilla estándar, te orientamos hacia una asesoría legal con un profesional.',
+    },
+    {
+        question: '¿Grexia funciona en dispositivos móviles?',
+        answer: 'Sí. Grexia está optimizada para funcionar en celulares, tabletas y computadores. Puedes completar cualquier formulario, previsualizar el documento y descargarlo en PDF desde cualquier dispositivo con un navegador moderno, sin necesidad de instalar aplicaciones adicionales.',
+    },
 ];

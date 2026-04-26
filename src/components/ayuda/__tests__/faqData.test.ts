@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { FAQ_DATA } from '../faqData';
 
 describe('FAQ_DATA', () => {
-    it('exporta exactamente 12 items', () => {
-        expect(FAQ_DATA).toHaveLength(12);
+    it('exporta exactamente 14 items', () => {
+        expect(FAQ_DATA).toHaveLength(14);
     });
 
     it('cada item tiene question y answer como strings no vacíos', () => {

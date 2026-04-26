@@ -6,7 +6,10 @@ import WhatsAppButton from '../../components/WhatsAppButton.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="Planes · Grexia | Documentos Legales para Colombia">
+<Layout
+    title="Planes - Grexia - Documentos Legales para Colombia"
+    description="Conoce los planes de Grexia. Desde documentos gratuitos hasta asesoría legal personalizada con abogados colombianos. Sin letra pequeña."
+>
     <main class="grow w-full">
         <!-- ─── HERO ──────────────────────────────────────────────────────── -->
         <section class="bg-white pt-14 pb-0 lg:pt-20">
@@ -26,12 +29,7 @@ const base = import.meta.env.BASE_URL;
         </section>
 
         <!-- ─── #PLANES — SharedPricing ──────────────────────────────────── -->
-        <div
-            id="precios"
-            class="scroll-mt-24"
-        >
-            <SharedPricing showHeader={false} />
-        </div>
+        <SharedPricing showHeader={false} />
 
         <!-- ─── #COMO-FUNCIONA ────────────────────────────────────────────── -->
         <section

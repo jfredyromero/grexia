@@ -1,4 +1,8 @@
 ---
+interface Props {
+    showHeader?: boolean;
+}
+const { showHeader = true } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
 const plans = [
@@ -66,15 +70,21 @@ const plans = [
 ---
 
 <section
-    class="w-full bg-background-light py-8 lg:py-14"
+    class="w-full bg-background-light py-8 lg:py-14 scroll-mt-24"
     id="precios"
 >
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <!-- Section Header -->
-        <div class="text-center mb-14">
-            <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">Elige tu plan</h2>
-            <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">Empieza gratis. Escala cuando lo necesites.</p>
-        </div>
+        {
+            showHeader && (
+                <div class="text-center mb-14">
+                    <h2 class="text-3xl font-black tracking-tight text-secondary sm:text-4xl">Elige tu plan</h2>
+                    <p class="mt-3 max-w-xl mx-auto text-lg text-slate-600">
+                        Empieza gratis. Escala cuando lo necesites.
+                    </p>
+                </div>
+            )
+        }
 
         <!-- Cards -->
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-6 max-w-5xl mx-auto items-start">
