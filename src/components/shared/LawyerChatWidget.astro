@@ -1,0 +1,141 @@
+---
+interface Props {
+    lawyerName: string;
+    lawyerSpecialty: string;
+    lawyerAvatar: string;
+    heroImage: string;
+    heroAlt: string;
+    msg1: string;
+    msg2: string;
+    msg3: string;
+    whatsappText: string;
+    whatsappPhone?: string;
+}
+
+const {
+    lawyerName,
+    lawyerSpecialty,
+    lawyerAvatar,
+    heroImage,
+    heroAlt,
+    msg1,
+    msg2,
+    msg3,
+    whatsappText,
+    whatsappPhone = '573023429778',
+} = Astro.props;
+
+const widgetId = `chat-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div
+    class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-4xl shadow-2xl flex flex-col animate-[fade-in-up_1s_ease-out_0.3s_backwards]"
+>
+    <!-- Hero image as background — fully visible in chat area -->
+    <img
+        src={heroImage}
+        alt={heroAlt}
+        class="absolute inset-0 h-full w-full object-cover object-center"
+    />
+
+    <!-- Chat layout -->
+    <div class="relative flex flex-col h-full">
+        <!-- Header: glassmorphism dark-teal -->
+        <div
+            class="flex items-center gap-3 bg-[#1b3a30]/80 backdrop-blur-md px-5 py-4 shrink-0 border-b border-white/10"
+        >
+            <div class="relative shrink-0">
+                <img
+                    src={lawyerAvatar}
+                    alt={lawyerName}
+                    class="h-12 w-12 rounded-full object-cover border-2 border-white/30"
+                    onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80'"
+                />
+                <div class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-400 border-2 border-[#1b3a30]">
+                </div>
+            </div>
+            <div class="flex flex-col min-w-0">
+                <span class="text-base font-bold text-white leading-tight">{lawyerName}</span>
+                <span class="text-sm text-green-300 leading-tight truncate">{lawyerSpecialty}</span>
+            </div>
+        </div>
+
+        <!-- Messages area: transparent — image shows through, messages stack from top -->
+        <div class="flex-1 flex flex-col justify-start gap-3 px-4 py-4 overflow-hidden">
+            <!-- Burbuja 1: abogado (izquierda) -->
+            <div class="flex justify-start animate-[chat-bubble-in_0.5s_ease-out_1.5s_backwards]">
+                <div
+                    class="max-w-[78%] rounded-[10px] rounded-tl-[3px] bg-white/88 px-4 py-2.5 text-sm text-slate-800 leading-snug shadow-md"
+                >
+                    {msg1}
+                </div>
+            </div>
+
+            <!-- Burbuja 2: cliente (derecha) -->
+            <div class="flex justify-end animate-[chat-bubble-in_0.35s_ease-out_3.0s_backwards]">
+                <div
+                    class="max-w-[78%] rounded-[10px] rounded-tr-[3px] bg-[#cef0d3]/92 px-4 py-2.5 text-sm text-slate-800 leading-snug shadow-md"
+                >
+                    {msg2}
+                </div>
+            </div>
+
+            <!-- Burbuja 3: abogado (izquierda) -->
+            <div class="flex justify-start animate-[chat-bubble-in_0.35s_ease-out_4.5s_backwards]">
+                <div
+                    class="max-w-[78%] rounded-[10px] rounded-tl-[3px] bg-white/88 px-4 py-2.5 text-sm text-slate-800 leading-snug shadow-md"
+                >
+                    {msg3}
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer: glassmorphism input -->
+        <div class="bg-white/60 backdrop-blur-md px-4 py-3 shrink-0 border-t border-white/20">
+            <div
+                id={widgetId}
+                data-phone={whatsappPhone}
+                class="flex items-center gap-2 rounded-full bg-white/90 px-4 py-2.5 shadow-sm"
+            >
+                <input
+                    type="text"
+                    placeholder={whatsappText}
+                    class="flex-1 bg-transparent text-sm text-slate-700 placeholder:text-slate-400 outline-none border-none"
+                    aria-label="Mensaje para el abogado"
+                />
+                <button
+                    type="button"
+                    class="flex h-9 w-9 items-center justify-center rounded-full bg-[#1b3a30] text-white shrink-0 transition-opacity hover:opacity-80"
+                    aria-label="Enviar mensaje por WhatsApp"
+                >
+                    <svg
+                        class="h-4 w-4"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('[id^="chat-"]').forEach((wrapper) => {
+        const phone = wrapper.getAttribute('data-phone') ?? '573023429778';
+        const input = wrapper.querySelector('input') as HTMLInputElement | null;
+        const button = wrapper.querySelector('button');
+
+        function sendToWhatsApp() {
+            const text = input?.value.trim() ?? '';
+            if (!text) return;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+        }
+
+        button?.addEventListener('click', sendToWhatsApp);
+        input?.addEventListener('keydown', (e) => {
+            if ((e as KeyboardEvent).key === 'Enter') sendToWhatsApp();
+        });
+    });
+</script>
