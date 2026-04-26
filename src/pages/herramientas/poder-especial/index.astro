@@ -1,0 +1,22 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ToolHero from '../../../components/tools/ToolHero.astro';
+import ToolHowItWorks from '../../../components/tools/ToolHowItWorks.astro';
+import SharedPricing from '../../../components/shared/SharedPricing.astro';
+import WhatsAppButton from '../../../components/WhatsAppButton.astro';
+import { getToolBySlug } from '../../../config/tools';
+
+const tool = getToolBySlug('poder-especial')!;
+---
+
+<Layout
+    title="Generador de Poder Especial - Grexia"
+    description="Genera tu poder especial gratis en Colombia. Cumple con el Código General del Proceso, redactado por abogados, listo para descargar en PDF."
+    navbarVariant="tool-landing"
+    navbarActiveTool="poder-especial"
+>
+    <ToolHero tool={tool} />
+    <ToolHowItWorks tool={tool} />
+    <SharedPricing />
+    <WhatsAppButton />
+</Layout>

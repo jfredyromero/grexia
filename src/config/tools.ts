@@ -4,7 +4,8 @@ export type ToolSlug =
     | 'liquidacion-de-intereses'
     | 'promesa-compraventa'
     | 'accion-de-tutela'
-    | 'contrato-laboral';
+    | 'contrato-laboral'
+    | 'poder-especial';
 
 export interface ToolConfig {
     slug: ToolSlug;
@@ -285,7 +286,7 @@ export const TOOLS: ToolConfig[] = [
                     'Descarga el PDF y preséntalo ante cualquier juzgado. Tienes 48 horas para la primera respuesta.',
             },
         ],
-        heroImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80',
+        heroImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Sofía',
         heroLawyerSpecialty: 'Derechos Fundamentales · En línea',
         heroLawyerAvatar:
@@ -343,6 +344,58 @@ export const TOOLS: ToolConfig[] = [
         heroLawyerAvatar:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
         heroChat: 'Hola, ¿necesitas generar un contrato laboral? Te ayudo a crearlo correctamente.',
+    },
+    {
+        slug: 'poder-especial',
+        name: 'Poder Especial',
+        shortName: 'Poder',
+        description:
+            'Genera un poder especial para procesos judiciales o trámites notariales en Colombia. Gratis, sin registro, conforme al Código General del Proceso.',
+        icon: 'edit_document',
+        legalBasis: 'Art. 74 y 77 Código General del Proceso',
+        href: {
+            landing: 'herramientas/poder-especial',
+            form: 'herramientas/poder-especial/generar',
+        },
+        heroHeadline: {
+            prefix: 'Tu poder',
+            highlight: 'especial',
+            suffix: 'listo en segundos',
+        },
+        heroSubtitle:
+            'Genera un poder especial con validez legal en Colombia conforme al Código General del Proceso. Sin registro, sin complicaciones. Descarga en PDF.',
+        trustBadges: [
+            { icon: 'check_circle', label: 'Gratis · Sin registro' },
+            { icon: 'verified', label: 'Art. 74 y 77 C.G.P.' },
+            { icon: 'download', label: 'Descarga en PDF' },
+            { icon: 'balance', label: 'Redactado por abogados' },
+        ],
+        howItWorksSteps: [
+            {
+                icon: 'fact_check',
+                title: 'Elige el tipo de proceso',
+                description:
+                    'Selecciona si es declaración de pertenencia, proceso laboral, civil, familiar, penal, trámites notariales o administración de bienes.',
+            },
+            {
+                icon: 'edit_note',
+                title: 'Ingresa los datos',
+                description:
+                    'Completa los datos del poderdante, del apoderado y de los demandados o el objeto del poder. Solo toma unos segundos.',
+            },
+            {
+                icon: 'picture_as_pdf',
+                title: 'Descarga en PDF',
+                description:
+                    'Revisa tu poder, descárgalo en PDF y firmalo. Listo para presentar ante juzgado, notaría o entidad.',
+            },
+        ],
+        heroImage: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80',
+        heroLawyerName: 'Abogada Daniela',
+        heroLawyerSpecialty: 'Procesal Civil · En línea',
+        heroLawyerAvatar:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroChat: 'Hola, ¿necesitas otorgar un poder especial? Te ayudo a redactarlo paso a paso.',
     },
 ];
 

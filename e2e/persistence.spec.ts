@@ -2,9 +2,11 @@ import { test, expect } from '@playwright/test';
 import { ArrendamientoFormPage } from './helpers/ArrendamientoFormPage';
 import { PagareFormPage } from './helpers/PagareFormPage';
 import { InteresesFormPage } from './helpers/InteresesFormPage';
+import { PoderFormPage } from './helpers/PoderFormPage';
 import { contratoVivienda } from './fixtures/testData';
 import { pagareSimple } from './fixtures/pagareTestData';
 import { liquidacionCortaCorriente } from './fixtures/interesesTestData';
+import { declaracionPertenencia } from './fixtures/poderTestData';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SUITE 1: Arrendamiento — Persistencia en localStorage
@@ -467,5 +469,95 @@ test.describe('Intereses — persistencia en localStorage', () => {
 
         // No debe mostrar el preview (step 2)
         await expect(page.locator('#intereses-preview')).not.toBeVisible();
+    });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SUITE 4: Poder Especial — Persistencia en localStorage
+//
+// Claves observadas:
+//   grexia_pod_form_v1  — datos del formulario (JSON)
+//   grexia_pod_step_v1  — step actual (número)
+//   grexia_pod_max_v1   — step más alto alcanzado (número)
+//
+// Escenarios:
+//   1. Recarga restaura el step guardado
+//   2. Recarga restaura los datos del Step 2 (poderdante)
+//   3. maxStep persiste → StepProgress habilita navegación directa tras recarga
+//   4. localStorage corrompido → fallback al estado inicial
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Poder — persistencia en localStorage', () => {
+    test('recarga en Step 2 restaura el step guardado', async ({ page }) => {
+        const form = new PoderFormPage(page);
+        await form.goto();
+
+        // Llenar Step 1 → nanostores escribe grexia_pod_step_v1='2'
+        await form.selectTipoProceso(declaracionPertenencia.tipoProceso);
+
+        await page.reload();
+        await page.waitForSelector('h2:has-text("El poderdante")', { timeout: 15_000 });
+
+        await expect(page.getByRole('heading', { name: /El poderdante/i })).toBeVisible();
+        await expect(page.getByRole('heading', { name: /El apoderado/i })).not.toBeVisible();
+    });
+
+    test('recarga restaura los datos del Step 2 (poderdante)', async ({ page }) => {
+        const form = new PoderFormPage(page);
+        await form.goto();
+
+        await form.selectTipoProceso(declaracionPertenencia.tipoProceso);
+        await form.fillPoderdante(declaracionPertenencia.poderdante);
+
+        // Estamos en step 3; recargamos
+        await page.reload();
+        await page.waitForSelector('h2:has-text("El apoderado")', { timeout: 15_000 });
+
+        // Volver a step 2 y verificar que persiste el nombre
+        await page.getByRole('button', { name: /Anterior/i }).click();
+        await page.waitForSelector('h2:has-text("El poderdante")');
+
+        await expect(page.locator('#poderdante-nombre')).toHaveValue(declaracionPertenencia.poderdante.nombreCompleto);
+    });
+
+    test('maxStep persiste y habilita navegación directa desde StepProgress tras recarga', async ({ page }) => {
+        const form = new PoderFormPage(page);
+        await form.goto();
+
+        // Avanzar hasta step 3 (maxStep se fija en 3)
+        await form.selectTipoProceso(declaracionPertenencia.tipoProceso);
+        await form.fillPoderdante(declaracionPertenencia.poderdante);
+
+        // Retroceder a step 2 (currentStep=2, maxStep=3 no cambia)
+        await page.getByRole('button', { name: /Anterior/i }).click();
+        await page.waitForSelector('h2:has-text("El poderdante")');
+
+        // Recargar — debe restaurar currentStep=2 y maxStep=3
+        await page.reload();
+        await page.waitForSelector('h2:has-text("El poderdante")', { timeout: 15_000 });
+
+        // Step 3 debe ser clickeable en el StepProgress
+        const step3Btn = page.getByRole('button', { name: 'Ir al paso 3: Apoderado' });
+        await expect(step3Btn).toBeVisible();
+
+        await step3Btn.click();
+        await expect(page.getByRole('heading', { name: /El apoderado/i })).toBeVisible();
+    });
+
+    test('localStorage corrompido — fallback al estado inicial en Step 1', async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.setItem('grexia_pod_form_v1', '{{json invalido}}');
+            localStorage.setItem('grexia_pod_step_v1', 'NaN');
+            localStorage.setItem('grexia_pod_max_v1', '-99');
+        });
+
+        await page.goto('/herramientas/poder-especial/generar');
+        await page.waitForSelector('h2:has-text("¿Para qué tipo de proceso")', { timeout: 15_000 });
+
+        // Debe mostrar Step 1 limpio
+        await expect(page.getByRole('heading', { name: /¿Para qué tipo de proceso/i })).toBeVisible();
+
+        // No debe mostrar steps posteriores
+        await expect(page.getByRole('heading', { name: /El poderdante/i })).not.toBeVisible();
     });
 });
