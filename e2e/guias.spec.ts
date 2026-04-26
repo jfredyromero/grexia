@@ -463,6 +463,16 @@ test.describe('Guía — Poder Especial', () => {
         await expect(cta).toBeVisible();
         await expect(cta).toHaveAttribute('href', /herramientas\/poder-especial/);
     });
+
+    test('chat widget del abogado tiene 3 burbujas en poder-especial', async ({ page }) => {
+        await page.goto('/guias/poder-especial');
+        // El header del chat
+        await expect(page.getByText('Abogada Daniela')).toBeVisible();
+        // Las 3 burbujas (busca texto de cada una)
+        await expect(page.getByText('Hola, ¿necesitas otorgar un poder especial?')).toBeVisible();
+        await expect(page.getByText('Sí, es para un proceso civil')).toBeVisible();
+        await expect(page.getByText('Listo en 1 minuto. Descárgalo en PDF, sin notaría.')).toBeVisible();
+    });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -547,5 +557,27 @@ test.describe('Guía — Index', () => {
         await expect(description).toHaveAttribute('content', /.{50,}/);
         const canonical = page.locator('link[rel="canonical"]');
         await expect(canonical).toHaveAttribute('href', /grexia\.co\/guias/);
+    });
+});
+
+test.describe('Guía — Poder Especial (chat widget)', () => {
+    const URL = '/guias/poder-especial';
+
+    test('chat widget del abogado tiene las 3 burbujas animadas', async ({ page }) => {
+        await page.goto(URL);
+        await expect(page.getByText('Abogada Daniela')).toBeVisible();
+        await expect(page.getByText('Hola, ¿necesitas otorgar un poder especial?')).toBeVisible();
+        await expect(page.getByText('Sí, es para un proceso civil')).toBeVisible();
+        await expect(page.getByText('Listo en 1 minuto. Descárgalo en PDF, sin notaría.')).toBeVisible();
+    });
+
+    test('el input del chat es editable y el botón de enviar está visible', async ({ page }) => {
+        await page.goto(URL);
+        const input = page.getByRole('textbox', { name: /Mensaje para el abogado/i });
+        await expect(input).toBeVisible();
+        await input.fill('Necesito un poder especial urgente');
+        await expect(input).toHaveValue('Necesito un poder especial urgente');
+        const sendButton = page.getByRole('button', { name: /Enviar mensaje por WhatsApp/i });
+        await expect(sendButton).toBeVisible();
     });
 });

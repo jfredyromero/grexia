@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import Breadcrumb from '../../components/shared/Breadcrumb.astro';
 import FAQAccordion from '../../components/shared/FAQAccordion.tsx';
+import LawyerChatWidget from '../../components/shared/LawyerChatWidget.astro';
 import { TOOLS } from '../../config/tools';
 
 const base = import.meta.env.BASE_URL;
@@ -184,67 +185,19 @@ const faqSchema = {
                         </p>
                     </div>
 
-                    <!-- Derecha: imagen -->
+                    <!-- Derecha: chat widget -->
                     <div class="relative hidden lg:block order-1 lg:order-2">
-                        <div
-                            class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
-                        >
-                            <img
-                                alt="Liquidación de intereses judiciales en Colombia"
-                                class="h-full w-full object-cover object-center"
-                                src={tool.heroImage}
-                            />
-                            <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
-
-                            <!-- Glass Widget: abogado -->
-                            <div
-                                class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
-                            >
-                                <div class="flex items-center gap-3">
-                                    <div class="relative">
-                                        <div
-                                            class="h-10 w-10 rounded-full bg-primary flex items-center justify-center border border-white overflow-hidden"
-                                        >
-                                            <img
-                                                alt={tool.heroLawyerName}
-                                                class="h-full w-full object-cover"
-                                                src={tool.heroLawyerAvatar}
-                                            />
-                                        </div>
-                                        <div
-                                            class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
-                                        >
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <span class="text-sm font-bold text-slate-800">{tool.heroLawyerName}</span>
-                                        <span class="text-xs text-slate-700">{tool.heroLawyerSpecialty}</span>
-                                    </div>
-                                </div>
-                                <div
-                                    class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm"
-                                >
-                                    "{tool.heroChat}"
-                                </div>
-                            </div>
-
-                            <!-- Glass Widget: guía badge -->
-                            <div
-                                class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
-                            >
-                                <div
-                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
-                                >
-                                    <span class="material-symbols-outlined text-[24px]">menu_book</span>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">
-                                        Guía completa
-                                    </p>
-                                    <p class="text-sm font-bold text-slate-800">Normativa vigente</p>
-                                </div>
-                            </div>
-                        </div>
+                        <LawyerChatWidget
+                            lawyerName={tool.heroLawyerName}
+                            lawyerSpecialty={tool.heroLawyerSpecialty}
+                            lawyerAvatar={tool.heroLawyerAvatar}
+                            heroImage={tool.heroImage}
+                            heroAlt="Liquidación de intereses judiciales en Colombia"
+                            msg1="Hola, ¿necesitas liquidar intereses judiciales?"
+                            msg2="Sí, para un proceso ejecutivo"
+                            msg3="Calculamos con tasas certificadas por la Superfinanciera."
+                            whatsappText="Hola Grexia, necesito ayuda con la liquidación de intereses"
+                        />
 
                         <!-- Blobs decorativos -->
                         <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl">

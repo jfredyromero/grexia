@@ -1,6 +1,7 @@
 ---
 import type { ToolConfig } from '../../config/tools';
 import Breadcrumb from '../shared/Breadcrumb.astro';
+import LawyerChatWidget from '../shared/LawyerChatWidget.astro';
 
 interface Props {
     tool: ToolConfig;
@@ -136,60 +137,19 @@ const socialAvatars = [
                 </p>
             </div>
 
-            <!-- ── Right: Photo visual ── -->
+            <!-- ── Right: chat widget ── -->
             <div class="relative hidden lg:block order-1 lg:order-2">
-                <div
-                    class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
-                >
-                    <!-- Hero photo -->
-                    <img
-                        alt={`${heroHeadline.prefix} ${heroHeadline.highlight} ${heroHeadline.suffix}`}
-                        class="h-full w-full object-cover object-center"
-                        src={heroImage}
-                    />
-
-                    <!-- Gradient overlay -->
-                    <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
-
-                    <!-- Glass Widget: Lawyer chat -->
-                    <div
-                        class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
-                    >
-                        <div class="flex items-center gap-3">
-                            <div class="relative">
-                                <img
-                                    alt={heroLawyerName}
-                                    class="h-10 w-10 rounded-full object-cover border border-white"
-                                    src={heroLawyerAvatar}
-                                />
-                                <div
-                                    class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
-                                >
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-slate-800">{heroLawyerName}</span>
-                                <span class="text-xs text-slate-700">{heroLawyerSpecialty}</span>
-                            </div>
-                        </div>
-                        <div class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm">
-                            "{heroChat}"
-                        </div>
-                    </div>
-
-                    <!-- Glass Widget: PDF badge -->
-                    <div
-                        class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
-                    >
-                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                            <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">Descarga en PDF</p>
-                            <p class="text-sm font-bold text-slate-800">Lista en segundos</p>
-                        </div>
-                    </div>
-                </div>
+                <LawyerChatWidget
+                    lawyerName={heroLawyerName}
+                    lawyerSpecialty={heroLawyerSpecialty}
+                    lawyerAvatar={heroLawyerAvatar}
+                    heroImage={heroImage}
+                    heroAlt={`${heroHeadline.prefix} ${heroHeadline.highlight} ${heroHeadline.suffix}`}
+                    msg1={heroChat}
+                    msg2="¿Cómo lo genero?"
+                    msg3="Completa el formulario y tendrás tu documento listo en 1 minuto."
+                    whatsappText={`Hola Grexia, necesito ayuda con ${name}`}
+                />
 
                 <!-- Decorative blobs -->
                 <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl"></div>

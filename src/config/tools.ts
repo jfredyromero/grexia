@@ -82,8 +82,7 @@ export const TOOLS: ToolConfig[] = [
             'https://lh3.googleusercontent.com/aida-public/AB6AXuDWv17QOVbfZPk9kO3e46KtKbJzpucPs99OOaVCKHmz2kSkcOdNeEneM_-NRb0z92MAptlBCnGHUtZ9a_zBH9FGGGc3CuUb5FBGZGlifDi5G7uZ5iuyYO4-XH-fNOuHZVEJqpkHIyIpA0sf1h01qqAIy9P5MIEPwc6XnRwYvAVz2exUikaWK2bWALEyVH_2h-FOjnU3mTm7OzCqoq3dSX7sjL8mmij62DeQaz1SBWDPC-d1luqm6r6HJQoOrBM14byZqO3OL7Fk9NVP',
         heroLawyerName: 'Abogada Camila',
         heroLawyerSpecialty: 'Arrendamientos · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80',
         heroChat: 'Hola, ¿necesitas ayuda con tu contrato de arrendamiento? Estoy disponible.',
     },
     {
@@ -134,8 +133,7 @@ export const TOOLS: ToolConfig[] = [
         heroImage: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogado Carlos',
         heroLawyerSpecialty: 'Títulos Valor · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80',
         heroChat: 'Hola, ¿necesitas generar un pagaré con validez legal? Puedo orientarte.',
     },
     {
@@ -186,8 +184,7 @@ export const TOOLS: ToolConfig[] = [
         heroImage: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogado Rodrigo',
         heroLawyerSpecialty: 'Litigios civiles · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&q=80',
         heroChat: 'Hola, ¿necesitas liquidar intereses judiciales? Te ayudo a calcularlo correctamente.',
     },
     {
@@ -237,9 +234,8 @@ export const TOOLS: ToolConfig[] = [
         ],
         heroImage: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Laura',
-        heroLawyerSpecialty: 'Derecho Inmobiliario · En linea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroLawyerSpecialty: 'Derecho Inmobiliario · En línea',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80',
         heroChat: 'Hola, ¿necesitas generar una promesa de compraventa? Te guio paso a paso.',
     },
     {
@@ -289,8 +285,7 @@ export const TOOLS: ToolConfig[] = [
         heroImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Sofía',
         heroLawyerSpecialty: 'Derechos Fundamentales · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=200&q=80',
         heroChat: 'Hola, ¿vulneraron alguno de tus derechos fundamentales? Te ayudo a preparar tu tutela.',
     },
     {
@@ -341,8 +336,7 @@ export const TOOLS: ToolConfig[] = [
         heroImage: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogado Andrés',
         heroLawyerSpecialty: 'Derecho Laboral · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80',
         heroChat: 'Hola, ¿necesitas generar un contrato laboral? Te ayudo a crearlo correctamente.',
     },
     {
@@ -393,8 +387,7 @@ export const TOOLS: ToolConfig[] = [
         heroImage: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Daniela',
         heroLawyerSpecialty: 'Procesal Civil · En línea',
-        heroLawyerAvatar:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBbKs5sbl-utIVdovJPKbQzcWod4y2hOz3kaztBtj7Ls3bW6Kwmulsoiz5mSwSe2xDUiCjKSkRA7MeGhg8cxHWwaNE4sUc7vM8NgEfuyvXUSfK-_8h-qTmuKvgfNs9HM5_6k1bDeqmeqTf_U8nzSQTcle8h9MK-z7KwRb0iVKgWMNIOKIQ6X2NBC1UZSHH2VZf0kPHx6cxsAUtjbnXpTUI6yYFmebZ030BxfSNRfNOqTMagqtzDJ2s7yUHVvK_pWBiCF0Ljmgeen1EQ',
+        heroLawyerAvatar: 'https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=200&q=80',
         heroChat: 'Hola, ¿necesitas otorgar un poder especial? Te ayudo a redactarlo paso a paso.',
     },
 ];
