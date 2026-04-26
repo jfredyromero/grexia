@@ -55,6 +55,10 @@ const faqIntereses = [
             '¿Qué tasa se aplica si la fecha de pago es posterior a la última tasa publicada por la Superfinanciera?',
         answer: 'Las tasas las certifica la Superfinanciera mes a mes (antes eran trimestrales). Si todavía no ha salido la certificación del período actual, se aplica por proyección la última tasa disponible y así lo indica Grexia en el reporte. Cuando la Superfinanciera publique la nueva certificación, la liquidación debe actualizarse antes de presentarla ante el juez para evitar diferencias y objeciones del deudor por aplicación de tasas no vigentes.',
     },
+    {
+        question: '¿Los documentos de Grexia son generados por inteligencia artificial?',
+        answer: 'No. Los documentos de Grexia nunca son generados por IA. Cada plantilla fue redactada, validada y respaldada por abogados especialistas en derecho colombiano, sin artículos inventados ni leyes fabricadas. La herramienta recopila tus datos y los aplica a una plantilla legal verificada. Para condiciones especiales o situaciones complejas, te conectamos con un profesional legal.',
+    },
 ];
 
 const faqSchema = {
@@ -674,6 +678,9 @@ const faqSchema = {
                             <strong class="text-secondary">Grexia genera todos estos elementos automáticamente</strong> usando
                             la tabla de tasas TEA certificadas por la Superfinanciera. Solo ingresas capital, tipo de interés
                             y fechas.
+                            <span class="block text-xs font-semibold text-slate-500 mt-1"
+                                >Sin IA: cada plantilla fue redactada, validada y respaldada por abogados especialistas.</span
+                            >
                         </p>
                     </div>
                     <a
