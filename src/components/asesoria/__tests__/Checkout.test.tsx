@@ -23,7 +23,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    // @ts-expect-error cleanup
     delete window.ePayco;
     vi.restoreAllMocks();
 });
@@ -31,9 +30,10 @@ afterEach(() => {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /** Espera que el SDK esté listo (intervalo de 100 ms) y rellena el formulario. */
-async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com') {
+async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com', celular = '3001234567') {
     await userEvent.type(screen.getByLabelText(/nombre completo/i), nombre);
     await userEvent.type(screen.getByLabelText(/correo electrónico/i), email);
+    await userEvent.type(screen.getByLabelText(/número de celular/i), celular);
     await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
     await userEvent.click(screen.getByTestId('btn-pagar'));
 }
@@ -41,11 +41,12 @@ async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com')
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('Checkout', () => {
-    it('renderiza el formulario con campos de nombre y email', () => {
+    it('renderiza el formulario con campos de nombre, email y celular', () => {
         render(<Checkout />);
 
         expect(screen.getByLabelText(/nombre completo/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/número de celular/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/cuéntanos tu caso/i)).toBeInTheDocument();
     });
 
@@ -61,6 +62,7 @@ describe('Checkout', () => {
 
         await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
         await userEvent.type(screen.getByLabelText(/correo/i), 'a@b.com');
+        await userEvent.type(screen.getByLabelText(/número de celular/i), '3001234567');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
         expect(screen.getByText(/ingresa tu nombre/i)).toBeInTheDocument();
@@ -73,6 +75,7 @@ describe('Checkout', () => {
         await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
         await userEvent.type(screen.getByLabelText(/nombre/i), 'Juan');
         await userEvent.type(screen.getByLabelText(/correo/i), 'no-es-un-email');
+        await userEvent.type(screen.getByLabelText(/número de celular/i), '3001234567');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
         expect(screen.getByText(/correo electrónico válido/i)).toBeInTheDocument();
@@ -96,13 +99,14 @@ describe('Checkout', () => {
         );
     });
 
-    it('guarda nombre y email en localStorage antes de abrir el modal', async () => {
+    it('guarda nombre, email y celular en localStorage antes de abrir el modal', async () => {
         render(<Checkout />);
 
-        await fillAndSubmit('Carlos López', 'carlos@example.com');
+        await fillAndSubmit('Carlos López', 'carlos@example.com', '3009876543');
 
         expect(localStorage.getItem('grexia_checkout_name')).toBe('Carlos López');
         expect(localStorage.getItem('grexia_checkout_email')).toBe('carlos@example.com');
+        expect(localStorage.getItem('grexia_checkout_celular')).toBe('3009876543');
     });
 
     it('configura el SDK con la key y el modo test al detectar window.ePayco', async () => {
@@ -124,6 +128,7 @@ describe('Checkout', () => {
         // Corregir y reenviar
         await userEvent.type(screen.getByLabelText(/nombre/i), 'María');
         await userEvent.type(screen.getByLabelText(/correo/i), 'maria@example.com');
+        await userEvent.type(screen.getByLabelText(/número de celular/i), '3001234567');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
         await waitFor(() => expect(screen.queryByText(/ingresa tu nombre/i)).not.toBeInTheDocument());

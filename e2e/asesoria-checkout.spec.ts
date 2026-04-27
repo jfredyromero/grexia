@@ -58,7 +58,6 @@ test.describe('Asesoria — Checkout', () => {
     });
 
     test('llama a ePayco handler.open() con los datos del formulario', async ({ page }) => {
-        const openCalls: unknown[] = [];
         await page.addInitScript(() => {
             Object.defineProperty(window, 'ePayco', {
                 value: {
@@ -67,7 +66,7 @@ test.describe('Asesoria — Checkout', () => {
                             open: (params: unknown) => {
                                 (window as unknown as Record<string, unknown>)['__epayco_calls__'] =
                                     (window as unknown as Record<string, unknown[]>)['__epayco_calls__'] ?? [];
-                                ((window as unknown as Record<string, unknown[]>)['__epayco_calls__']).push(params);
+                                (window as unknown as Record<string, unknown[]>)['__epayco_calls__'].push(params);
                             },
                         }),
                     },
@@ -81,9 +80,9 @@ test.describe('Asesoria — Checkout', () => {
         await checkout.fillContactForm('Juan Pérez', 'juan@example.com', 'Mi consulta');
         await page.getByTestId('btn-pagar').click();
 
-        const calls = await page.evaluate(() =>
-            (window as unknown as Record<string, unknown>)['__epayco_calls__']
-        );
+        const calls = (await page.evaluate(
+            () => (window as unknown as Record<string, unknown>)['__epayco_calls__']
+        )) as unknown[];
         expect(calls).toHaveLength(1);
         expect(calls[0]).toMatchObject({
             name_billing: 'Juan Pérez',

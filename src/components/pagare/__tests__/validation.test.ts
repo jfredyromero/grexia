@@ -30,6 +30,7 @@ const validObligacionUnico: ObligacionData = {
     periodoCuotas: '',
     ciudadSuscripcion: 'Bogotá D.C.',
     tasaInteresMora: '',
+    tasaInteresNominal: '',
 };
 
 const validObligacionCuotas: ObligacionData = {
@@ -302,6 +303,7 @@ describe('validateObligacion', () => {
                 periodoCuotas: '',
                 ciudadSuscripcion: '',
                 tasaInteresMora: '',
+                tasaInteresNominal: '',
             });
             expect(errors.valorPrincipal).toBeTruthy();
             expect(errors.fechaSuscripcion).toBeTruthy();

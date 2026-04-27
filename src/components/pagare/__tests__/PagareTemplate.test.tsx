@@ -31,6 +31,7 @@ const base: PagareFormData = {
         periodoCuotas: '',
         ciudadSuscripcion: 'Bogotá D.C.',
         tasaInteresMora: '',
+        tasaInteresNominal: '',
     },
 };
 
