@@ -6,6 +6,17 @@ import CheckoutForm from '../../components/asesoria/Checkout';
 
 const base = import.meta.env.BASE_URL;
 
+const asesoriaSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Asesoría Legal Virtual con Abogado Especialista',
+    description:
+        'Sesión virtual de 45 minutos con abogado colombiano especialista. Diagnóstico y hoja de ruta para tu caso legal.',
+    provider: { '@type': 'Organization', name: 'Grexia', url: Astro.site?.href ?? 'https://grexia.co/' },
+    offers: { '@type': 'Offer', price: '59900', priceCurrency: 'COP' },
+    url: new URL('asesoria/checkout', Astro.site).href,
+};
+
 const SESSION_FEATURES = [
     { icon: 'schedule', text: '45 minutos de sesión virtual' },
     { icon: 'person', text: 'Abogado especialista en tu área' },
@@ -17,6 +28,7 @@ const SESSION_FEATURES = [
 <Layout
     title="Checkout - Asesoría Legal - Grexia"
     description="Agenda tu sesión de asesoría legal con un abogado colombiano. Para situaciones complejas que requieren orientación profesional."
+    schema={asesoriaSchema}
 >
     <main class="grow w-full bg-background-light">
         <div class="mx-auto max-w-4xl px-6 lg:px-8 py-8 lg:py-14">

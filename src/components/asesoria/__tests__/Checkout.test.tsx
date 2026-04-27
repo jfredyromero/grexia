@@ -29,11 +29,20 @@ afterEach(() => {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+/** Abre el Listbox de tipo de documento y selecciona una opción por su label. */
+async function selectTipoDoc(optionLabel: string) {
+    await userEvent.click(screen.getByLabelText(/tipo de documento/i));
+    await userEvent.click(await screen.findByText(optionLabel));
+}
+
 /** Espera que el SDK esté listo (intervalo de 100 ms) y rellena el formulario. */
 async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com', celular = '3001234567') {
     await userEvent.type(screen.getByLabelText(/nombre completo/i), nombre);
     await userEvent.type(screen.getByLabelText(/correo electrónico/i), email);
     await userEvent.type(screen.getByLabelText(/número de celular/i), celular);
+    await selectTipoDoc('Cédula de ciudadanía');
+    await userEvent.type(screen.getByLabelText(/número de documento/i), '12345678');
+    await userEvent.type(screen.getByLabelText(/dirección/i), 'Calle 1 # 2-3, Bogotá');
     await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
     await userEvent.click(screen.getByTestId('btn-pagar'));
 }
@@ -129,6 +138,9 @@ describe('Checkout', () => {
         await userEvent.type(screen.getByLabelText(/nombre/i), 'María');
         await userEvent.type(screen.getByLabelText(/correo/i), 'maria@example.com');
         await userEvent.type(screen.getByLabelText(/número de celular/i), '3001234567');
+        await selectTipoDoc('Cédula de ciudadanía');
+        await userEvent.type(screen.getByLabelText(/número de documento/i), '12345678');
+        await userEvent.type(screen.getByLabelText(/dirección/i), 'Calle 1 # 2-3');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
         await waitFor(() => expect(screen.queryByText(/ingresa tu nombre/i)).not.toBeInTheDocument());

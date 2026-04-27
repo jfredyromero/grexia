@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getSupabase } from '../../../services/supabase';
+import { getSupabase, type SupabaseLike } from '../../../services/supabase';
 import type { PagoData } from './estado';
 
 export const prerender = false;
@@ -42,17 +42,20 @@ export async function validateEpaycoSignature(fields: SignatureFields, x_signatu
 
 // ── validateResumenCaso ──────────────────────────────────────────────────────
 
-export function validateResumenCaso(body: unknown): { ref_payco: string; resumen_caso: string } | null {
+export function validateResumenCaso(
+    body: unknown
+): { ref_payco: string; ref_hash: string; resumen_caso: string } | null {
     if (typeof body !== 'object' || body === null) return null;
     const b = body as Record<string, unknown>;
     const ref_payco = b['ref_payco'];
+    const ref_hash = b['ref_hash'];
     const resumen_caso = b['resumen_caso'];
 
     if (typeof ref_payco !== 'string' || ref_payco.trim() === '') return null;
+    if (typeof ref_hash !== 'string' || ref_hash.trim() === '') return null;
     if (typeof resumen_caso !== 'string') return null;
-    if (resumen_caso.length > 5000) return null;
 
-    return { ref_payco: ref_payco.trim(), resumen_caso };
+    return { ref_payco: ref_payco.trim(), ref_hash: ref_hash.trim(), resumen_caso };
 }
 
 // ── TransaccionRow type ──────────────────────────────────────────────────────
@@ -75,6 +78,23 @@ export interface TransaccionRow {
     cuotas: string | null;
     descripcion: string | null;
     fecha_transaccion: string | null;
+    redimido: boolean;
+    tipo_documento?: string | null;
+    numero_documento?: string | null;
+    direccion?: string | null;
+}
+
+// ── tryFixEncoding ───────────────────────────────────────────────────────────
+// ePayco sends UTF-8 text but some gateways store it with Latin-1 mis-mapping.
+// Re-interpret each char as a raw byte and decode as UTF-8 to recover accented chars.
+function tryFixEncoding(s: string | null | undefined): string {
+    if (!s) return '';
+    if (!/[\xC0-\xFF]/.test(s)) return s;
+    try {
+        return new TextDecoder().decode(new Uint8Array([...s].map((c) => c.charCodeAt(0))));
+    } catch {
+        return s;
+    }
 }
 
 // ── mapTransaccionToResponse ─────────────────────────────────────────────────
@@ -82,7 +102,7 @@ export interface TransaccionRow {
 export function mapTransaccionToResponse(
     row: TransaccionRow,
     calendarUrl: string
-): { ok: boolean; calendarUrl?: string; pago: PagoData } {
+): { ok: boolean; calendarUrl?: string; pago: PagoData; redimido: boolean } {
     const ok = row.estado === 'Aceptada';
 
     const FRANQUICIAS: Record<string, string> = {
@@ -107,25 +127,37 @@ export function mapTransaccionToResponse(
         tipoPago: row.tipo_pago ?? '',
         cuotas: row.cuotas ?? '',
         transactionId: row.transaction_id ?? '',
-        descripcion: row.descripcion ?? '',
+        descripcion: tryFixEncoding(row.descripcion),
         codigoAprobacion: row.codigo_aprobacion ?? '',
         motivoRechazo: !ok ? (row.motivo_rechazo ?? '') : '',
+        tipoDocumento: row.tipo_documento ?? '',
+        numeroDocumento: row.numero_documento ?? '',
+        direccion: row.direccion ?? '',
     };
 
     if (ok) {
-        return { ok: true, calendarUrl, pago };
+        return { ok: true, calendarUrl, pago, redimido: row.redimido };
     }
-    return { ok: false, pago };
+    return { ok: false, pago, redimido: row.redimido };
 }
 
-// ── POST webhook handler ─────────────────────────────────────────────────────
+// ── extractCalendlyEventId ────────────────────────────────────────────────────
 
-export const POST: APIRoute = async ({ request }) => {
+export function extractCalendlyEventId(uri: string): string | null {
+    if (!uri) return null;
+    const segments = uri.split('/');
+    const id = segments[segments.length - 1];
+    return id && id.length > 0 ? id : null;
+}
+
+// ── handlePost (testable core logic) ─────────────────────────────────────────
+
+export async function handlePost(
+    request: Request,
+    deps: { db?: SupabaseLike; signatureValid?: boolean } = {}
+): Promise<Response> {
     const text = await request.text();
     const params = new URLSearchParams(text);
-
-    const p_cust_id_cliente = import.meta.env.EPAYCO_P_CUST_ID as string;
-    const p_key = import.meta.env.EPAYCO_P_KEY as string;
 
     const x_ref_payco = params.get('x_ref_payco') ?? '';
     const x_transaction_id = params.get('x_transaction_id') ?? '';
@@ -133,19 +165,37 @@ export const POST: APIRoute = async ({ request }) => {
     const x_currency_code = params.get('x_currency_code') ?? '';
     const x_signature = params.get('x_signature') ?? '';
 
-    const valid = await validateEpaycoSignature(
-        { p_cust_id_cliente, p_key, x_ref_payco, x_transaction_id, x_amount, x_currency_code },
-        x_signature
-    );
+    let valid: boolean;
+    if (deps.signatureValid !== undefined) {
+        valid = deps.signatureValid;
+    } else {
+        const p_cust_id_cliente = import.meta.env.EPAYCO_P_CUST_ID as string;
+        const p_key = import.meta.env.EPAYCO_P_KEY as string;
+        valid = await validateEpaycoSignature(
+            { p_cust_id_cliente, p_key, x_ref_payco, x_transaction_id, x_amount, x_currency_code },
+            x_signature
+        );
+        if (!valid) {
+            console.warn('[ePayco webhook] firma inválida — ref:', x_ref_payco, {
+                p_cust_id_cliente_set: !!p_cust_id_cliente,
+                p_key_set: !!p_key,
+                p_key_prefix: p_key ? p_key.slice(0, 6) + '…' : 'MISSING',
+                x_ref_payco,
+                x_transaction_id,
+                x_amount,
+                x_currency_code,
+                x_signature_received: x_signature,
+            });
+        }
+    }
 
     if (!valid) {
-        console.warn('[ePayco webhook] firma inválida — ref:', x_ref_payco);
         return new Response(null, { status: 200 });
     }
 
     try {
-        const db = getSupabase();
-        await db.from('transacciones').upsert(
+        const db = deps.db ?? getSupabase();
+        const { error } = await db.from('transacciones').upsert(
             {
                 ref_payco: x_ref_payco,
                 transaction_id: params.get('x_transaction_id'),
@@ -167,21 +217,33 @@ export const POST: APIRoute = async ({ request }) => {
                 fecha_transaccion: params.get('x_fecha_transaccion')
                     ? new Date(params.get('x_fecha_transaccion')!).toISOString()
                     : null,
+                tipo_documento: params.get('x_extra2') || null,
+                numero_documento: params.get('x_extra3') || null,
+                direccion: params.get('x_extra4') || null,
+                es_prueba:
+                    params.get('x_test_request') === '1' ||
+                    (params.get('x_test_request') ?? '').toUpperCase() === 'TRUE',
                 raw: Object.fromEntries(params.entries()),
                 updated_at: new Date().toISOString(),
             },
             { onConflict: 'ref_payco' }
         );
+        if (error) {
+            console.error('[ePayco webhook] upsert falló — ref:', x_ref_payco, error);
+        }
     } catch (err) {
-        console.error('[ePayco webhook] error al guardar transacción:', err);
+        console.error('[ePayco webhook] error inesperado al guardar transacción:', err);
     }
 
     return new Response(null, { status: 200 });
-};
+}
 
-// ── PATCH handler ────────────────────────────────────────────────────────────
+// ── handlePatch (testable core logic) ────────────────────────────────────────
 
-export const PATCH: APIRoute = async ({ request }) => {
+export async function handlePatch(
+    request: Request,
+    deps: { db?: SupabaseLike; fetcher?: typeof fetch } = {}
+): Promise<Response> {
     let body: unknown;
     try {
         body = await request.json();
@@ -192,20 +254,39 @@ export const PATCH: APIRoute = async ({ request }) => {
         });
     }
 
-    const validated = validateResumenCaso(body);
-    if (!validated) {
-        return new Response(JSON.stringify({ error: 'Datos inválidos' }), {
+    const b = body as Record<string, unknown>;
+    const rawRef =
+        typeof b['ref_payco'] === 'number'
+            ? String(b['ref_payco'])
+            : typeof b['ref_payco'] === 'string'
+              ? b['ref_payco'].trim()
+              : '';
+    if (!rawRef) {
+        return new Response(JSON.stringify({ error: 'ref_payco requerido' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
         });
     }
 
-    const db = getSupabase();
+    const isRedimido = b['redimido'] === true;
+
+    const refHash = !isRedimido ? (typeof b['ref_hash'] === 'string' ? b['ref_hash'].trim() : '') : '';
+    if (!isRedimido && !refHash) {
+        return new Response(JSON.stringify({ error: 'ref_hash requerido' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    const resumenCaso = !isRedimido && typeof b['resumen_caso'] === 'string' ? (b['resumen_caso'] as string) : null;
+
+    const db = deps.db ?? getSupabase();
+    const ref = rawRef;
     const { data, error } = await db
         .from('transacciones')
-        .select('id, estado')
-        .eq('ref_payco', validated.ref_payco)
-        .single();
+        .select('ref_payco, estado')
+        .or(`ref_payco.eq.${ref},ref_hash.eq.${ref}`)
+        .maybeSingle();
 
     if (error || !data) {
         return new Response(JSON.stringify({ error: 'Transacción no encontrada' }), {
@@ -214,20 +295,66 @@ export const PATCH: APIRoute = async ({ request }) => {
         });
     }
 
-    if (data.estado !== 'Aceptada') {
-        return new Response(JSON.stringify({ error: 'El pago no fue aceptado' }), {
-            status: 409,
-            headers: { 'Content-Type': 'application/json' },
-        });
-    }
+    if (isRedimido) {
+        if (data.estado !== 'Aceptada') {
+            return new Response(JSON.stringify({ error: 'El pago no fue aceptado' }), {
+                status: 409,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
-    await db
-        .from('transacciones')
-        .update({ resumen_caso: validated.resumen_caso, updated_at: new Date().toISOString() })
-        .eq('ref_payco', validated.ref_payco);
+        const rawCalendlyId = typeof b['calendly_event_id'] === 'string' ? b['calendly_event_id'].trim() : null;
+        const calendlyId =
+            rawCalendlyId && rawCalendlyId.length <= 100 && /^[\w-]+$/.test(rawCalendlyId) ? rawCalendlyId : null;
+
+        const calFetcher = deps.fetcher ?? fetch;
+        const apiKey = import.meta.env.CALENDLY_API_KEY as string | undefined;
+        let fechaReunion: string | null = null;
+
+        if (calendlyId && (deps.fetcher || apiKey)) {
+            try {
+                const res = await calFetcher(`https://api.calendly.com/scheduled_events/${calendlyId}`, {
+                    headers: { Authorization: `Bearer ${apiKey ?? ''}` },
+                });
+                if (res.ok) {
+                    const payload = (await res.json()) as { resource?: { start_time?: string } };
+                    fechaReunion = payload.resource?.start_time ?? null;
+                }
+            } catch {
+                console.warn('[Calendly] no se pudo obtener start_time para:', calendlyId);
+            }
+        }
+
+        await db
+            .from('transacciones')
+            .update({
+                redimido: true,
+                ...(calendlyId ? { calendly_event_id: calendlyId } : {}),
+                ...(fechaReunion ? { fecha_reunion: fechaReunion } : {}),
+                updated_at: new Date().toISOString(),
+            })
+            .eq('ref_payco', data.ref_payco);
+    } else {
+        await db
+            .from('transacciones')
+            .update({
+                ref_hash: refHash,
+                ...(resumenCaso !== null ? { resumen_caso: resumenCaso } : {}),
+                updated_at: new Date().toISOString(),
+            })
+            .eq('ref_payco', data.ref_payco);
+    }
 
     return new Response(JSON.stringify({ ok: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
     });
-};
+}
+
+// ── POST webhook handler ─────────────────────────────────────────────────────
+
+export const POST: APIRoute = async ({ request }) => handlePost(request);
+
+// ── PATCH handler ────────────────────────────────────────────────────────────
+
+export const PATCH: APIRoute = async ({ request }) => handlePatch(request);

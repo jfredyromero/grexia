@@ -11,7 +11,7 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
     integrations: [react()],
 
-    site: 'https://grexia.vercel.app',
+    site: 'https://grexia.co',
     base: '/',
 
     vite: {
@@ -23,4 +23,8 @@ export default defineConfig({
             enabled: true,
         },
     }),
+
+    security: {
+        checkOrigin: false,
+    },
 });

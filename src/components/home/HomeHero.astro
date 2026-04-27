@@ -1,4 +1,6 @@
 ---
+import LawyerChatWidget from '../shared/LawyerChatWidget.astro';
+
 const base = import.meta.env.BASE_URL;
 
 const trustBadges = [
@@ -10,16 +12,16 @@ const trustBadges = [
 
 const socialAvatars = [
     {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5V-on_7keAJEftPazMB7vJ67iatf4qd4WOg_ZLAGyQBUYYmpcgWK5CelWduBdraqtPEVMpbZacLQTptHErkMPUSMqVXJe326yqQ1W5TwXEGPS4jEK_qNcJlia7lnzWXHb8dHj4yFQ0yb8dgypVkMEydK7l4KuqFSfMe08sorNHA100WBaGKGVLRDnkqDwuhJaz29ykI2nxkBUGnMcdVoXgJQJLSjQy3dkBNGn3kCa3dXugbVN6ZcyTay7ASuwwRvKF5m__5lVmKDy',
+        src: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80',
         alt: 'Usuaria de Grexia',
     },
     {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfp-jh4m6Wbqi9eNLW5obsxwye-auLWzPod3k8AJEROlnlaC_1aesC1FHe7w3PXdQekpmc1AW1_i3T5me0j8M5OUwqa88kbLcNPK3-4JyenI6zUb4QR6Av2Yh4wh10lu4brK_rCWq_2EIcu93vRZ4rWuRPfxhmVwSAVnZVNXWprqEEhh8Pv6fQZO5Hir-sQmpAv-PUqk9Lx0iPvBHpG-Ufxf9VoI2PTL81xeLGJ_9uZ5UabQYR-HFeNlBSdNJxQeWQyU2Tj0VbSAw9',
+        src: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80',
         alt: 'Usuario de Grexia',
     },
     {
-        src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCX5Y3IuUrv_PQkgw7I4x0hIq5GvqM4mNZH8Nf77tl1GcPXLaCsLSP2o-hJE_jkQBylIIrWbA_Agy1XvGpz_f8DUANpGrude4HanBLTVn0rjk9MH1DWXBs_2XcoV0BjA2Jv0TSycQXYoMDCFQ6jRTvQ7EqpI_UR5w-Hc1GzrtD-_-1gqsnysbzsx96QlqhDIlsLbggTZolxZyvIOnJ4GSC_Nr2qTSas446QFjH9RInxio5Jobdsm1Lu_97Tf-dswOGBLAidqyvqKbw',
-        alt: 'Usuario de Grexia',
+        src: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80',
+        alt: 'Usuaria de Grexia',
     },
 ];
 
@@ -85,19 +87,19 @@ const LAWYER_AVATAR =
                 </div>
 
                 <!-- Social Proof -->
-                <div class="flex items-center gap-4 pt-6 border-t border-slate-200 mt-2">
-                    <div class="flex -space-x-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 pt-6 border-t border-slate-200 mt-2">
+                    <div class="flex -space-x-3 shrink-0">
                         {
                             socialAvatars.map((avatar) => (
                                 <img
                                     alt={avatar.alt}
-                                    class="h-12 w-12 rounded-full border-2 border-white object-cover"
+                                    class="h-10 w-10 rounded-full border-2 border-white object-cover"
                                     src={avatar.src}
                                 />
                             ))
                         }
                         <div
-                            class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
+                            class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-secondary text-xs font-bold text-white"
                         >
                             +1.2k
                         </div>
@@ -106,7 +108,12 @@ const LAWYER_AVATAR =
                         <div class="flex text-yellow-400 text-sm">
                             {
                                 Array.from({ length: 5 }).map(() => (
-                                    <span class="material-symbols-outlined text-[18px]">star</span>
+                                    <span
+                                        class="material-symbols-outlined text-[18px]"
+                                        style="font-variation-settings: 'FILL' 1"
+                                    >
+                                        star
+                                    </span>
                                 ))
                             }
                         </div>
@@ -117,60 +124,19 @@ const LAWYER_AVATAR =
                 </div>
             </div>
 
-            <!-- ── Right: Photo visual ── -->
+            <!-- ── Right: chat widget ── -->
             <div class="relative hidden lg:block order-1 lg:order-2">
-                <div
-                    class="relative w-full aspect-4/5 md:aspect-square lg:aspect-4/5 overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-2xl"
-                >
-                    <!-- Hero photo -->
-                    <img
-                        alt="Persona generando documentos legales con Grexia"
-                        class="h-full w-full object-cover object-center"
-                        src={HERO_IMAGE}
-                    />
-
-                    <!-- Gradient overlay -->
-                    <div class="absolute inset-0 bg-linear-to-t from-secondary/20 to-transparent"></div>
-
-                    <!-- Glass Widget: Lawyer chat -->
-                    <div
-                        class="glass-widget absolute top-8 right-6 flex max-w-65 flex-col gap-3 rounded-lg p-4 animate-[fade-in-up_1s_ease-out_0.5s_backwards]"
-                    >
-                        <div class="flex items-center gap-3">
-                            <div class="relative">
-                                <img
-                                    alt="Abogada Camila de Grexia"
-                                    class="h-10 w-10 rounded-full object-cover border border-white"
-                                    src={LAWYER_AVATAR}
-                                />
-                                <div
-                                    class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"
-                                >
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-bold text-slate-800">Abogada Camila</span>
-                                <span class="text-xs text-slate-700">Equipo Grexia · En línea</span>
-                            </div>
-                        </div>
-                        <div class="rounded-xl bg-white/60 p-2 text-xs text-slate-700 leading-snug backdrop-blur-sm">
-                            "Hola, ¿en qué documento legal te puedo ayudar hoy? Estamos disponibles."
-                        </div>
-                    </div>
-
-                    <!-- Glass Widget: PDF badge -->
-                    <div
-                        class="glass-widget absolute bottom-8 left-6 flex items-center gap-3 rounded-full py-3 px-5 pr-8"
-                    >
-                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-                            <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-700 font-medium uppercase tracking-wider">Descarga en PDF</p>
-                            <p class="text-sm font-bold text-slate-800">Lista en segundos</p>
-                        </div>
-                    </div>
-                </div>
+                <LawyerChatWidget
+                    lawyerName="Abogada Camila"
+                    lawyerSpecialty="Equipo Grexia · En línea"
+                    lawyerAvatar={LAWYER_AVATAR}
+                    heroImage={HERO_IMAGE}
+                    heroAlt="Persona generando documentos legales con Grexia"
+                    msg1="Hola, ¿en qué documento legal te puedo ayudar hoy?"
+                    msg2="¿Puedo generar un contrato gratis?"
+                    msg3="¡Claro! Con Grexia lo tienes listo en menos de 2 minutos."
+                    whatsappText="Hola Grexia, necesito ayuda con un documento legal"
+                />
 
                 <!-- Decorative blobs -->
                 <div class="absolute -top-12 -right-12 -z-10 h-64 w-64 rounded-full bg-primary/20 blur-3xl"></div>

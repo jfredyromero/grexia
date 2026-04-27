@@ -1,0 +1,2 @@
+ALTER TABLE transacciones
+  ADD COLUMN IF NOT EXISTS es_prueba BOOLEAN DEFAULT false;

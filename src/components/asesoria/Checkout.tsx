@@ -2,6 +2,16 @@ import { useState, useRef, useEffect, type FormEvent } from 'react';
 import InputField from '../shared/InputField';
 import TextareaField from '../shared/TextareaField';
 import Button from '../shared/Button';
+import SelectField, { type SelectOption } from '../shared/SelectField';
+
+type TipoDoc = 'CC' | 'CE' | 'NIT' | 'Pasaporte';
+
+const TIPO_DOC_OPTIONS: SelectOption<TipoDoc>[] = [
+    { value: 'CC', label: 'Cédula de ciudadanía' },
+    { value: 'CE', label: 'Cédula de extranjería' },
+    { value: 'NIT', label: 'NIT' },
+    { value: 'Pasaporte', label: 'Pasaporte' },
+];
 
 export function validateCelular(value: string): boolean {
     return /^\d{10}$/.test(value);
@@ -31,6 +41,9 @@ interface Errors {
     nombre?: string;
     email?: string;
     celular?: string;
+    tipoDoc?: string;
+    numDoc?: string;
+    direccion?: string;
 }
 
 export default function Checkout() {
@@ -38,6 +51,9 @@ export default function Checkout() {
     const [email, setEmail] = useState('');
     const [celular, setCelular] = useState('');
     const [caso, setCaso] = useState('');
+    const [tipoDoc, setTipoDoc] = useState<TipoDoc | ''>('');
+    const [numDoc, setNumDoc] = useState('');
+    const [direccion, setDireccion] = useState('');
     const [errors, setErrors] = useState<Errors>({});
     const [sdkReady, setSdkReady] = useState(false);
     const handlerRef = useRef<EpaycoHandler | null>(null);
@@ -61,6 +77,9 @@ export default function Checkout() {
         if (!nombre.trim()) errs.nombre = 'Ingresa tu nombre completo';
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = 'Ingresa un correo electrónico válido';
         if (!validateCelular(celular.trim())) errs.celular = 'Ingresa un número de celular válido (10 dígitos)';
+        if (!tipoDoc) errs.tipoDoc = 'Selecciona el tipo de documento';
+        if (!numDoc.trim()) errs.numDoc = 'Ingresa tu número de documento';
+        if (!direccion.trim()) errs.direccion = 'Ingresa tu dirección';
         return errs;
     }
 
@@ -76,6 +95,10 @@ export default function Checkout() {
         localStorage.setItem('grexia_checkout_email', email.trim());
         localStorage.setItem('grexia_checkout_celular', celular.trim());
         localStorage.setItem('grexia_checkout_notes', caso.trim());
+        localStorage.setItem('grexia_checkout_patch_done', 'false');
+        localStorage.setItem('grexia_checkout_tipo_doc', tipoDoc);
+        localStorage.setItem('grexia_checkout_num_doc', numDoc.trim());
+        localStorage.setItem('grexia_checkout_direccion', direccion.trim());
 
         handlerRef.current?.open({
             name: 'Asesoría legal Grexia',
@@ -94,6 +117,13 @@ export default function Checkout() {
             name_billing: nombre.trim(),
             mobilephone_billing: celular.trim(),
             extra1: celular.trim(),
+            extra2: tipoDoc,
+            extra3: numDoc.trim(),
+            extra4: direccion.trim(),
+            id_billing: numDoc.trim(),
+            type_doc_billing: tipoDoc,
+            address_billing: direccion.trim(),
+            type_person_billing: tipoDoc === 'NIT' ? 'J' : 'N',
             methodsDisable: ['CASH', 'SP'],
         });
     }
@@ -155,6 +185,54 @@ export default function Checkout() {
                     value={celular}
                     onChange={(e) => setCelular(e.target.value)}
                     error={errors.celular}
+                />
+
+                <div className="flex flex-col gap-1">
+                    <label
+                        htmlFor="tipoDoc"
+                        className="text-sm font-medium text-slate-700"
+                    >
+                        Tipo de documento <span className="text-red-500">*</span>
+                    </label>
+                    <SelectField<TipoDoc>
+                        id="tipoDoc"
+                        value={tipoDoc}
+                        onChange={(v) => setTipoDoc(v)}
+                        options={TIPO_DOC_OPTIONS}
+                        placeholder="Tipo de documento"
+                        error={errors.tipoDoc}
+                    />
+                </div>
+
+                <InputField
+                    label={
+                        <>
+                            Número de documento <span className="text-red-500">*</span>
+                        </>
+                    }
+                    id="numDoc"
+                    name="numDoc"
+                    type="text"
+                    placeholder="Número de documento"
+                    value={numDoc}
+                    onChange={(e) => setNumDoc(e.target.value)}
+                    error={errors.numDoc}
+                />
+
+                <InputField
+                    label={
+                        <>
+                            Dirección <span className="text-red-500">*</span>
+                        </>
+                    }
+                    id="direccion"
+                    name="direccion"
+                    type="text"
+                    autoComplete="street-address"
+                    placeholder="Ej: Calle 1 # 2-3, Bogotá"
+                    value={direccion}
+                    onChange={(e) => setDireccion(e.target.value)}
+                    error={errors.direccion}
                 />
 
                 <TextareaField

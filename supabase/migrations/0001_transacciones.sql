@@ -22,6 +22,7 @@ CREATE TABLE transacciones (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX idx_transacciones_ref_payco ON transacciones (ref_payco);
 CREATE INDEX idx_transacciones_estado ON transacciones (estado);
 CREATE INDEX idx_transacciones_email ON transacciones (email);
 CREATE INDEX idx_transacciones_created_at ON transacciones (created_at DESC);
