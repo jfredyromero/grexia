@@ -1,18 +1,11 @@
 import { useState, useRef, useEffect, type FormEvent } from 'react';
 import InputField from '../shared/InputField';
-// import SelectField from '../shared/SelectField';
-// import type { SelectOption } from '../shared/SelectField';
 import TextareaField from '../shared/TextareaField';
 import Button from '../shared/Button';
 
-// type TipoDoc = 'cc' | 'ce' | 'nit' | 'passport';
-
-// const TIPOS_DOC: SelectOption<TipoDoc>[] = [
-//     { value: 'cc', label: 'CC' },
-//     { value: 'ce', label: 'CE' },
-//     { value: 'nit', label: 'NIT' },
-//     { value: 'passport', label: 'Pasaporte' },
-// ];
+export function validateCelular(value: string): boolean {
+    return /^\d{10}$/.test(value);
+}
 
 const EPAYCO_KEY = import.meta.env.PUBLIC_EPAYCO_P_KEY as string;
 const IS_TEST = import.meta.env.PUBLIC_EPAYCO_TEST !== 'false';
@@ -37,17 +30,13 @@ declare global {
 interface Errors {
     nombre?: string;
     email?: string;
-    // celular?: string;
-    // tipoDoc?: string;
-    // cedula?: string;
+    celular?: string;
 }
 
 export default function Checkout() {
     const [nombre, setNombre] = useState('');
     const [email, setEmail] = useState('');
-    // const [celular, setCelular] = useState('');
-    // const [tipoDoc, setTipoDoc] = useState<TipoDoc | ''>('');
-    // const [cedula, setCedula] = useState('');
+    const [celular, setCelular] = useState('');
     const [caso, setCaso] = useState('');
     const [errors, setErrors] = useState<Errors>({});
     const [sdkReady, setSdkReady] = useState(false);
@@ -71,9 +60,7 @@ export default function Checkout() {
         const errs: Errors = {};
         if (!nombre.trim()) errs.nombre = 'Ingresa tu nombre completo';
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = 'Ingresa un correo electrónico válido';
-        // if (!/^\d{10}$/.test(celular.replace(/\s/g, ''))) errs.celular = 'Ingresa un celular de 10 dígitos';
-        // if (!tipoDoc) errs.tipoDoc = 'Selecciona el tipo de documento';
-        // if (!/^\d{6,12}$/.test(cedula.replace(/\s/g, ''))) errs.cedula = 'Ingresa un número de documento válido';
+        if (!validateCelular(celular.trim())) errs.celular = 'Ingresa un número de celular válido (10 dígitos)';
         return errs;
     }
 
@@ -87,8 +74,7 @@ export default function Checkout() {
         setErrors({});
         localStorage.setItem('grexia_checkout_name', nombre.trim());
         localStorage.setItem('grexia_checkout_email', email.trim());
-        // localStorage.setItem('grexia_checkout_celular', celular.trim());
-        // localStorage.setItem('grexia_checkout_cedula', cedula.trim());
+        localStorage.setItem('grexia_checkout_celular', celular.trim());
         localStorage.setItem('grexia_checkout_notes', caso.trim());
 
         handlerRef.current?.open({
@@ -106,9 +92,8 @@ export default function Checkout() {
             confirmation: CONFIRMATION_URL,
             email_billing: email.trim(),
             name_billing: nombre.trim(),
-            // mobilephone_billing: celular.trim(),
-            // number_doc_billing: cedula.trim(),
-            // type_doc_billing: tipoDoc,
+            mobilephone_billing: celular.trim(),
+            extra1: celular.trim(),
             methodsDisable: ['CASH', 'SP'],
         });
     }
@@ -156,7 +141,7 @@ export default function Checkout() {
                     error={errors.email}
                 />
 
-                {/* <InputField
+                <InputField
                     label={
                         <>
                             Número de celular <span className="text-red-500">*</span>
@@ -170,40 +155,7 @@ export default function Checkout() {
                     value={celular}
                     onChange={(e) => setCelular(e.target.value)}
                     error={errors.celular}
-                /> */}
-
-                {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:items-end">
-                    <div className="flex flex-col gap-1.5">
-                        <label className="text-sm font-semibold text-slate-700">
-                            Tipo de documento <span className="text-red-500">*</span>
-                        </label>
-                        <SelectField
-                            id="tipo-doc"
-                            value={tipoDoc}
-                            onChange={setTipoDoc}
-                            options={TIPOS_DOC}
-                            placeholder="Seleccionar..."
-                            error={errors.tipoDoc}
-                        />
-                    </div>
-                    <div className="sm:col-span-2">
-                        <InputField
-                            label={
-                                <>
-                                    Número de documento <span className="text-red-500">*</span>
-                                </>
-                            }
-                            id="cedula"
-                            name="cedula"
-                            type="text"
-                            inputMode="numeric"
-                            placeholder="1234567890"
-                            value={cedula}
-                            onChange={(e) => setCedula(e.target.value)}
-                            error={errors.cedula}
-                        />
-                    </div>
-                </div> */}
+                />
 
                 <TextareaField
                     label={

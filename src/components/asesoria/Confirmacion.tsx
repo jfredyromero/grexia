@@ -63,6 +63,15 @@ export default function Confirmacion() {
                 if (data.ok && data.calendarUrl) {
                     document.title = '¡Pago exitoso! · Grexia';
                     setEstado({ tipo: 'exito', calendarUrl: data.calendarUrl, pago: data.pago });
+
+                    const notas = localStorage.getItem('grexia_checkout_notes');
+                    if (notas?.trim() && ref) {
+                        fetch('/api/pago/confirmar', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ ref_payco: ref, resumen_caso: notas.trim() }),
+                        }).catch(() => {});
+                    }
                 } else {
                     setEstado({
                         tipo: 'fallido',

@@ -108,6 +108,7 @@ describe('forceValidate — muestra errores al intentar saltar step inválido', 
                 <StepArrendatario
                     data={INITIAL_FORM_DATA.arrendatario}
                     onChange={noop}
+                    onCoarrendatarioChange={noop}
                     onNext={noop}
                     onBack={noop}
                     forceValidate={0}
@@ -121,6 +122,7 @@ describe('forceValidate — muestra errores al intentar saltar step inválido', 
                 <StepArrendatario
                     data={INITIAL_FORM_DATA.arrendatario}
                     onChange={noop}
+                    onCoarrendatarioChange={noop}
                     onNext={noop}
                     onBack={noop}
                     forceValidate={0}
@@ -130,6 +132,7 @@ describe('forceValidate — muestra errores al intentar saltar step inválido', 
                 <StepArrendatario
                     data={INITIAL_FORM_DATA.arrendatario}
                     onChange={noop}
+                    onCoarrendatarioChange={noop}
                     onNext={noop}
                     onBack={noop}
                     forceValidate={1}

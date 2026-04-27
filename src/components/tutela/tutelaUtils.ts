@@ -134,7 +134,8 @@ export function generarPretensiones(data: TutelaFormData): string[] {
 }
 
 export function generarListaAnexos(data: TutelaFormData): string[] {
-    return data.documentosGuia
-        .map((doc) => DOCUMENTOS_GUIA.find((d) => d.value === doc)?.label)
-        .filter((label): label is string => !!label);
+    return data.documentosGuia.flatMap((doc) => {
+        const found = DOCUMENTOS_GUIA.find((d) => d.value === doc);
+        return found ? [found.label as string] : [];
+    });
 }
