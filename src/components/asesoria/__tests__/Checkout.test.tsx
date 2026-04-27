@@ -34,6 +34,9 @@ async function fillAndSubmit(nombre = 'Juan Pérez', email = 'juan@example.com',
     await userEvent.type(screen.getByLabelText(/nombre completo/i), nombre);
     await userEvent.type(screen.getByLabelText(/correo electrónico/i), email);
     await userEvent.type(screen.getByLabelText(/número de celular/i), celular);
+    await userEvent.selectOptions(screen.getByLabelText(/tipo de documento/i), 'CC');
+    await userEvent.type(screen.getByLabelText(/número de documento/i), '12345678');
+    await userEvent.type(screen.getByLabelText(/dirección/i), 'Calle 1 # 2-3, Bogotá');
     await waitFor(() => expect(screen.getByTestId('btn-pagar')).not.toBeDisabled());
     await userEvent.click(screen.getByTestId('btn-pagar'));
 }
@@ -129,6 +132,9 @@ describe('Checkout', () => {
         await userEvent.type(screen.getByLabelText(/nombre/i), 'María');
         await userEvent.type(screen.getByLabelText(/correo/i), 'maria@example.com');
         await userEvent.type(screen.getByLabelText(/número de celular/i), '3001234567');
+        await userEvent.selectOptions(screen.getByLabelText(/tipo de documento/i), 'CC');
+        await userEvent.type(screen.getByLabelText(/número de documento/i), '12345678');
+        await userEvent.type(screen.getByLabelText(/dirección/i), 'Calle 1 # 2-3');
         await userEvent.click(screen.getByTestId('btn-pagar'));
 
         await waitFor(() => expect(screen.queryByText(/ingresa tu nombre/i)).not.toBeInTheDocument());

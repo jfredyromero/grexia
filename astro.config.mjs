@@ -23,4 +23,8 @@ export default defineConfig({
             enabled: true,
         },
     }),
+
+    security: {
+        checkOrigin: false,
+    },
 });

@@ -16,47 +16,59 @@ export interface PagoData {
     fecha: string;
     banco: string;
     tarjeta: string;
-    franquicia: string; // 'VS', 'MC', 'PSE', etc.
-    tipoPago: string; // 'TDC' | 'pse' | ...
+    franquicia: string;
+    tipoPago: string;
     cuotas: string;
     transactionId: string;
     descripcion: string;
     codigoAprobacion: string;
     motivoRechazo: string;
+    tipoDocumento: string;
+    numeroDocumento: string;
+    direccion: string;
 }
 
-/** Verifica el estado de un pago.
- *  Primero consulta la DB; si no existe, cae a ePayco y guarda el resultado.
- *  Exportada para permitir unit tests sin importar Astro. */
+type EstadoPayload = { ok: boolean; calendarUrl?: string; pago?: PagoData; redimido: boolean };
+
 export async function verificarPago(
     ref: string,
     calendarUrl: string,
-    deps: { db?: SupabaseLike; fetcher?: typeof fetch } = {}
-): Promise<{ ok: boolean; calendarUrl?: string; pago?: PagoData }> {
+    deps: { fallback?: boolean; db?: SupabaseLike; fetcher?: typeof fetch } = {}
+): Promise<EstadoPayload | null> {
     const db = deps.db ?? getSupabase();
     const fetcher = deps.fetcher ?? fetch;
+    const fallback = deps.fallback ?? false;
 
-    // 1. Try DB first
-    const { data: row } = await db
-        .from('transacciones')
-        .select(
-            'ref_payco, estado, nombre, email, telefono, monto, moneda, fecha_transaccion, banco, tarjeta, franquicia, tipo_pago, cuotas, descripcion, codigo_aprobacion, motivo_rechazo, transaction_id'
-        )
-        .eq('ref_payco', ref)
-        .single();
+    // 1. DB first
+    try {
+        const { data: row } = await db
+            .from('transacciones')
+            .select(
+                'ref_payco, estado, nombre, email, telefono, monto, moneda, fecha_transaccion, banco, tarjeta, franquicia, tipo_pago, cuotas, descripcion, codigo_aprobacion, motivo_rechazo, transaction_id, redimido, tipo_documento, numero_documento, direccion'
+            )
+            .or(`ref_payco.eq.${ref},ref_hash.eq.${ref}`)
+            .maybeSingle();
 
-    if (row) {
-        return mapTransaccionToResponse(row, calendarUrl);
+        if (row) {
+            return mapTransaccionToResponse(row, calendarUrl);
+        }
+    } catch {
+        console.warn('[estado] DB lookup failed for ref:', ref);
+        if (!fallback) return null;
     }
 
-    // 2. Fall back to ePayco API
+    // 2. No row in DB — return null unless fallback requested
+    if (!fallback) {
+        return null;
+    }
+
+    // 3. Fallback to ePayco public API (no DB write)
     const res = await fetcher(`https://secure.epayco.co/validation/v1/reference/${ref}`);
     if (!res.ok) throw new Error('epayco_fetch_failed');
     const data = await res.json();
     const d = data.data ?? {};
     const ok = d.x_transaction_state === 'Aceptada';
 
-    // ePayco devuelve la descripción con encoding latin-1 interpretado como UTF-8
     const fixEncoding = (str: string) => {
         try {
             return decodeURIComponent(escape(str));
@@ -90,43 +102,20 @@ export async function verificarPago(
         descripcion: fixEncoding(d.x_description ?? ''),
         codigoAprobacion: d.x_approval_code ?? '',
         motivoRechazo: !ok ? fixEncoding(d.x_response_reason_text ?? '') : '',
+        tipoDocumento: d.x_extra2 ?? '',
+        numeroDocumento: d.x_extra3 ?? '',
+        direccion: d.x_extra4 ?? '',
     };
-
-    // 3. Upsert to DB (best-effort)
-    void Promise.resolve(
-        db.from('transacciones').upsert(
-            {
-                ref_payco: ref,
-                transaction_id: d.x_transaction_id ?? null,
-                estado: d.x_transaction_state ?? 'desconocido',
-                nombre: pago.nombre,
-                email: pago.email,
-                telefono: pago.telefono,
-                monto: pago.monto,
-                moneda: pago.moneda,
-                franquicia: d.x_franchise ?? null,
-                tipo_pago: pago.tipoPago,
-                banco: d.x_bank_name !== 'N/A' ? (d.x_bank_name ?? null) : null,
-                tarjeta: d.x_cardnumber !== '*******' ? (d.x_cardnumber ?? null) : null,
-                cuotas: d.x_quotas && d.x_quotas !== '0' ? d.x_quotas : null,
-                descripcion: pago.descripcion,
-                codigo_aprobacion: pago.codigoAprobacion,
-                motivo_rechazo: !ok ? pago.motivoRechazo : null,
-                fecha_transaccion: d.x_fecha_transaccion ? new Date(d.x_fecha_transaccion).toISOString() : null,
-                updated_at: new Date().toISOString(),
-            },
-            { onConflict: 'ref_payco' }
-        )
-    ).catch(() => {});
 
     return {
         ok,
         calendarUrl: ok ? calendarUrl : undefined,
         pago,
+        redimido: false,
     };
 }
 
-export const GET: APIRoute = async ({ url }) => {
+export async function handleGet(url: URL, deps: { db?: SupabaseLike; fetcher?: typeof fetch } = {}): Promise<Response> {
     const ref = url.searchParams.get('ref');
     if (!ref) {
         return new Response(JSON.stringify({ error: 'ref requerido' }), {
@@ -135,8 +124,16 @@ export const GET: APIRoute = async ({ url }) => {
         });
     }
 
+    const fallback = url.searchParams.get('fallback') === 'true';
+
     try {
-        const result = await verificarPago(ref, CALENDLY_URL);
+        const result = await verificarPago(ref, CALENDLY_URL, { ...deps, fallback });
+        if (!result) {
+            return new Response('{}', {
+                status: 202,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
         return new Response(JSON.stringify(result), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -148,4 +145,6 @@ export const GET: APIRoute = async ({ url }) => {
             headers: { 'Content-Type': 'application/json' },
         });
     }
-};
+}
+
+export const GET: APIRoute = async ({ url }) => handleGet(url);

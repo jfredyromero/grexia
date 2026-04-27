@@ -1,0 +1,6 @@
+ALTER TABLE transacciones
+  ADD COLUMN IF NOT EXISTS tipo_documento TEXT,
+  ADD COLUMN IF NOT EXISTS numero_documento TEXT,
+  ADD COLUMN IF NOT EXISTS direccion TEXT,
+  ADD COLUMN IF NOT EXISTS calendly_event_id TEXT,
+  ADD COLUMN IF NOT EXISTS fecha_reunion TIMESTAMPTZ;

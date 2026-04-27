@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { PagoData } from '../../pages/api/pago/estado';
+import { extractCalendlyEventId } from '../../pages/api/pago/confirmar';
 
 declare global {
     interface Window {
@@ -12,6 +13,7 @@ declare global {
 const WHATSAPP_URL = 'https://wa.me/573014822371?text=Hola%2C+tuve+un+problema+con+mi+pago+de+asesor%C3%ADa';
 const BASE = import.meta.env.BASE_URL;
 const CHECKOUT_URL = `${BASE}asesoria/checkout`;
+const MAX_POLLS = 5;
 
 const NA_VALUES = new Set(['na', 'n/a', 'na na', 'n.a.', '-']);
 
@@ -43,69 +45,206 @@ type PageEstado =
     | { tipo: 'fallido'; motivo: string; pago?: PagoData }
     | { tipo: 'error' };
 
+type EstadoPayload = { ok: boolean; calendarUrl?: string; pago?: PagoData; redimido?: boolean };
+
 export default function Confirmacion() {
     const [estado, setEstado] = useState<PageEstado>(() => {
         const ref = new URLSearchParams(window.location.search).get('ref_payco');
         return ref ? { tipo: 'loading' } : { tipo: 'fallido', motivo: 'sin-ref' };
     });
-    const [agendado, setAgendado] = useState(() => {
-        const ref = new URLSearchParams(window.location.search).get('ref_payco');
-        return ref ? !!localStorage.getItem(`booked_${ref}`) : false;
-    });
+    const [agendado, setAgendado] = useState(false);
+
+    const pollCount = useRef(0);
+    const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
         const ref = new URLSearchParams(window.location.search).get('ref_payco');
         if (!ref) return;
 
-        fetch(`/api/pago/estado?ref=${ref}`)
-            .then((r) => r.json())
-            .then((data) => {
-                if (data.ok && data.calendarUrl) {
-                    document.title = '¡Pago exitoso! · Grexia';
-                    setEstado({ tipo: 'exito', calendarUrl: data.calendarUrl, pago: data.pago });
+        function sendResumenPatch(refPayco: string): void {
+            const notas = localStorage.getItem('grexia_checkout_notes');
+            if (!notas?.trim()) return;
+            fetch('/api/pago/confirmar', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ref_payco: refPayco, resumen_caso: notas.trim() }),
+            })
+                .then((r) => {
+                    if (r.ok) localStorage.removeItem('grexia_checkout_notes');
+                })
+                .catch(() => {});
+        }
 
-                    const notas = localStorage.getItem('grexia_checkout_notes');
-                    if (notas?.trim() && ref) {
-                        fetch('/api/pago/confirmar', {
-                            method: 'PATCH',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ ref_payco: ref, resumen_caso: notas.trim() }),
-                        }).catch(() => {});
-                    }
+        function resolve(data: EstadoPayload): void {
+            if (data.redimido) setAgendado(true);
+            sendResumenPatch(ref);
+            if (data.ok && data.calendarUrl) {
+                document.title = '¡Pago exitoso! · Grexia';
+                setEstado({ tipo: 'exito', calendarUrl: data.calendarUrl, pago: data.pago });
+            } else {
+                setEstado({ tipo: 'fallido', motivo: data.pago?.estado ?? 'desconocido', pago: data.pago });
+            }
+        }
+
+        fetch(`/api/pago/estado?ref=${ref}`)
+            .then(async (res) => {
+                if (res.status === 202) {
+                    pollIntervalRef.current = setInterval(() => {
+                        pollCount.current += 1;
+                        const isLast = pollCount.current >= MAX_POLLS;
+
+                        fetch(`/api/pago/estado?ref=${ref}`)
+                            .then(async (pollRes) => {
+                                if (pollRes.status !== 202 || isLast) {
+                                    if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+
+                                    if (pollRes.status === 202) {
+                                        // Polls exhausted — call fallback
+                                        fetch(`/api/pago/estado?ref=${ref}&fallback=true`)
+                                            .then(async (fb) => resolve(await fb.json()))
+                                            .catch(() => setEstado({ tipo: 'error' }));
+                                    } else {
+                                        resolve(await pollRes.json());
+                                    }
+                                }
+                            })
+                            .catch(() => {
+                                if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+                                setEstado({ tipo: 'error' });
+                            });
+                    }, 5000);
                 } else {
-                    setEstado({
-                        tipo: 'fallido',
-                        motivo: data.pago?.estado ?? 'desconocido',
-                        pago: data.pago,
-                    });
+                    resolve(await res.json());
                 }
             })
             .catch(() => setEstado({ tipo: 'error' }));
 
         const handleMessage = (e: MessageEvent) => {
             if (e.data?.event === 'calendly.event_scheduled') {
-                localStorage.setItem(`booked_${ref}`, '1');
                 setAgendado(true);
+                const eventUri: string = (e.data?.payload?.event?.uri as string) ?? '';
+                const calendlyEventId = extractCalendlyEventId(eventUri);
+                fetch('/api/pago/confirmar', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ref_payco: ref,
+                        redimido: true,
+                        ...(calendlyEventId ? { calendly_event_id: calendlyEventId } : {}),
+                    }),
+                }).catch(() => {});
             }
         };
         window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
+        return () => {
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
+            window.removeEventListener('message', handleMessage);
+        };
     }, []);
 
     function handleAgendar(calendlyUrl: string) {
         window.Calendly?.initPopupWidget({ url: calendlyUrl });
     }
 
-    // ── Loading ──────────────────────────────────────────────────────────────
+    // ── Loading (cubre también el estado de polling) ───────────────────────────
     if (estado.tipo === 'loading') {
         return (
             <div
                 data-testid="confirmacion-loading"
-                className="flex items-center justify-center min-h-[calc(100vh-4rem)]"
+                className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] gap-8"
             >
-                <div className="flex flex-col items-center gap-4">
-                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-primary" />
-                    <p className="text-sm text-slate-500">Verificando tu pago...</p>
+                <style>{`
+                    @keyframes ldr-float {
+                        0%, 100% { transform: rotate(2deg) translateY(0px); }
+                        50%       { transform: rotate(3deg) translateY(-14px); }
+                    }
+                    @keyframes ldr-float-back {
+                        0%, 100% { transform: rotate(-5deg) translateY(0px); }
+                        50%       { transform: rotate(-6deg) translateY(-10px); }
+                    }
+                    @keyframes ldr-shimmer {
+                        0%   { background-position: -400px 0; }
+                        100% { background-position:  400px 0; }
+                    }
+                    @keyframes ldr-progress {
+                        0%   { transform: translateX(-100%); }
+                        100% { transform: translateX(600%); }
+                    }
+                    .ldr-card      { animation: ldr-float        3s ease-in-out         infinite; }
+                    .ldr-card-back { animation: ldr-float-back   3s ease-in-out 0.15s   infinite; }
+                    .ldr-line {
+                        background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+                        background-size: 400px 100%;
+                        animation: ldr-shimmer 1.6s ease-in-out infinite;
+                    }
+                    .ldr-progress { width: 18%; animation: ldr-progress 1.8s ease-in-out infinite; }
+                `}</style>
+
+                {/* px-10 pt-10 dan espacio a la rotación; pb-4 acerca el badge */}
+                <div className="flex flex-col items-center gap-5 p-10">
+                    {/* Documento flotando */}
+                    <div className="relative w-56">
+                        {/* Tarjeta trasera */}
+                        <div className="ldr-card-back absolute inset-0 rounded-lg bg-primary/10" />
+
+                        {/* Tarjeta principal */}
+                        <div className="ldr-card relative z-10 rounded-lg bg-white p-6 shadow-2xl">
+                            <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+                                <span
+                                    className="text-xs font-black uppercase tracking-widest text-primary"
+                                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                                >
+                                    Grexia
+                                </span>
+                                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                                    PDF
+                                </span>
+                            </div>
+
+                            <div className="mb-4">
+                                <div className="ldr-line mb-1.5 h-2 w-3/4 rounded-full" />
+                                <div className="ldr-line h-2 w-1/2 rounded-full" />
+                            </div>
+
+                            <div className="flex flex-col gap-1.5">
+                                <div className="ldr-line h-1.5 w-full rounded-full" />
+                                <div className="ldr-line h-1.5 w-full rounded-full" />
+                                <div className="ldr-line h-1.5 w-4/5 rounded-full" />
+                                <div className="ldr-line h-1.5 w-full rounded-full" />
+                                <div className="ldr-line h-1.5 w-3/4 rounded-full" />
+                                <div className="ldr-line h-1.5 w-full rounded-full" />
+                            </div>
+
+                            <div className="mt-5 flex items-end justify-between border-t border-slate-100 pt-4">
+                                <div>
+                                    <div className="ldr-line mb-1 h-1 w-16 rounded-full" />
+                                    <div className="ldr-line h-1 w-12 rounded-full" />
+                                </div>
+                                <div>
+                                    <div className="ldr-line mb-1 h-1 w-16 rounded-full" />
+                                    <div className="ldr-line h-1 w-12 rounded-full" />
+                                </div>
+                            </div>
+
+                            <div className="mt-3 flex justify-center">
+                                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-300">
+                                    grexia.co
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Barra de progreso */}
+                    <div className="w-full space-y-4 flex flex-col items-center">
+                        <div className="w-full h-2 bg-primary/10 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary rounded-full ldr-progress"></div>
+                        </div>
+                        <div className="text-center">
+                            <h2 className="text-2xl font-bold text-secondary mb-2">Verificando tu pago...</h2>
+                            <div className="text-[11px] text-primary/50 font-semibold tracking-widest uppercase mt-4">
+                                GREXIA.CO
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
