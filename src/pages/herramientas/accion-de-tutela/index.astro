@@ -8,6 +8,16 @@ import TutelaSelector from '../../../components/tutela/TutelaSelector';
 import { getToolBySlug } from '../../../config/tools';
 
 const tool = getToolBySlug('accion-de-tutela')!;
+const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: tool.name,
+    description: tool.description,
+    applicationCategory: 'BusinessApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'COP' },
+    operatingSystem: 'Web',
+    url: new URL(tool.href.landing, Astro.site).href,
+};
 ---
 
 <Layout
@@ -15,6 +25,7 @@ const tool = getToolBySlug('accion-de-tutela')!;
     description="Genera tu acción de tutela gratis. Protege tus derechos fundamentales con un documento redactado por abogados colombianos, listo en PDF."
     navbarVariant="tool-landing"
     navbarActiveTool="accion-de-tutela"
+    schema={toolSchema}
 >
     <ToolHero tool={tool} />
 

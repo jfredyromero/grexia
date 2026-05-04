@@ -78,8 +78,7 @@ export const TOOLS: ToolConfig[] = [
                     'Revisa tu contrato, descárgalo en PDF y fírmalo. Listo para usar, sin costo y sin trámites adicionales.',
             },
         ],
-        heroImage:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuDWv17QOVbfZPk9kO3e46KtKbJzpucPs99OOaVCKHmz2kSkcOdNeEneM_-NRb0z92MAptlBCnGHUtZ9a_zBH9FGGGc3CuUb5FBGZGlifDi5G7uZ5iuyYO4-XH-fNOuHZVEJqpkHIyIpA0sf1h01qqAIy9P5MIEPwc6XnRwYvAVz2exUikaWK2bWALEyVH_2h-FOjnU3mTm7OzCqoq3dSX7sjL8mmij62DeQaz1SBWDPC-d1luqm6r6HJQoOrBM14byZqO3OL7Fk9NVP',
+        heroImage: 'https://images.unsplash.com/photo-1733244766159-f58f4184fd38?auto=format&fit=crop&w=800&q=80',
         heroLawyerName: 'Abogada Camila',
         heroLawyerSpecialty: 'Arrendamientos · En línea',
         heroLawyerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80',

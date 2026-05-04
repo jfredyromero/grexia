@@ -7,6 +7,16 @@ import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import { getToolBySlug } from '../../../config/tools';
 
 const tool = getToolBySlug('contrato-arrendamiento')!;
+const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: tool.name,
+    description: tool.description,
+    applicationCategory: 'BusinessApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'COP' },
+    operatingSystem: 'Web',
+    url: new URL(tool.href.landing, Astro.site).href,
+};
 ---
 
 <Layout
@@ -14,6 +24,7 @@ const tool = getToolBySlug('contrato-arrendamiento')!;
     description="Genera tu contrato de arrendamiento gratis en Colombia. Cumple con la Ley 820 de 2003, redactado por abogados, listo para descargar en PDF."
     navbarVariant="tool-landing"
     navbarActiveTool="contrato-arrendamiento"
+    schema={toolSchema}
 >
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />

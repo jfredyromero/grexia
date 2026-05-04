@@ -7,6 +7,16 @@ import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import { getToolBySlug } from '../../../config/tools';
 
 const tool = getToolBySlug('liquidacion-de-intereses')!;
+const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: tool.name,
+    description: tool.description,
+    applicationCategory: 'BusinessApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'COP' },
+    operatingSystem: 'Web',
+    url: new URL(tool.href.landing, Astro.site).href,
+};
 ---
 
 <Layout
@@ -14,6 +24,7 @@ const tool = getToolBySlug('liquidacion-de-intereses')!;
     description="Calcula intereses corrientes y moratorios en Colombia. Tasas oficiales de la Superfinanciera, resultado listo para usar en tu proceso judicial."
     navbarVariant="tool-landing"
     navbarActiveTool="liquidacion-de-intereses"
+    schema={toolSchema}
 >
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />

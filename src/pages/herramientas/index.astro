@@ -2,11 +2,21 @@
 import Layout from '../../layouts/Layout.astro';
 import ToolGrid from '../../components/home/ToolGrid.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
+
+const toolsSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Herramientas legales - Grexia',
+    description:
+        'Genera contratos de arrendamiento, pagarés, promesas de compraventa, tutelas y más. Gratis, sin registro, con respaldo legal colombiano.',
+    url: new URL('herramientas', Astro.site).href,
+};
 ---
 
 <Layout
     title="Herramientas legales - Grexia - Documentos para Colombia"
     description="Genera contratos de arrendamiento, pagarés, promesas de compraventa, tutelas y más. Gratis, sin registro, con respaldo legal colombiano."
+    schema={toolsSchema}
 >
     <main class="grow w-full">
         {/* ── Hero ── */}

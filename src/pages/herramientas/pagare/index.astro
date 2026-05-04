@@ -7,6 +7,16 @@ import WhatsAppButton from '../../../components/WhatsAppButton.astro';
 import { getToolBySlug } from '../../../config/tools';
 
 const tool = getToolBySlug('pagare')!;
+const toolSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: tool.name,
+    description: tool.description,
+    applicationCategory: 'BusinessApplication',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'COP' },
+    operatingSystem: 'Web',
+    url: new URL(tool.href.landing, Astro.site).href,
+};
 ---
 
 <Layout
@@ -14,6 +24,7 @@ const tool = getToolBySlug('pagare')!;
     description="Genera tu pagaré gratis en Colombia. Título valor con validez legal según el Código de Comercio, redactado por abogados, listo para descargar en PDF."
     navbarVariant="tool-landing"
     navbarActiveTool="pagare"
+    schema={toolSchema}
 >
     <ToolHero tool={tool} />
     <ToolHowItWorks tool={tool} />
